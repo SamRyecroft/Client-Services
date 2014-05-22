@@ -1,0 +1,146 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: 'Ubuntu', 'sans-serif';
+	font-size: 16px;
+	box-sizing: border-box;
+}
+
+body{
+	background-color: #f9faf7;
+}
+
+a:link{
+	text-decoration: none;
+	color: #1bd8b3;
+}	
+ul{
+	list-style-type: none;
+}
+
+h1{
+	margin-bottom: 24px;
+	padding: 24px 0 48px 0;
+	text-align: center;
+	font-size: 48px;
+	font-weight: 100;
+	border-bottom: 1px silver solid;
+}
+/* === BORDER + OUTLINE === */
+img, .form-input, .form-textarea, input[type=submit]{
+	outline: none;
+	border: none;
+	border-width: 0; 
+}
+
+/* === APP CONTAINER === */
+#container{
+	margin: 0 auto;
+	padding: 16px;
+	max-width: 960px;
+	background-color: #ffffff;
+	border: 1px silver solid;
+}
+
+/* === FORM === */
+.ng-view-section{
+}
+
+
+
+
+
+.links-nav{
+	margin-bottom: 16px;
+}
+
+.links-nav-ul{
+	text-align: right;
+}
+
+.links-nav-filter-ul{
+	text-align: center;
+}
+
+.links-nav-li{
+	display: inline-block;
+	padding: 8px 0;
+}
+
+.links-nav-li a{
+	padding: 8px;
+	color: #000000;
+}
+.links-nav-li a:hover{
+	background-color: #1bd8b3;
+	color: #ffffff;
+}
+
+.forms{
+	margin: 0 auto;
+	padding: 16px;
+	width: 50%;
+	border: 1px silver solid;
+    -moz-box-sizing: border-box;
+}
+/* === FORM INPUT FIELDS === */
+.form-input{
+	margin-bottom: 16px;
+	padding: 16px 0 16px 12px;
+	display: block;
+	width: 100%;
+	border: 1px silver solid;
+	box-shadow: none;
+    -moz-box-sizing: border-box;
+}
+.form-input.ng-valid{
+	border: 1px green solid;
+}
+
+/* === SUBMIT BUTTON === */
+.button{
+	border: 1px silver solid;
+	color: #ffffff;
+	background-color: #1abc9c;	
+	padding: 16px 0;
+	display: block;
+	width: 50%;
+}
+.button:hover{
+	background-color: #1bd8b3;	
+	cursor: pointer;
+}
+
+
+/* === LIST OF CURRENT MEMBERS DISPLAYED ON THE WELCOME PAGE. === */
+.current-members-li{
+	vertical-align: top;
+	margin-top: 16px;
+	padding: 16px;
+	display: inline-block;
+	width: 16.6%;
+	background-color: #ffffff;
+}
+.current-members-li > h3{
+	font-weight: 400;
+	text-align: center;
+	text-transform: capitalize;
+}
+.current-members-li > img{
+	margin: 0 auto 16px auto;
+	max-width: 100%;
+	border-radius: 50%;
+	border: 2px solid silver;
+}
+.current-members-li:hover > img{
+	border-color: #1abc9c;
+	box-shadow: 0px 0px 10px #1abc9c;
+}
+
+.error-messages{
+	margin-bottom: 16px;
+}
+
+
+
+

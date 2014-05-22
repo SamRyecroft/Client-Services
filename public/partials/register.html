@@ -1,0 +1,49 @@
+<section class="ng-view-section">
+
+	<h1>Register</h1>
+
+	<form class="forms" name="register_form" novalidate action="/login" method="post">
+		
+		{{registrationErrorMessage}}
+		
+		<input class="form-input" name="username" type="text" placeholder="Desired Username" required ng-model="register.username" ng-minlength=2 ng-maxlength=20>
+			<div class="error-messages" ng-show="register_form.username.$dirty && register_form.username.$invalid && register_form.submitted">
+				<small ng-show="register_form.username.$error.required">
+					A username is required
+				</small>
+				<small ng-show="register_form.username.$error.minlength">
+					The username min character length is 2
+				</small>
+				<small ng-show="register_form.username.$error.maxlength">
+					The username max character length is 20
+				</small>
+			</div>
+			
+		<input class="form-input" name="email" type="email" placeholder="Your Email Address" required ng-model="register.email">
+			<div class="error-messages" ng-show="register_form.email.$dirty && register_form.email.$invalid && register_form.submitted">
+				<small ng-show="register_form.email.$error.required">
+					An email address is required
+				</small>
+				<small ng-show="register_form.email.$error.email">
+					A valid email address is required
+				</small>
+			</div>
+		
+		<input class="form-input" name="password" type="password" placeholder="Desired Password" required ng-model="register.password" ng-minlength=2 ng-maxlength=20>
+			<div class="error-messages" ng-show="register_form.password.$dirty && register_form.password.$invalid && register_form.submitted">
+				<small ng-show="register_form.password.$error.required">
+					A password is required
+				</small>
+				<small ng-show="register_form.password.$error.minlength">
+					The password min character length is 2
+				</small>
+				<small ng-show="register_form.password.$error.maxlength">
+					The password max character length is 20
+				</small>
+			</div>
+		
+		<button class="button" type="submit" name="submit">CREATE ACCOUNT</button>
+		
+	</form>
+
+</section>

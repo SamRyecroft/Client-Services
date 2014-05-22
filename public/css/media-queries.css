@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+@media all and (max-width: 480px){ 
+	h1{
+		font-size: 38px;
+	} 
+
+	.links-nav-ul{
+		text-align: center;
+	}
+	.forms{
+		width: 100%;
+	}
+	
+	.button{
+		width: 100%;
+	}
+	
+	.current-members-li{
+		width: 50%;
+	}
+}
+
+
+
+
+@media all and (min-width: 481px) and (max-width: 768px){ 
+	.forms{
+		width: 75%;
+	}
+	
+	.button{
+		width: 100%;
+	}
+	
+	.current-members-li{
+		width: 33.33%;
+	}
+}
+
+
+
+
+@media all and (min-width:769px) and (max-width:1024px){
+	.forms{
+		width: 65%;
+	}
+	
+	.current-members-li{
+		width: 25%;
+	}
+}
+
+
+
+
+@media all and (min-width:1025px) and (max-width:1279px){
+	
+	.current-members-li{
+		width: 20%;
+	}
+}
+
+
+
+
+@media all and (min-width:1280px){   
+}

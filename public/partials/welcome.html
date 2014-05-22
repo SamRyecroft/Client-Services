@@ -1,0 +1,22 @@
+<section class="ng-view-section">
+
+	<h1>Meet The Team</h1>
+
+	<nav class="links-nav">
+		<ul class="links-nav-filter-ul">
+			<li class="links-nav-li"><a href="" ng-click="sortField = 'username'; reverse = !reverse">Username</a></li>
+			<li class="links-nav-li"><a href="" ng-click="sortField = 'type'; reverse = !reverse">Type</a></li>
+		</ul>
+	</nav>
+	
+	<input class="form-input" type="text" name="searchMembers" placeholder="Type to filter members" ng-model="search.members" ng-minlength=2 ng-maxlength=20>
+
+	<ul class="current-members-ul">
+		<li class="current-members-li" ng-repeat="member in members | filter:search.members | orderBy:sortField:reverse">
+			<img ng-src="{{ member.imgURL }}" width="200"/>
+			<h3>{{ member.username }}</h3>
+			<h3>{{ member.type }}</h3>
+		</li>
+	</ul>
+
+</section>

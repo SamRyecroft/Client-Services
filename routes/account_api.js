@@ -1,5 +1,4 @@
-var userModel = require("../model/UserModel.js")
-
+var userModel = require("../model/UserModel.js");
 function registerUserAccount(req, res, next) {
 
 	console.log(req.param);
@@ -66,7 +65,8 @@ function registerUserAccount(req, res, next) {
 
 function loginUserAccount(req, res) {
 
-	if (!req.body.username) {
+	console.log(req);
+	if (!req.param.username) {
 		res.statusCode = 400;
 		res.end(JSON.stringify({
 			status : "error",
@@ -76,7 +76,7 @@ function loginUserAccount(req, res) {
 
 	}
 
-	if (!req.body.password) {
+	if (!req.param.password) {
 		res.statusCode = 400;
 		res.end(JSON.stringify({
 			status : "error",
@@ -86,7 +86,7 @@ function loginUserAccount(req, res) {
 
 	}
 	
-	userModel.loginUsingPassword(req.body.username, req.body.password, function(err){
+	userModel.loginUsingPassword(req.param.username, req.param.password, function(err){
 		res.end(JSON.stringify({
 			status : "error",
 			errors : err.err
@@ -96,5 +96,10 @@ function loginUserAccount(req, res) {
 
 }
 
+function logOutUser(req, res){
+	
+}
+
 exports.registerUserAccount = registerUserAccount;
+exports.loginUserAccount = loginUserAccount;
 		
