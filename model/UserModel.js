@@ -96,11 +96,12 @@ function isValidPassword(password, hashedPassword, saltValue) {
 
 var userModel = mongoDB.model('User', userSchema);
 
+
 // Validates user credentials against the stored values before returning the
 // user data if the credentials are correct
 function loginUsingPassword(accountIdentifier, password, callback) {
 
-	userModle.findOne({
+	userModel.findOne({
 		$or : [ {
 			username : accountIdentifier
 		}, {
@@ -116,12 +117,12 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 		}
 
 		// Uses the isValidPassword method to check if the password entered matches the one on record
-		if (isValidPassword(password, data.password, data.salt)) {
+		if (isValidPassword(password, userAccount.password, userAccount.salt)) {
 
 			// RUN IF PASSWORD IS CORRECT
 
 			// Returns the data retrived from the database
-			return callback(null, data);
+			return callback(null, userAccount);
 
 		} else {
 
