@@ -1,6 +1,6 @@
 var userModel = require("../model/UserModel.js");
 var qs = require('querystring');
-
+var fs = require('fs');
 function registerUserAccount(req, res, next) {
 
 	var body = '';
@@ -107,13 +107,13 @@ function loginUserAccount(req, res) {
 
 		var data = qs.parse(body);
 
-		console.log(data);
 		if (!data.username) {
 			res.statusCode = 400;
 			res.end(JSON.stringify({
 				status : "error",
 				errors : "No username specified"
 			}));
+			
 			return;
 
 		}
@@ -124,6 +124,7 @@ function loginUserAccount(req, res) {
 				status : "error",
 				errors : "No password specified"
 			}));
+			
 			return;
 
 		}
@@ -132,6 +133,7 @@ function loginUserAccount(req, res) {
 				err, accountData) {
 
 			if (err != null) {
+				res.statusCode = 400;
 				res.end(JSON.stringify({
 					status : "error",
 					errors : err.err
@@ -139,7 +141,10 @@ function loginUserAccount(req, res) {
 				return;
 			} else {
 				res.statusCode = 400;
-				res.end(JSON.stringify(accountData));
+				res.end(JSON.stringify({
+					status : "login sucsessfull",
+					errors : "none"
+				}));
 			}
 
 		});
