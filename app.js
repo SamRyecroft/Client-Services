@@ -3,14 +3,17 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path')
-  , account_api = require('./routes/account_api.js');
-
+var express = require('express');
+var routes = require('./routes');
+var user = require('./routes/user');
+var http = require('http');
+var path = require('path');
+var account_api = require('./routes/account_api.js');
+var mongoDB = require('mongoose');
+var serverConfiguration = require('./config.js');
 var app = express();
+
+mongoDB.connect(serverConfiguration.MONGODBADDRESS);
 
 // all environments
 app.set('port', process.env.PORT || 3000);

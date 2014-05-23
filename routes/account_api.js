@@ -1,7 +1,7 @@
 var userModel = require("../model/UserModel.js");
 var qs = require('querystring');
 var fs = require('fs');
-
+var tokenModel = require('../model/TokenModel.js');
 function registerUserAccount(req, res, next) {
 
 	var body = '';
@@ -138,13 +138,30 @@ function loginUserAccount(req, res) {
 					status : "error",
 					errors : err.err
 				}));
+				
 				return;
+				
 			} else {
 				res.statusCode = 400;
 				res.end(JSON.stringify({
 					status : "login sucsessfull",
 					errors : "none"
 				}));
+				
+				tokenModel.createToken(accountData.emailAddress, function(err, token){
+					
+					if (err != null){
+						res.statusCode = 400;
+						res.end(JSON.stringify({
+							status : "error",
+							errors : "Could not genrate token"
+						}));
+						
+					}else {
+						console.log(token);
+					}
+					
+				});
 			}
 
 		});

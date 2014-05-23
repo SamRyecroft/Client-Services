@@ -3,9 +3,6 @@ var userId = mongoDB.Schema.ObjectId;
 var crypto = require('crypto');
 var Schema = mongoDB.Schema;
 var uuid = require('node-uuid');
-var serverConfiguration = require('../config');
-
-mongoDB.connect(serverConfiguration.MONGODBADDRESS);
 
 var userSchema = mongoDB
 		.Schema({
@@ -94,7 +91,6 @@ function isValidPassword(password, hashedPassword, saltValue) {
 
 var userModel = mongoDB.model('User', userSchema);
 
-
 // Validates user credentials against the stored values before returning the
 // user data if the credentials are correct
 function loginUsingPassword(accountIdentifier, password, callback) {
@@ -159,5 +155,6 @@ function createNewUser(username, password, emailAddress, firstName, middleName, 
 	});
 }
 
+exports.userModel = userModel;
 exports.createNewUser = createNewUser;
 exports.loginUsingPassword = loginUsingPassword;
