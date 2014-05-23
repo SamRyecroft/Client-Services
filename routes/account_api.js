@@ -10,7 +10,7 @@ function registerUserAccount(req, res, next) {
 
 		if (body.length > 1e6) {
 
-			request.connection.destroy();
+			req.connection.destroy();
 		}
 	});
 
@@ -32,15 +32,14 @@ function registerUserAccount(req, res, next) {
 		if (!data.email)
 			errors.push("No email address specified");
 
-		// (!data.name)
-		//	errors.push("No first name specified");
+		(!data.name)
+			errors.push("No first name specified");
 
-		//if (!data.surname)
-		//	errors.push("No surname specified");
+		if (!data.surname)
+			errors.push("No surname specified");
 
-		data.firstName = "";
-		data.surname = "";
-		data.middleName = "";
+		if (!data.middleName)
+			data.middleName = "";
 
 		// Checks to see if the errors array
 		if (errors.length) {
@@ -92,7 +91,7 @@ function loginUserAccount(req, res) {
 
 		if (body.length > 1e6) {
 
-			request.connection.destroy();
+			req.connection.destroy();
 		}
 	});
 
