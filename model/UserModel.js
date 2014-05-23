@@ -5,8 +5,6 @@ var Schema = mongoDB.Schema;
 var uuid = require('node-uuid');
 var serverConfiguration = require('../config');
 
-
-console.log(serverConfiguration.MONGODBADDRESS);
 mongoDB.connect(serverConfiguration.MONGODBADDRESS);
 
 var userSchema = mongoDB

@@ -1,6 +1,7 @@
 var userModel = require("../model/UserModel.js");
 var qs = require('querystring');
 var fs = require('fs');
+
 function registerUserAccount(req, res, next) {
 
 	var body = '';
@@ -18,7 +19,6 @@ function registerUserAccount(req, res, next) {
 
 		var data = qs.parse(body);
 
-		console.log(data);
 		var errors = [];
 
 		if (!data.username)
