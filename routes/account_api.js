@@ -18,6 +18,7 @@ function registerUserAccount(req, res, next) {
 
 		var data = qs.parse(body);
 
+		console.log(data);
 		var errors = [];
 
 		if (!data.username)
@@ -32,7 +33,7 @@ function registerUserAccount(req, res, next) {
 		if (!data.email)
 			errors.push("No email address specified");
 
-		(!data.name)
+		if (!data.firstName)
 			errors.push("No first name specified");
 
 		if (!data.surname)
@@ -57,7 +58,7 @@ function registerUserAccount(req, res, next) {
 		userModel.createNewUser(data.username, data.password, data.email,
 				data.firstName, data.middleName, data.surname, function(err) {
 
-					if (err) {
+					if (err != null) {
 
 						if (err.code === 11000) {
 							res.statusCode = 400;
@@ -76,10 +77,17 @@ function registerUserAccount(req, res, next) {
 							}));
 							return;
 						}
+					}else  {
+						
+						res.statusCode = 400;
+						res.end(JSON.stringify({
+							status : "User added",
+							compleated : "User added"
+						}));
+						return;
 					}
 				});
-
-	});
+			});
 }
 
 function loginUserAccount(req, res) {
@@ -129,11 +137,11 @@ function loginUserAccount(req, res) {
 					errors : err.err
 				}));
 				return;
-			}else {
+			} else {
 				res.statusCode = 400;
 				res.end(JSON.stringify(accountData));
 			}
-			
+
 		});
 	});
 

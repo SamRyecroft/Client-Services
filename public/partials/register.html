@@ -3,9 +3,9 @@
 	<h1>Register</h1>
 
 	<form class="forms" name="register_form" novalidate action="/register" method="post">
-		
+
 		{{registrationErrorMessage}}
-		
+
 		<input class="form-input" name="firstName" type="text" placeholder="Your First Name" required ng-model="register.firstName" ng-minlength=2 ng-maxlength=20>
 			<div class="error-messages" ng-show="register_form.firstName.$dirty && register_form.firstName.$invalid && register_form.submitted">
 				<small ng-show="register_form.firstName.$error.required">
@@ -18,7 +18,7 @@
 					The Firstname max character length is 20
 				</small>
 			</div>
-		
+
 		<input class="form-input" name="middleName" type="text" placeholder="Your Middle Name" required ng-model="register.middleName" ng-minlength=2 ng-maxlength=20>
 			<div class="error-messages" ng-show="register_form.middleName.$dirty && register_form.middleName.$invalid && register_form.submitted">
 				<small ng-show="register_form.middleName.$error.required">
@@ -31,7 +31,7 @@
 					The Middle Name max character length is 20
 				</small>
 			</div>
-		
+
 		<input class="form-input" name="surname" type="text" placeholder="Your Surname" required ng-model="register.surname" ng-minlength=2 ng-maxlength=20>
 			<div class="error-messages" ng-show="register_form.surname.$dirty && register_form.surname.$invalid && register_form.submitted">
 				<small ng-show="register_form.surname.$error.required">
@@ -44,7 +44,7 @@
 					Your Surname max character length is 20
 				</small>
 			</div>
-		
+
 		<input class="form-input" name="username" type="text" placeholder="Desired Username" required ng-model="register.username" ng-minlength=2 ng-maxlength=20>
 			<div class="error-messages" ng-show="register_form.username.$dirty && register_form.username.$invalid && register_form.submitted">
 				<small ng-show="register_form.username.$error.required">
@@ -57,7 +57,7 @@
 					The username max character length is 20
 				</small>
 			</div>
-			
+
 		<input class="form-input" name="email" type="email" placeholder="Your Email Address" required ng-model="register.email">
 			<div class="error-messages" ng-show="register_form.email.$dirty && register_form.email.$invalid && register_form.submitted">
 				<small ng-show="register_form.email.$error.required">
@@ -67,7 +67,7 @@
 					A valid email address is required
 				</small>
 			</div>
-		
+
 		<input class="form-input" name="password" type="password" placeholder="Desired Password" required ng-model="register.password" ng-minlength=2 ng-maxlength=20>
 			<div class="error-messages" ng-show="register_form.password.$dirty && register_form.password.$invalid && register_form.submitted">
 				<small ng-show="register_form.password.$error.required">
@@ -80,9 +80,9 @@
 					The password max character length is 20
 				</small>
 			</div>
-		
+
 		<button class="button" type="submit" name="submit">CREATE ACCOUNT</button>
-		
+
 	</form>
 
 </section>

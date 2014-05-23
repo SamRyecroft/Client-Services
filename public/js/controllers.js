@@ -67,17 +67,9 @@ loginApp.controller('RegisterController', function($scope, $location, memberFact
 		// Setting $scope.registrationError is false and the register form is valid 
 		// push the registration details to $scope.members and set the location of the view to /login
 		if (!$scope.registrationError && $scope.register_form.$valid){
-			$scope.members.push(
-				{
-					firstName:$scope.register.firstName,
-					middleName:$scope.register.middleName,
-					surname:$scope.register.surname,
-					username:$scope.register.username, 
-					email:$scope.register.email, 
-					password:$scope.register.password
-				});
+			$scope.members.push({username:$scope.register.username, email:$scope.register.email, password:$scope.register.password});
 			$location.url("/login");
-
+		}
 	}
 
 });

@@ -152,7 +152,11 @@ function createNewUser(username, password, emailAddress, firstName, middleName, 
 			console.error(err);
 			callback(new Error("Duplicate user :("));
 			
+		}else {
+			
+			callback(null);
 		}
+			
 		
 	});
 }
