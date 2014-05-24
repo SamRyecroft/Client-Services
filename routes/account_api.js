@@ -170,7 +170,25 @@ function loginUserAccount(req, res) {
 }
 
 function logOutUser(req, res) {
+	var body = '';
 
+	req.on('data', function(data) {
+		body += data;
+
+		if (body.length > 1e6) {
+
+			req.connection.destroy();
+		}
+	});
+
+	req.on('end', function() {
+
+		var data = qs.parse(body);
+		
+		tokenModel.invalidateToken(JSON.parse(data));
+		
+	});
+	
 }
 
 function getAllAccounts(req,res){
@@ -184,4 +202,5 @@ function getAllAccounts(req,res){
 exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
 exports.loginUserAccount = loginUserAccount;
+exports.logOutUser = logOutUser;
 

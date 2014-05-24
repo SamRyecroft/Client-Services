@@ -25,6 +25,7 @@ app.get('/', routes.index);
 
 app.post('/register', account_api.registerUserAccount);
 app.post('/login', account_api.loginUserAccount);
+app.post('/logout', account_api.logOutUser);
 
 
 
