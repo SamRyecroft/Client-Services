@@ -155,6 +155,16 @@ function createNewUser(username, password, emailAddress, firstName, middleName, 
 	});
 }
 
+function getAllUsers (callback) {
+	userModel.find(null,{password:0, salt:0, id:0},function (err, accounts){
+		callback(null, accounts);
+		console.log(accounts);
+	});
+	
+}
+
+
 exports.userModel = userModel;
+exports.getAllUsers = getAllUsers;
 exports.createNewUser = createNewUser;
 exports.loginUsingPassword = loginUsingPassword;

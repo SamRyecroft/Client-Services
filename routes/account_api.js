@@ -142,11 +142,6 @@ function loginUserAccount(req, res) {
 				return;
 				
 			} else {
-				res.statusCode = 400;
-				res.end(JSON.stringify({
-					status : "login sucsessfull",
-					errors : "none"
-				}));
 				
 				tokenModel.createToken(accountData.emailAddress, function(err, token){
 					
@@ -158,7 +153,12 @@ function loginUserAccount(req, res) {
 						}));
 						
 					}else {
-						console.log(token);
+						res.cookie('authenticationCookie', JSON.stringify(token), { maxAge: 900000, httpOnly: true });
+						res.writeHead(302, {
+							  'Location': '/#/welcome'
+							  //add other headers here...
+							});
+							res.end();
 					}
 					
 				});
@@ -173,5 +173,15 @@ function logOutUser(req, res) {
 
 }
 
+function getAllAccounts(req,res){
+	userModel.getAllUsers(function(err, userAccounts){
+		res.statusCode = 400;
+		res.end(JSON.stringify(userAccounts));
+	});
+	
+}
+
+exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
 exports.loginUserAccount = loginUserAccount;
+
