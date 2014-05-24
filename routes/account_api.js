@@ -2,6 +2,10 @@ var userModel = require("../model/UserModel.js");
 var qs = require('querystring');
 var fs = require('fs');
 var tokenModel = require('../model/TokenModel.js');
+
+
+
+
 function registerUserAccount(req, res, next) {
 
 	var body = '';
