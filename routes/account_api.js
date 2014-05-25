@@ -196,30 +196,18 @@ function logInUserAccount(req, res) {
 }
 
 function logOutUser(req, res) {
-	var body = '';
 
-	req.on('data', function(data) {
-		body += data;
+	var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
 
-		if (body.length > 1e6) {
+	tokenModel.invalidateToken(token);
 
-			req.connection.destroy();
-		}
-	});
-
-	req.on('end', function() {
-
-		var data = qs.parse(body);
-
-		tokenModel.invalidateToken(JSON.parse(data));
-
-	});
+	res.statusCode = 200;
+	res.end("user logged out");
 
 }
 
 function getAllAccounts(req, res) {
 
-	
 	var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
 
 	tokenModel.verifyToken(token, function (validToken){

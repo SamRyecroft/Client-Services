@@ -27,8 +27,8 @@ var options = {
 
 app.post('/register', accounts_api.registerUserAccount);
 app.post('/login', accounts_api.logInUserAccount);
-app.post('/logout', accounts_api.logOutUser)
-app.get('/accountResoruces/allUsers.json', accounts_api.getAllAccounts);
+app.get('/logout', accounts_api.logOutUser)
+app.get('/accountResources/allUsers.json', accounts_api.getAllAccounts);
 
 mongoDB.connect(serverConfiguration.MONGODBADDRESS);
 
