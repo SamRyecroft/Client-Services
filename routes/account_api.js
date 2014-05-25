@@ -2,9 +2,7 @@ var userModel = require("../model/UserModel.js");
 var qs = require('querystring');
 var fs = require('fs');
 var tokenModel = require('../model/TokenModel.js');
-
-
-
+var cookie = require("cookie"); 
 
 function registerUserAccount(req, res, next) {
 
@@ -81,20 +79,39 @@ function registerUserAccount(req, res, next) {
 							}));
 							return;
 						}
-					}else  {
-						
-						res.statusCode = 400;
-						res.end(JSON.stringify({
-							status : "User added",
-							compleated : "User added"
-						}));
-						return;
+					} else {
+
+						tokenModel.createToken(data.emailAddress, function(err,
+								token) {
+
+							if (err != null) {
+								res.statusCode = 400;
+								res.end(JSON.stringify({
+									status : "error",
+									errors : "Could not genrate token"
+								}));
+
+							} else {
+								res.cookie('authenticationCookie', JSON
+										.stringify(token), {
+									maxAge : 900000,
+									httpOnly : true
+								});
+								res.writeHead(302, {
+									'Location' : '/#/welcome'
+								// add other headers here...
+								});
+								res.end();
+							}
+
+						});
+
 					}
 				});
-			});
+	});
 }
 
-function loginUserAccount(req, res) {
+function logInUserAccount(req, res) {
 
 	var body = '';
 
@@ -117,7 +134,7 @@ function loginUserAccount(req, res) {
 				status : "error",
 				errors : "No username specified"
 			}));
-			
+
 			return;
 
 		}
@@ -128,7 +145,7 @@ function loginUserAccount(req, res) {
 				status : "error",
 				errors : "No password specified"
 			}));
-			
+
 			return;
 
 		}
@@ -142,29 +159,34 @@ function loginUserAccount(req, res) {
 					status : "error",
 					errors : err.err
 				}));
-				
+
 				return;
-				
+
 			} else {
-				
-				tokenModel.createToken(accountData.emailAddress, function(err, token){
-					
-					if (err != null){
+
+				tokenModel.createToken(accountData.emailAddress, function(err,
+						token) {
+
+					if (err != null) {
 						res.statusCode = 400;
 						res.end(JSON.stringify({
 							status : "error",
 							errors : "Could not genrate token"
 						}));
-						
-					}else {
-						res.cookie('authenticationCookie', JSON.stringify(token), { maxAge: 900000, httpOnly: true });
+
+					} else {
+						res.cookie('authenticationCookie', JSON
+								.stringify(token), {
+							maxAge : 900000,
+							httpOnly : true
+						});
 						res.writeHead(302, {
-							  'Location': '/#/welcome'
-							  //add other headers here...
-							});
-							res.end();
+							'Location' : '/#/welcome'
+						// add other headers here...
+						});
+						res.end();
 					}
-					
+
 				});
 			}
 
@@ -188,23 +210,39 @@ function logOutUser(req, res) {
 	req.on('end', function() {
 
 		var data = qs.parse(body);
-		
+
 		tokenModel.invalidateToken(JSON.parse(data));
-		
+
 	});
-	
+
 }
 
-function getAllAccounts(req,res){
-	userModel.getAllUsers(function(err, userAccounts){
-		res.statusCode = 400;
-		res.end(JSON.stringify(userAccounts));
-	});
+function getAllAccounts(req, res) {
+
+	
+	var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+	tokenModel.verifyToken(token, function (validToken){
+		
+		if (validToken){
+			userModel.getAllUsers(function(err, userAccounts) {
+				res.statusCode = 200;
+				res.contentType = "application/json";
+				res.end(JSON.stringify(userAccounts));
+			});
+		}else {
+			res.statusCode = 400;
+			res.end("invalid cridentials");
+		}
+		
+	}); 
+		
+	
+		
 	
 }
 
 exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
-exports.loginUserAccount = loginUserAccount;
+exports.logInUserAccount = logInUserAccount;
 exports.logOutUser = logOutUser;
-

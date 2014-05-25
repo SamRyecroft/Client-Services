@@ -23,7 +23,7 @@ loginApp.factory('memberFactory', function() {
 			username: 'xi', 
 			email: 'xi@email.com', 
 			password: 'xi', 
-			imgURL: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_5_200x200.png', 
+			imgURL: 'https://abs.twimg.com/sticky/  /default_profile_5_200x200.png', 
 			type: 3
 		},
 		{

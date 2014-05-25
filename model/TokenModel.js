@@ -38,7 +38,7 @@ function createToken(emailAddress, callback) {
 	});
 }
 
-function verifyToken(token) {
+function verifyToken(token, callback) {
 	tokenModel.find({
 		emailAddress : token.emailAddress,
 		series : token.series,
@@ -49,10 +49,10 @@ function verifyToken(token) {
 		
 		if (results.length === 1){
 			
-			console.log(true);
+			callback(true);
 		}else {
 			
-			console.log(false);
+			callback(false);
 		}
 	});
 }
