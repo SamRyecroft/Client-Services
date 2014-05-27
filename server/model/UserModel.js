@@ -155,6 +155,22 @@ function createNewUser(username, password, emailAddress, firstName, middleName, 
 	});
 }
 
+function doseUserExsist(value, callback){
+	
+	userModel.find({username:value}, null, function (err, results){
+		
+		if (results.length === 1){
+			
+			callback(true);
+		
+		}else {
+			
+			callback(false);
+		}
+		
+	});
+} 
+
 function getAllUsers (callback) {
 	userModel.find(null,{password:0, salt:0, id:0},function (err, accounts){
 		callback(null, accounts);
@@ -167,3 +183,4 @@ exports.userModel = userModel;
 exports.getAllUsers = getAllUsers;
 exports.createNewUser = createNewUser;
 exports.loginUsingPassword = loginUsingPassword;
+exports.doseUserExsist = doseUserExsist;

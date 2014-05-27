@@ -1,8 +1,5 @@
 var app = require('./app.js').app;
 
-
-
-
 function define(name, value) {
     Object.defineProperty(exports, name, {
         value:      value,
@@ -10,6 +7,8 @@ function define(name, value) {
     });
 }
 
-define("MONGODBADDRESS", "mongodb://localhost/clientServices");
-define("SERVERPORT", 3000);
+define("MONGODB_ADDRESS", "mongodb://localhost/clientServices");
+define("SERVER_PORT", 3000);
+define("MAXIMUM_FAILED_LOGIN_ATTEMPTS", 3);
+
  

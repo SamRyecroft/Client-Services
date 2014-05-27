@@ -199,7 +199,7 @@ function logInUserAccount(req, res) {
 
 						res.writeHead(302, {
 							'Location' : '/#/welcome'
-						// add other headers here...
+						
 						});
 						res.end();
 					}
@@ -248,7 +248,48 @@ function getAllAccounts(req, res) {
 
 }
 
+function isValidUserAccount(req, res){
+	
+	console.log(req.headers.cookie);
+	//console.log((cookie.parse(req.headers.cookie)['authenticationCookie']));
+	
+	if (req.headers.cookie != undefined){
+		
+	var token = (JSON
+			.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+	tokenModel.verifyToken(token, function(validToken) {
+	
+		if (validToken) {
+	
+			userModel.doseUserExsist(req.query.username, function (exsists){
+				
+				res.statusCode = 200;
+				res.contentType = "application/json";
+				res.end(JSON.stringify(exsists));
+			});
+			
+		} else {
+			res.writeHead(302, {
+				'Location' : '/login'
+			
+			});
+			res.end();
+		}
+
+	});
+
+	}else {
+		res.writeHead(302, {
+			'Location' : '/login'
+		
+		});
+		res.end();
+	}
+}
+
 exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
 exports.logInUserAccount = logInUserAccount;
 exports.logOutUser = logOutUser;
+exports.isValidUserAccount = isValidUserAccount;

@@ -3,38 +3,36 @@
  * Module dependencies.
  */
 
+
 var express = require('express');
 var app = express();
 exports.app = app;
 
-var routes = require('./routes');
+require('./routes/accountService.js');
 
-var user = require('./routes/user');
 var https = require('https');
 var path = require('path');
 var mongoDB = require('mongoose');
 var serverConfiguration = require('./config.js');
-var accounts_api = require('./routes/account_api.js')
 var compress = require('compression');
 var fs = require('fs');
 
-var privateKey = fs.readFileSync('./certificates/privkey.pem').toString();
+var routes = require ('./routes');
+
+var privateKey = fs.readFileSync('./certificates/privkey.pem').toString(); 
 var certificate = fs.readFileSync('./certificates/newcert.pem').toString();
+
 var options = {
 		key: privateKey,
-		cert: certificate
+		cert : certificate
 }
 
-app.post('/register', accounts_api.registerUserAccount);
-app.post('/login', accounts_api.logInUserAccount);
-app.get('/logout', accounts_api.logOutUser)
-app.get('/accountResources/allUsers.json', accounts_api.getAllAccounts);
 
-mongoDB.connect(serverConfiguration.MONGODBADDRESS);
+
+mongoDB.connect(serverConfiguration.MONGODB_ADDRESS);
 
 // all environments
-app.set('port', serverConfiguration.SERVERPORT);
-app.set('views', __dirname + '/views');
+app.set('port', serverConfiguration.SERVER_PORT);
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 app.use(compress());  
