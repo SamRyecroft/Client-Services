@@ -3,7 +3,8 @@ var userId = mongoDB.Schema.ObjectId;
 var crypto = require('crypto');
 var Schema = mongoDB.Schema;
 var uuid = require('node-uuid');
-
+var MAXIMUM_FAILED_LOGIN_ATTEMPTS = require('../config.js').MAXIMUM_FAILED_LOGIN_ATTEMPTS;
+var LOCK_OUT_TIME = require('../config.js').LOCKOUT_TIME;
 var userSchema = mongoDB
 		.Schema({
 
@@ -29,6 +30,17 @@ var userSchema = mongoDB
 				type : String,
 				required : false,
 				"default" : uuid.v1
+			},
+			numberOfFaildLoginAttempts : {
+				type : Number,
+				required : true,
+				"default" : 0
+			},
+			accountLockedUntill : {
+				type : Date,
+				required : false,
+				defult : new Date
+				
 			},
 
 			// User information
@@ -75,14 +87,9 @@ function createHash(password, saltValue) {
 
 }
 
-// Sets the password and the salt value used to hash the password of the user
-function setPassword(password) {
 
-	this.password = createHash(password, saltValue);
-	this.salt = saltValue;
-};
-
-// Creates a hash value of a password with a specified salt against a already hashed password
+// Creates a hash value of a password with a specified salt against a already
+// hashed password
 function isValidPassword(password, hashedPassword, saltValue) {
 
 	return hashedPassword === createHash(password, saltValue);
@@ -105,82 +112,153 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 
 		if (err || (userAccount == null)) {
 
-			// Returns an error if no user account was found with the specified username or email address
+			// Returns an error if no user account was found with the specified
+			// username or email address
 			return callback(new Error('The user was not found :('));
 
 		}
 
-		// Uses the isValidPassword method to check if the password entered matches the one on record
-		if (isValidPassword(password, userAccount.password, userAccount.salt)) {
+		if (!(userAccount.accountLockedUntill > new Date)) {
+			// Uses the isValidPassword method to check if the password entered
+			// matches the one on record
+			if (isValidPassword(password, userAccount.password,
+					userAccount.salt)) {
 
-			// RUN IF PASSWORD IS CORRECT
+				userAccount.numberOfFaildLoginAttempts = 0;
+				
+				userAccount.save();
+				
+				// RUN IF PASSWORD IS CORRECT
 
-			// Returns the data retrived from the database
-			return callback(null, userAccount);
+				// Returns the data retrived from the database
+				return callback(null, userAccount);
+				
+			} else {
+				
+				userAccount.numberOfFaildLoginAttempts += 1;
+				
+				if (userAccount.numberOfFaildLoginAttempts > MAXIMUM_FAILED_LOGIN_ATTEMPTS){
+					
+					console.log();
+					console.log("account lock code run");
+					userAccount.accountLockedUntill = ((new Date).setHours((new Date).getHours() + LOCK_OUT_TIME));
+				}
+				
+				userAccount.save();
+				// RUN IF PASSWORD IS INCORRECT
+				return callback(new Error('invalid password'));
 
-		} else {
-
-			// RUN IF PASSWORD IS INCORRECT 
-			return callback(new Error('invalid password'));
-
+			}
+		}else {
+			
+			return callback(new Error ('This account is locked untill ' + userAccount.numberOfFailedLoginAttempts));
 		}
 	});
 }
 
 // Creates a new user account adding it to the database
-function createNewUser(username, password, emailAddress, firstName, middleName, surname, callback) {
-	
+function createNewUser(username, password, emailAddress, firstName, middleName,
+		surname, callback) {
+
 	var userAccount = new userModel({
-		username:username,
-		password:createHash(password, saltValue),
-		salt:saltValue,
-		emailAddress:emailAddress,
-		firstName:firstName,
-		middleName:middleName,
-		surname:surname
+		username : username,
+		password : createHash(password, saltValue),
+		salt : saltValue,
+		emailAddress : emailAddress,
+		firstName : firstName,
+		middleName : middleName,
+		surname : surname
 	});
-	
-	userAccount.save(function(err, userAccount){
-		
-		if (err){
+
+	userAccount.save(function(err, userAccount) {
+
+		if (err) {
 			console.error(err);
 			callback(new Error("Duplicate user :("));
-			
-		}else {
-			
+
+		} else {
+
 			callback(null);
 		}
-			
-		
+
 	});
 }
 
-function doseUserExsist(value, callback){
+// Checks to see if a user account with the specified username exsists
+function doseUserExsist(username, callback) {
+
+	userModel.find({
+		username : username
+	}, null, function(err, results) {
+
+		if (results.length === 1) {
+
+			callback(true);
+
+		} else {
+
+			callback(false);
+		}
+
+	});
+}
+
+// Checks to see if an account with the specified email address exsists
+function isEmailAddressRegisterd (emailAddress, callback){
 	
-	userModel.find({username:value}, null, function (err, results){
+	userModel.find({
+		emailAddress : emailAddress
+	}, null, function (err, results){
 		
-		if (results.length === 1){
+		if (result.length === 1){
 			
 			callback(true);
 		
 		}else {
 			
 			callback(false);
+			
 		}
-		
 	});
-} 
+}
 
-function getAllUsers (callback) {
-	userModel.find(null,{password:0, salt:0, id:0},function (err, accounts){
-		callback(null, accounts);
-	});
+// Sets a new password for a user account when provided with the correct emailAddress and correct origanl password
+function setNewPassword(emailAddress, oldPassword, newPassword, callback){
+
+	userModel.find({
+		emailAddress : emailAddress
+	}, null, function (err, userAccount){
+		
+		if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
+			
+			userAccount.password = newPassword;
+			userAccount.salt = saltValue;
+			
+			userAccount.save(function (err, userAccount){
+				
+				callback(err);
+			});
+		}
+	})
 	
 }
 
+function getAllUsers(callback) {
+	userModel.find(null, {
+		password : 0,
+		salt : 0,
+		id : 0
+	}, function(err, accounts) {
+		callback(null, accounts);
+	});
 
+}
+
+
+exports.setNewPassword = setNewPassword;
 exports.userModel = userModel;
 exports.getAllUsers = getAllUsers;
 exports.createNewUser = createNewUser;
 exports.loginUsingPassword = loginUsingPassword;
 exports.doseUserExsist = doseUserExsist;
+exports.isEmailAddressRegisterd = isEmailAddressRegisterd;

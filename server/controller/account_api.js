@@ -79,37 +79,37 @@ function registerUserAccount(req, res, next) {
 							}));
 							return;
 						}
-						
+
 					} else {
 
 						tokenModel.createToken(data.emailAddress, function(err,
 								token) {
 
-						if (err != null) {
-							
-							res.statusCode = 400;
-							res.end(JSON.stringify({
-							status : "error",
-							errors : "Could not genrate token"
-								
-						}));
+							if (err != null) {
 
-						} else {
-							res.cookie('authenticationCookie', JSON
-									.stringify(token), {
-								maxAge : 900000,
-								httpOnly : true
+								res.statusCode = 400;
+								res.end(JSON.stringify({
+									status : "error",
+									errors : "Could not genrate token"
+
+								}));
+
+							} else {
+								res.cookie('authenticationCookie', JSON
+										.stringify(token), {
+									maxAge : 900000,
+									httpOnly : true
+								});
+
+								res.writeHead(302, {
+									'Location' : '/#/welcome'
+								});
+
+								res.end();
+							}
 						});
-								
-							res.writeHead(302, {
-								'Location' : '/#/welcome'
-						});
-								
-						res.end();
 					}
 				});
-			}
-		});
 	});
 }
 
@@ -199,7 +199,7 @@ function logInUserAccount(req, res) {
 
 						res.writeHead(302, {
 							'Location' : '/#/welcome'
-						
+
 						});
 						res.end();
 					}
@@ -211,7 +211,6 @@ function logInUserAccount(req, res) {
 	});
 
 }
-
 function logOutUser(req, res) {
 
 	var token = (JSON
@@ -248,44 +247,104 @@ function getAllAccounts(req, res) {
 
 }
 
-function isValidUserAccount(req, res){
-	
-	console.log(req.headers.cookie);
-	//console.log((cookie.parse(req.headers.cookie)['authenticationCookie']));
-	
-	if (req.headers.cookie != undefined){
-		
-	var token = (JSON
-			.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+function isValidUserAccount(req, res) {
 
-	tokenModel.verifyToken(token, function(validToken) {
-	
-		if (validToken) {
-	
-			userModel.doseUserExsist(req.query.username, function (exsists){
-				
-				res.statusCode = 200;
-				res.contentType = "application/json";
-				res.end(JSON.stringify(exsists));
-			});
-			
-		} else {
-			res.writeHead(302, {
-				'Location' : '/login'
-			
-			});
-			res.end();
-		}
+	if (req.headers.cookie != undefined) {
 
-	});
+		var token = (JSON
+				.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
 
-	}else {
+		tokenModel.verifyToken(token, function(validToken) {
+
+			if (validToken) {
+
+				userModel.doseUserExsist(req.query.username, function(exsists) {
+
+					res.statusCode = 200;
+					res.contentType = "application/json";
+					res.end(JSON.stringify(exsists));
+				});
+
+			} else {
+				res.writeHead(302, {
+					'Location' : '/login'
+
+				});
+				res.end();
+			}
+
+		});
+
+	} else {
 		res.writeHead(302, {
 			'Location' : '/login'
-		
+
 		});
 		res.end();
 	}
+}
+
+function changePassword(req, res) {
+
+	if (req.headers.cookie != undefined) {
+
+		var token = (JSON
+				.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+		tokenModel
+				.verifyToken(
+						token,
+						function(validToken) {
+
+							if (validToken) {
+
+								userModel
+										.setNewPassword(
+												token.emailAddress,
+												req.query.oldPassword,
+												req.query.newPassword,
+												function(err) {
+
+													if (!err) {
+
+														res.statusCode = 404;
+														res.contentType = "application/json";
+														res
+																.end(JSON
+																		.stringify("{error : internal error}"));
+
+													} else {
+
+														res.statusCode = 200;
+														res.contentType = "application/json";
+														res
+																.end(JSON
+																		.stringify("{error : internal error}"));
+
+													}
+
+												});
+
+							} else {
+
+								res.writeHead(302, {
+									'Location' : '/login'
+
+								});
+
+								res.end();
+							}
+
+						});
+
+	} else {
+		res.writeHead(302, {
+			'Location' : '/login'
+
+		});
+		res.end();
+	}
+
 }
 
 exports.getAllAccounts = getAllAccounts;
@@ -293,3 +352,4 @@ exports.registerUserAccount = registerUserAccount;
 exports.logInUserAccount = logInUserAccount;
 exports.logOutUser = logOutUser;
 exports.isValidUserAccount = isValidUserAccount;
+exports.changePassword = changePassword;

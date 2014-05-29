@@ -9,6 +9,7 @@ var app = express();
 exports.app = app;
 
 require('./routes/accountService.js');
+require('./routes/index.js');
 
 var https = require('https');
 var path = require('path');
@@ -37,8 +38,6 @@ app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 app.use(compress());  
  
-
-app.get('/', routes.index);
 app.get('*', invalidResource);
 
 
