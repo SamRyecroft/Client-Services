@@ -45,8 +45,6 @@ function verifyToken(token, callback) {
 		issueTime : token.issueTime
 	}, null, function(err, results) {
 		
-		console.log(results);
-		
 		if (results.length === 1){
 			
 			callback(true);
@@ -70,7 +68,6 @@ function invalidateToken(token) {
 }
 
 exports.tokenModel = tokenModel;
-
 exports.verifyToken = verifyToken;
 exports.invalidateToken = invalidateToken;
 exports.createToken = createToken;

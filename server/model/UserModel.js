@@ -247,7 +247,10 @@ function getAllUsers(callback) {
 	userModel.find(null, {
 		password : 0,
 		salt : 0,
-		id : 0
+		id : 0,
+		numberOfFaildLoginAttempts :0,
+		_id : 0,
+		__v : 0
 	}, function(err, accounts) {
 		callback(null, accounts);
 	});

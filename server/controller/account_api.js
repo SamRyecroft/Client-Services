@@ -211,6 +211,7 @@ function logInUserAccount(req, res) {
 	});
 
 }
+
 function logOutUser(req, res) {
 
 	var token = (JSON
