@@ -1,0 +1,81 @@
+{"level":"info","message":"hello from db","timestamp":"2014-05-30T19:54:42.401Z"}
+{"level":"info","message":"hello from db","timestamp":"2014-05-30T19:55:18.768Z"}
+{"level":"info","message":"hello from db","timestamp":"2014-05-30T19:55:42.531Z"}
+{"level":"info","message":"","timestamp":"2014-05-30T19:55:43.567Z"}
+{"level":"info","message":"hello from db","timestamp":"2014-05-30T19:56:54.381Z"}
+{"level":"info","message":"undefined","timestamp":"2014-05-30T19:56:55.422Z"}
+{"level":"info","message":"hello from db","timestamp":"2014-05-30T19:58:50.034Z"}
+{"level":"info","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T19:58:51.083Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:11:56.473Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:11:57.505Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:12:57.064Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:12:58.095Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:13:30.098Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:13:31.132Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:14:52.707Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:14:53.735Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:22:00.392Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:22:01.421Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:23:05.990Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:29:30.527Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:29:31.556Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:36:14.848Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T20:36:15.876Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:36:24.087Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T20:46:34.158Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T21:39:25.555Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:39:30.938Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T21:43:32.849Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:37.481Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:39.496Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:41.503Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:43.516Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:45.528Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:47.542Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:49.553Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:51.566Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:53.573Z"}
+{"level":"error","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T21:43:55.576Z"}
+{"level":"error","message":"hello from db","timestamp":"2014-05-30T22:05:24.376Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-30T23:50:35.170Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:51:54.836Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:51:56.846Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:51:58.861Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:52:00.872Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:52:02.887Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:52:04.897Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-30T23:52:06.911Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:21.529Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:23.531Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:25.545Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:27.559Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:29.569Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:31.586Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:33.595Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:35.606Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:37.637Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:03:39.650Z"}
+{"level":"error","message":"Could not connect to database server at mongodb://localhost/clientServices","timestamp":"2014-05-31T00:03:49.932Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T00:05:54.984Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:08.442Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:10.463Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:12.468Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:14.480Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:16.493Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:18.504Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:20.516Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:22.524Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:24.526Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:26.537Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:28.551Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:30.575Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:32.577Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-05-31T00:13:34.587Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:05:49.941Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:21:04.398Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:21:20.093Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:21:42.668Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:52:00.419Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:53:13.658Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T05:18:19.452Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-05-31T05:19:02.183Z"}
