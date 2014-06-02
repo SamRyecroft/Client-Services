@@ -6,10 +6,11 @@ var uuid = require('node-uuid');
 var MAXIMUM_FAILED_LOGIN_ATTEMPTS = require('../config.js').MAXIMUM_FAILED_LOGIN_ATTEMPTS;
 var LOCK_OUT_TIME = require('../config.js').LOCKOUT_TIME;
 var PASSWORD_RECOVERY_KEY_LIFE_SPAN = require('../config.js').PASSWORD_RECOVERY_KEY_LIFE_SPAN;
-var mailService = require('../utilities/mailService');
-var logingUtilities = require('../utilities/logger.js');
+var logingUtilities = require('./utilities/logger.js');
 var databaseLogger = logingUtilities.logger.loggers.get('Database error');
 var serverLogger = logingUtilities.logger.loggers.get('Server error');
+var mailServices = require('./utilities/mailService.js');
+
 
 var userSchema = mongoDB
 		.Schema({
@@ -44,16 +45,21 @@ var userSchema = mongoDB
 			},
 			accountLockedUntill : {
 				type : Date,
-				required : false
+				required : false,
+				defult : new Date
+				
 			},
-			recoveryKey : {
-				type: String,
-				required : false
+			accountRecovery : {
+				key :{
+					type: String,
+					required : false
+				},
+				experationTime : {
+					type : Date,
+					required : false
+				}
 			},
-			recoveryKeyExpiryDate : {
-				type: Date,
-				required : false
-			} ,
+
 			// User information
 			firstName : {
 				type : String,
@@ -88,13 +94,16 @@ function generateSalt() {
 	} while (saltValue.length != 20);
 
 	return saltValue;
+
 }
 
 // Creates the sha512 hash value for the password combined with the salt
 function createHash(password, saltValue) {
 
 	return crypto.createHmac('sha512', (saltValue + password)).digest('hex');
+
 }
+
 
 // Creates a hash value of a password with a specified salt against a already
 // hashed password
@@ -165,7 +174,8 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 }
 
 // Creates a new user account adding it to the database
-function createNewUser(username, password, emailAddress, firstName, middleName,surname, callback) {
+function createNewUser(username, password, emailAddress, firstName, middleName,
+		surname, callback) {
 
 	var userAccount = new userModel({
 		username : username,
@@ -236,29 +246,20 @@ function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 		emailAddress : emailAddress
 	}, null, function (err, userAccount){
 		
-		if (err){
-
-			databaseLogger.error(err.Message);
-			callback(err);
-
-		} else { 
+		if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
 			
-			if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
+			userAccount.password = newPassword;
+			userAccount.salt = saltValue;
 			
-				userAccount.password = newPassword;
-				userAccount.salt = saltValue;
+			userAccount.save(function (err, userAccount){
 				
-				userAccount.save(function (err, userAccount){
-					
-					databaseLogger.error(err.Message);
-					callback(err);
-				});
-			}
+				callback(err);
+			});
 		}
-	});
+	})
+	
 }
 
-// Returns all user details other than the password, salt and id of all user accounts
 function getAllUsers(callback) {
 	userModel.find(null, {
 		password : 0,
@@ -270,79 +271,63 @@ function getAllUsers(callback) {
 	}, function(err, accounts) {
 		callback(null, accounts);
 	});
-}
 
-// Creates and adds a recovery key that can be sent to a user in order to reset an account password
-function createRecoveryKey(emailAddress, callback){
+}
+function createRecoveryKey (emailAddress, callback) {
 	
-	var CHARACTERSET = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
-	var passwordRecoveryKey = '';
-
-	do {
-
-		var characterSetIndex = Math
-				.floor((Math.random() * CHARACTERSET.length));
-		passwordRecoveryKey += CHARACTERSET.charAt(characterSetIndex);
-
-	} while (passwordRecoveryKey.length != 50);
-
-	userModel.findOne({
-		emailAddress : emailAddress
-	}, null, function (err, userAccount){
-		
+	userModel.findOne(
+			{ emailAddress : emailAddress}
+		, null, function (err, userAccount){
+			
 		if (err){
-
-			databaseLogger.error(err.Message);
+				
+			databaseLogger.error(err.message);
 			callback(err);
-
-		} else { 
-			
-			userAccount.recoveryKey = passwordRecoveryKey;
-			userAccount.recoveryKeyExpiryDate = ((new Date).setHours((new Date).getHours() + PASSWORD_RECOVERY_KEY_LIFE_SPAN));
-			
-			userAccount.save(function (err, userAccount){
 				
-				if (err){
-
-					databaseLogger.error(err.Message);
-					callback(err);
-
-				} else {
+		}else {
+				
+			if (userAccount != null){
 					
-					serverLogger.info("A recovery email as issued to the following email address " + emailAddress);
-					
-					//TODO appropriate link to password recovery page
-					mailService.sendEmail(emailAddress, "Account recovery", "some mail here", "</br><a href=" + passwordRecoveryKey +"> click here to reset yor password </a>");
-					callback(null);
+				var CHARACTERSET = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
+				var recoveryKey = '';
 
+				do {
+
+					var characterSetIndex = Math
+						.floor((Math.random() * CHARACTERSET.length));
+						recoveryKey += CHARACTERSET.charAt(characterSetIndex);
+
+				} while (recoveryKey.length != 20);
+
+				userAccount.accountRecovery.key = recoveryKey;
+				userAccount.accountRecovery.experationTime = ((new Date).setHours((new Date).getHours() + PASSWORD_RECOVERY_KEY_LIFE_SPAN));
+						
+				userAccount.save(function (err, userAccount){
+							
+					if (err){
+									
+						databaseLogger.error(err.message);
+						callback(err);
+									
+					}else {
+									
+									
+						mailServices.sendEmail(emailAddress, 'Account Recovery', 'Hi there, he is a link to recovery your account', 
+							'<a href="' + recoveryKey +'> click here </a>');
+						serverLogger.info('Recovery key issued to ' + emailAddress);
+									
+						}	
+					});
+						
+				}else {
+
+					callback(new Error('Account not found'));
 				}
-			});
-		}
-	});
-}
-
-// Checks to ensure the recovery key is valid for the user account specified and is within the valid time period
-function recoverAccountThoughKey (emailAddress, newPassword, recoveryKey ){
-	userModel.findOne({$and:[{emailAddress : emailAddress}, {recoveryKey : recoveryKey}]}, null, function (err, userAccount){
-
-		if (userAccount != null){
-			
-			
-			if (!(userAccount.recoveryKeyExpiryDate > new Date)){
-				// Reset password
-			}else {
-				
-				// key is not valid
 			}
-		}
-		
-	});
+	});		
+	
 }
 
-recoverAccountThoughKey("justsam33@gmail.com", "Jz391078c", "asdsads");
-
-exports.recoverAccountThoughKey = recoverAccountThoughKey;
-exports.createRecoveryKey = createRecoveryKey;
 exports.setNewPassword = setNewPassword;
 exports.userModel = userModel;
 exports.getAllUsers = getAllUsers;
