@@ -57,7 +57,8 @@ function registerUserAccount(req, res, next) {
 		}
 
 		// Adds a new user to the system
-		userModel.createNewUser(data.username, data.password, data.email,
+		userModel.createNewUser(data.username, data.
+			, data.email,
 				data.firstName, data.middleName, data.surname, function(err) {
 
 					if (err != null) {
