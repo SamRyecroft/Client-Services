@@ -79,3 +79,29 @@
 {"level":"info","message":"Connected to database","timestamp":"2014-05-31T04:53:13.658Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-05-31T05:18:19.452Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-05-31T05:19:02.183Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T12:29:20.576Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T12:59:52.153Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:05:09.393Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:19:27.996Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:21:04.781Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:27:28.753Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:30:21.389Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:34:22.278Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:34:28.718Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:46:39.391Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:54:49.242Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:57:28.326Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:58:02.417Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-03T13:58:47.100Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:28.309Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:30.320Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:32.336Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:34.345Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:36.357Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:38.369Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:40.402Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:42.410Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:44.431Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:46.435Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:48.447Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-03T14:22:50.460Z"}

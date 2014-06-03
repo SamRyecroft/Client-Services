@@ -13,7 +13,7 @@ var logingUtilities = require('./logger.js');
 var databaseLogger = logingUtilities.logger.loggers.get('Database error');
 var serverLogger = logingUtilities.logger.loggers.get('Server error');
 
-function sendEmail (recipient, subject, plainTextBody, htmlBody){
+function sendEmail (recipient, subject, plainTextBody, htmlBody, callback){
 	
 	var mailOptions = {
 			from: serverConfiguration.OUTGOING_EMAIL_ADDRESS,
@@ -30,6 +30,9 @@ function sendEmail (recipient, subject, plainTextBody, htmlBody){
 			serverLogger.warn(err.message + " could not send email to account " + recipient);
 			callback (err);
 
+		} else {
+
+			callback (null);
 		}
 	});
 }

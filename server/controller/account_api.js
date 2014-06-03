@@ -77,7 +77,7 @@ function registerUserAccount(req, res, next) {
 								status : "error",
 								errors : err.err
 							}));
-							return;
+							
 						}
 
 					} else {

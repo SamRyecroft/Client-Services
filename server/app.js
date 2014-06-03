@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> FETCH_HEAD
 var express = require('express');
 var app = express();
 var logingUtilities = require('./utilities/logger.js');
