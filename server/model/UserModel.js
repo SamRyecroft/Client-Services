@@ -354,11 +354,6 @@ console.log(userAccount);
 	});
 }
 
-changePasswordViaRecoveryKey('test', 'TxMqbCedYMI7qKOvByft', 'justsam33@gmail.com', function(err){
-	console.error(err);
-})
-
-
 exports.setNewPassword = setNewPassword;
 exports.userModel = userModel;
 exports.getAllUsers = getAllUsers;
