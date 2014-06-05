@@ -73,6 +73,10 @@ var userSchema = mongoDB
 				type : String,
 				required : false
 			},
+			profileInfomation : {
+				type : String,
+				required : false
+			}
 
 		});
 
@@ -107,8 +111,7 @@ function createHash(password, saltValue) {
 function isValidPassword(password, hashedPassword, saltValue) {
 
 	return hashedPassword === createHash(password, saltValue);
-
-};
+}
 
 var userModel = mongoDB.model('User', userSchema);
 
@@ -290,7 +293,7 @@ function createRecoveryKey (emailAddress, callback) {
 						databaseLogger.error(err.message);
 						callback(err);
 									
-					}else {
+					} else {
 												
 						mailServices.sendEmail(emailAddress, 'Account Recovery', 'Hi there, he is a link to recovery your account', 
 							'<a href="' + recoveryKey +'> click here </a>', function (err){
@@ -317,7 +320,8 @@ function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, c
 
 	userModel.findOne({emailAddress: emailAddress, 'accountRecovery.recoveryKey' : recoveryKey }, null , function (err, userAccount){
 
-console.log(userAccount);
+	console.log(userAccount);
+
 		if (err){
 
 			databaseLogger.error(err);
@@ -354,6 +358,55 @@ console.log(userAccount);
 	});
 }
 
+function updateUserInfomation (emailAddress, firstName, middleName, surname, profileInfomation, callback){
+	
+	userModel.findOne({emailAddress : emailAddress} , function(err, userAccount){
+
+		if (firstName != undefined) {
+
+			userAccount.firstName = firstName;
+		}
+
+		if (middleName != undefined) {
+
+			userAccount.middleName = middleName;
+
+		}
+
+		if (surname != undefined) {
+
+			userAccount.surname = surname;
+
+		}
+
+		if (profileInfomation != undefined) {
+
+			userAccount.profileInfomation = profileInfomation;
+
+		}
+
+		userAccount.save(function(err){
+
+			if (err){
+									
+				databaseLogger.error(err.message);
+				callback(err);
+									
+			} else {
+
+				callback(null);
+
+			}
+
+
+		});
+
+	});
+}
+
+exports.updateUserInfomation = updateUserInfomation;
+exports.changePasswordViaRecoveryKey = changePasswordViaRecoveryKey;
+exports.createRecoveryKey = createRecoveryKey;
 exports.setNewPassword = setNewPassword;
 exports.userModel = userModel;
 exports.getAllUsers = getAllUsers;

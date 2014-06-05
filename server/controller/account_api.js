@@ -23,6 +23,8 @@ function registerUserAccount(req, res, next) {
 
 		var errors = [];
 
+		console.log(data);
+
 		if (!data.username)
 			errors.push("No username specified");
 
@@ -57,9 +59,8 @@ function registerUserAccount(req, res, next) {
 		}
 
 		// Adds a new user to the system
-		userModel.createNewUser(data.username, data.
-			, data.email,
-				data.firstName, data.middleName, data.surname, function(err) {
+		userModel.createNewUser(data.username, data.password
+			, data.email, data.firstName, data.middleName, data.surname, function(err) {
 
 					if (err != null) {
 
@@ -349,6 +350,70 @@ function changePassword(req, res) {
 
 }
 
+function updateAccountDetails(req, res){
+
+var body = '';
+
+	req.on('data', function(data) {
+		body += data;
+
+		if (body.length > 1e6) {
+
+			req.connection.destroy();
+		}
+	});
+
+	req.on('end', function() {
+
+		if (req.headers.cookie != undefined) {
+
+			var data = qs.parse(body);
+
+			var token = (JSON
+					.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+			tokenModel.verifyToken(token,function(validToken) {
+
+				if (validToken) {
+					
+					userModel.updateUserInfomation(token.emailAddress,data.firstName,data.middleName,data.surname,data.profileInfomation, function(err) {
+
+						if (err != null) {
+
+							console.error(err);
+							res.statusCode = 500;
+							res.contentType = "application/json";
+							res.end(JSON.stringify("{error : internal error}"));
+
+							} else {
+
+								res.statusCode = 200;
+								res.contentType = "application/json";
+								res.end(JSON.stringify("{result : sucsess}"));
+
+							}
+
+					});
+
+				} else {
+
+					res.statusCode = 401;
+					res.contentType = "application/json";
+					res.end(JSON.stringify("{result : unsucsessful, reason : not authorised}"));
+				}
+
+			});
+
+		} else {
+			res.statusCode = 401;
+			res.contentType = "application/json";
+			res.end(JSON.stringify("{result : unsucsessful, reason : not authorised}"));
+		}
+
+	});
+}
+
+exports.updateAccountDetails = updateAccountDetails;
 exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
 exports.logInUserAccount = logInUserAccount;
