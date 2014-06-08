@@ -5,8 +5,7 @@ var databaseLogger = logingUtilities.logger.loggers.get('Database error');
 var serverLogger = logingUtilities.logger.loggers.get('Server error');
 exports.app = app;
 
-require('./routes/accountService.js');
-require('./routes/index.js');
+require('./routes/AccountService.js');
 
 var https = require('https');
 var path = require('path');
@@ -14,7 +13,6 @@ var mongoDB = require('mongoose');
 var serverConfiguration = require('./config.js');
 var compress = require('compression');
 var fs = require('fs');
-var routes = require ('./routes');
 
 
 
