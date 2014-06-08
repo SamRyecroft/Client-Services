@@ -6,6 +6,10 @@ var ConfigModule = angular.module('ConfigModule', ['ngRoute']);
 // === LOGIN APP ROUTE CONFIG === //
 ConfigModule.config(function($routeProvider) {
 	$routeProvider.
+	when('/index', {
+		templateUrl: 'partials/index.html',
+		controller: 'MainController'
+	}).
 	when('/login', {
 		templateUrl: 'partials/login.html',
 		controller: 'LoginController'
@@ -22,7 +26,19 @@ ConfigModule.config(function($routeProvider) {
 		templateUrl: 'partials/password.html',
 		controller: 'PasswordController'
 	}).
+	when('/profile', {
+		templateUrl: 'partials/profile.html',
+		controller: 'ProfileController'
+	}).
+	when('/settings', {
+		templateUrl: 'partials/settings.html',
+		controller: 'SettingsController'
+	}).
+	when('/edit', {
+		templateUrl: 'partials/edit.html',
+		controller: 'EditController'
+	}).
 	otherwise({
-		redirectTo: '/index'
+		redirectTo: '/login'
 	});
 });
