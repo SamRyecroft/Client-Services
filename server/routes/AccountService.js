@@ -1,6 +1,12 @@
 var accounts_api = require('../controller/account_api.js');
 var app = require('../app.js').app;
 
+app.all('/*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
+    next();
+});
+
 app.patch('/userAccount/profileUtilities/updateDetails', accounts_api.updateAccountDetails);
 
 //app.patch('/userAccount/profileUtilities/changePassword', accounts_api.changePassword); 
