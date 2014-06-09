@@ -255,6 +255,17 @@ function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 }
 
 function getAllUsers(callback) {
+	
+	userModel.find(null, {password:0, accountRecovery:0, salt:0, numberOfFaildLoginAttempts:0, _id:0, __v:0}, function (err, userAccounts){
+		
+		if (err) {
+			databaseLogger.error(err.message);
+			callback(err,null);
+		}else  {
+			
+			callback(null, userAccounts)
+		}
+	});
 }
 
 function createRecoveryKey (emailAddress, callback) {

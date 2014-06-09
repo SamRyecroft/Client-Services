@@ -199,10 +199,7 @@ function logInUserAccount(req, res) {
 							httpOnly : true
 						});
 
-						res.writeHead(302, {
-							'Location' : '/#/welcome'
-
-						});
+						res.writeHead(200);
 						res.end();
 					}
 
@@ -230,42 +227,39 @@ function logOutUser(req, res) {
 
 function getAllAccounts(req, res) {
 
+
+
 	if (req.headers.cookie != undefined) {
 
 		var token = (JSON
 			.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
 			
 		tokenModel.verifyToken(token, function(validToken) {
-
+	
 		if (validToken) {
+			
 			userModel.getAllUsers(function(err, userAccounts) {
+				console.log(userAccounts);
 				res.statusCode = 200;
 				res.contentType = "application/json";
 				res.end(JSON.stringify(userAccounts));
 			});
+			
 		} else {
-			res.statusCode = 400;
+			res.statusCode = 403;
 			res.end("invalid cridentials");
 		}
 
 	});
+	
 	} else {
-		res.statusCode = 400;
+		res.statusCode = 403;
 		res.end("invalid cridentials");
-
 	}
 }
 
 function isValidUserAccount(req, res) {
 
-	if (req.headers.cookie != undefined) {
-
-		var token = (JSON
-				.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
-
-		tokenModel.verifyToken(token, function(validToken) {
-
-			if (validToken) {
 
 				userModel.doseUserExsist(req.query.username, function(exsists) {
 
@@ -274,23 +268,7 @@ function isValidUserAccount(req, res) {
 					res.end(JSON.stringify(exsists));
 				});
 
-			} else {
-				res.writeHead(302, {
-					'Location' : '/login'
 
-				});
-				res.end();
-			}
-
-		});
-
-	} else {
-		res.writeHead(302, {
-			'Location' : '/login'
-
-		});
-		res.end();
-	}
 }
 
 function changePassword(req, res) {

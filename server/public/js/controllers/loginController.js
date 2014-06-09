@@ -7,7 +7,7 @@ loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$locatio
 		if($scope.login_form.$valid){ // If login_form is valid, do the following
 			$http({
 				method: 'POST',
-				url: 'https://localhost:3000/accountAuthentication/login',
+				url: 'https://localhost:3000/auth/login',
 				data: $.param($scope.login),
 				withCredentials: true
 			}).success(function(data, status){

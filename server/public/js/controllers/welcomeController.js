@@ -12,7 +12,7 @@ loginApp.controller('WelcomeController', ['$scope', '$http', '$cookies', '$timeo
 	console.log(cookie);
 	$http({ 	
 		method: 'GET',
-		url: 'https://localhost:3000/accountResources/allUsers',
+		url: 'https://localhost:3000/accountResources/users',
 		withCredentials: true
 	}).success(function(data) {
 		$scope.members = data;
