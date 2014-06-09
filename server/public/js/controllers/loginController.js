@@ -1,55 +1,27 @@
 'use strict';
 
-loginApp.controller('LoginController', ['$scope', '$http', '$location', 'memberFactory', 'loggedInFactory', 'userFactory', function($scope, $http, $location, memberFactory, loggedInFactory, userFactory){
-
-	// Getting current members from the memberFactory. Then suing the success, error promises.
-	memberFactory.getMembers().
-		success(function(data, status){
-			$scope.members = data;
-		}).
-		error(function(error, status){
-			console.log(error, status);
-		});
-
-	$scope.submitted = false; // If true the error message will be able to be shown.
-
-	$scope.loginValid = false; // If true $scope.loginErrorMessage will not be used.
-	
+loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$location', 'loggedInFactory', 'userFactory', function($scope,  $http, $cookies, $location, loggedInFactory, userFactory){
+		
 	// Log in submit funciton
 	$scope.loginSubmit = function(){
-		if($scope.login_form.$valid){ // If login_form is valid, do the following 
-				
-				$http({
-			        method  : 'POST',
-			        url     : 'https://localhost:3000/login',
-			        data    : $.param($scope.login),
-			        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-			    }).success(function(data){
-			    	console.log('success');
-			    }).error(function(error, status){
-			    	console.log(error, status);
-			    });
-						
-			/*
-			for (var i=0; i<$scope.members.length; i++){ // Loop through $scope.members
-				// If the username and password do have a match
-				if ($scope.members[i].username == $scope.login.username && $scope.members[i].password == $scope.login.password){
-					loggedInFactory.setLoginStatus(true); // Set loggedInFactory to true
-					$scope.loginValid = true; // Set loginValid to true.
-					userFactory.setUser($scope.members[i]); // Set the current member to userFactory.setUser($scope.members[i])
-					$location.path("/welcome"); // Direct the location to the /welcome view. 
-					break;
-				};
-			};
-*/
+		if($scope.login_form.$valid){ // If login_form is valid, do the following
+			$http({
+				method: 'POST',
+				url: 'https://localhost:3000/accountAuthentication/login',
+				data: $.param($scope.login),
+				withCredentials: true
+			}).success(function(data, status){
+				loggedInFactory.setLoginStatus(true);
+				//userFactory.setUser(user);
+				$location.path("/welcome");
+				console.log("success from Login");
+			}).error(function(error, status){
+				$scope.loginErrorMessage = "Login details are incorrect. Try again.";
+				console.log(error, status);
+			});       
 		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
 			$scope.login_form.submitted = true;
 		}
-
-		// If $scope.loginValid is false and the login_form is valid set $scope.loginErrorMessage.
-		if(!$scope.loginValid && $scope.login_form.$valid){
-			$scope.loginErrorMessage = "Login details are incorrect. Try again.";
-		};	
 	};
 
 }]);

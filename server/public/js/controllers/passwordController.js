@@ -1,12 +1,11 @@
 'use strict';
 
-loginApp.controller('PasswordController', ['$scope', 'memberFactory', function($scope, memberFactory){
+loginApp.controller('PasswordController', ['$scope', 'memberFactory', function($scope, $http, memberFactory){
 	
-	memberFactory.getMembers().
-		success(function(data, status){
+	memberFactory.getMembers().success(function(data, status){
 			$scope.members = data;
-		}).
-		error(function(error, status){
+			console.log($scope.members, 'hello');
+		}).error(function(error, status){
 			console.log(error, status);
 		});
 	

@@ -1,6 +1,6 @@
 'use strict';
 
-var loginApp = angular.module('loginApp', ['ngResource', 'ConfigModule']);
+var loginApp = angular.module('loginApp', ['ngResource', 'ngRoute', 'ngCookies']);
 
 // === MAIN CONTROLLER === //
 // ======================= //
@@ -13,16 +13,17 @@ loginApp.controller('MainController', ['$scope', '$http', 'loggedInFactory', 'us
 	// Loading indicators.
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
 	$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
+	
 	// Submit contact form function.
 	$scope.contactSubmit = function(){
-		$scope.$emit('LOADING'); // Emit LOADING, which sets $scope.loading to true. Shows the loading indicator.
 		if($scope.contact_form.$valid){ // If the frm input is valid, do the following.
+			$scope.$emit('LOADING'); // Emit LOADING, which sets $scope.loading to true. Shows the loading indicator.
 			// $http contact form post success, error promise.
 			$http({
-				method : 'POST',
-				url : 'process.php',
-				data : $.param($scope.contact),
-				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+				method: 'POST',
+				url: 'process.php',
+				data: $.param($scope.contact),
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data){
 				$scope.contact.success = 'Your message has been submitted';
 				$scope.contact.name = '';

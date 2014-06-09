@@ -122,3 +122,6 @@
 {"level":"info","message":"Connected to database","timestamp":"2014-06-05T14:59:18.603Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-05T15:00:42.364Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-08T19:32:38.906Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-09T20:39:45.494Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-09T20:46:03.496Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-09T20:51:42.421Z"}

@@ -1,10 +1,8 @@
 'use strict';
 
-// === CONFIG MODULE (WILL BE PASSED INTO LOGINAPP MODULE USING DEPENDANCY INJECTION) ['ConfigModule'] === //
-var ConfigModule = angular.module('ConfigModule', ['ngRoute']);
-
 // === LOGIN APP ROUTE CONFIG === //
-ConfigModule.config(function($routeProvider) {
+loginApp.config(function($routeProvider, $httpProvider) {
+    $httpProvider.defaults.withCredentials = true;
 	$routeProvider.
 	when('/index', {
 		templateUrl: 'partials/index.html',

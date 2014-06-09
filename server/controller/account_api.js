@@ -230,10 +230,12 @@ function logOutUser(req, res) {
 
 function getAllAccounts(req, res) {
 
-	var token = (JSON
-			.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+	if (req.headers.cookie != undefined) {
 
-	tokenModel.verifyToken(token, function(validToken) {
+		var token = (JSON
+			.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+			
+		tokenModel.verifyToken(token, function(validToken) {
 
 		if (validToken) {
 			userModel.getAllUsers(function(err, userAccounts) {
@@ -247,7 +249,11 @@ function getAllAccounts(req, res) {
 		}
 
 	});
+	} else {
+		res.statusCode = 400;
+		res.end("invalid cridentials");
 
+	}
 }
 
 function isValidUserAccount(req, res) {
