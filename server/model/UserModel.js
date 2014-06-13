@@ -203,15 +203,21 @@ function doseUserExsist(username, callback) {
 		username : username
 	}, null, function(err, results) {
 
-		if (results.length === 1) {
-
-			callback(true);
-
+		if (err){
+					
+			callback(err);
+					
 		} else {
-
-			callback(false);
+					
+			if (result.length === 1){
+									
+				callback(null, true);
+								
+			}else {
+									
+				callback(null, false);
+			}
 		}
-
 	});
 }
 
@@ -222,14 +228,20 @@ function isEmailAddressRegisterd (emailAddress, callback){
 		emailAddress : emailAddress
 	}, null, function (err, results){
 		
-		if (result.length === 1){
+		if (err){
 			
-			callback(true);
-		
-		}else {
+			callback(err);
 			
-			callback(false);
+		} else {
 			
+			if (result.length === 1){
+							
+				callback(null, true);
+						
+			}else {
+							
+				callback(null, false);
+			}
 		}
 	});
 }
@@ -307,11 +319,17 @@ function createRecoveryKey (emailAddress, callback) {
 					} else {
 												
 						mailServices.sendEmail(emailAddress, 'Account Recovery', 'Hi there, he is a link to recovery your account', 
-							'<a href="' + recoveryKey +'> click here </a>', function (err){
+							'<a href="...?recoveryKey' + recoveryKey +'&emailAddress=' + emailAddress + '> click here </a>', function (err){
 
 								if (err != null){
+									serverLogger.error(err);
 									callback(new Error ('key issued but email failed to send'));
+							
+								}else{
+									
+									callback(null);
 								}
+								
 							});
 
 						serverLogger.info('Recovery key issued to ' + emailAddress);
@@ -415,6 +433,22 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 	});
 }
 
+function removeAccount (emailAddress, callback){
+	
+	userModel.remove({emaillAddress : emailAddress}, {justOne : true}, function (err){
+		
+		if (err){
+			
+			callback(err);
+		
+		}else {
+			
+			callback(null);
+		}
+	});
+}
+
+exports.removeAccount = removeAccount;
 exports.updateUserInfomation = updateUserInfomation;
 exports.changePasswordViaRecoveryKey = changePasswordViaRecoveryKey;
 exports.createRecoveryKey = createRecoveryKey;

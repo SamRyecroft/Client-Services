@@ -8,9 +8,15 @@ app.all('/*', function(req, res, next) {
     next();
 });
 
-//app.patch('/userAccount/profileUtilities/updateDetails', accounts_api.updateAccountDetails);
 
-//app.patch('/userAccount/profileUtilities/changePassword', accounts_api.changePassword); 
+
+app.get('/userAccount/accountTools/accountRecovery/genrateRecoveryKey', accounts_api.createRecoveryKeyForAccount);
+
+app.post('/userAccount/accountTools/accountRecovery/recoverAccountWithKey', accounts_api.recoverAccountWithRecoveryKey);
+
+app.patch('/userAccount/profileUtilities/updateDetails', accounts_api.updateAccountDetails);
+
+app.patch('/userAccount/profileUtilities/changePassword', accounts_api.changePassword); 
 
 app.post('/userAccount/accountTools/CreateNewAccount', accounts_api.registerUserAccount);
 
@@ -20,7 +26,7 @@ app.get('/auth/logout', accounts_api.logOutUser)
 
 app.get('/accountResources/users', accounts_api.getAllAccounts);
 
-app.get('/accountResources/isValidUserAccount', accounts_api.isValidUserAccount);
+app.get('/accountResources/isValidUserAccount', accounts_api.isUsernameRegistered);
 
 app.post('accountActions/newPassword', accounts_api.changePassword);
 
