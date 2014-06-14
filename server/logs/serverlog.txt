@@ -1,0 +1,8 @@
+{"level":"info","message":"A recovery email as issued to the following email address justsam33@gmail.com","timestamp":"2014-05-31T04:52:00.431Z"}
+{"level":"info","message":"A recovery email as issued to the following email address justsam33@gmail.com","timestamp":"2014-05-31T04:53:13.670Z"}
+{"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-03T13:19:28.011Z"}
+{"level":"warn","message":"Invalid login - 535-5.7.8 Username and Password not accepted. Learn more at\r\n535 5.7.8 http://support.google.com/mail/bin/answer.py?answer=14257 bn7sm43943782wjc.7 - gsmtp could not send email to account justsam33@gmail.com","timestamp":"2014-06-03T13:19:28.232Z"}
+{"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-13T17:01:30.180Z"}
+{"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-13T17:03:19.777Z"}
+{"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-13T17:05:28.678Z"}
+{"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-13T17:06:38.319Z"}

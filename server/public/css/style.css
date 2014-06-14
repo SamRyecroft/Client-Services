@@ -1,0 +1,492 @@
+.popup{
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background-color: rgba(78,117,94,0.5);
+	z-index: 9999;
+}
+.popup-inner-container{
+	margin: 5% auto 12.5% auto;
+	width: 50%;
+}
+.close-popup{
+	margin-left: 100%;
+	font-size: 32px;
+	width: 64px;
+	height: 64px;
+	line-height: 64px;
+	color: #ffffff;
+	left: 100%;
+	top: -64px;
+}
+.close-popup:hover{
+	color: #1abc9c;
+	border: none;
+}
+.contact-forms{
+	padding: 16px;
+	border: 1px silver solid;
+}
+textarea {
+   resize: none;
+}
+
+
+
+/* === UNIVERSAL === */
+/* ================= */
+*{
+	margin: 0;
+	padding: 0;
+	font-family: 'Helvetica Neue', 'sans-serif';
+	font-size: 16px;
+	font-weight: 300;
+	line-height: 16px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+
+
+/* === BODY === */
+/* ============ */
+body{
+	background-color: #f9faf7;
+}
+
+
+
+
+/* === A LINK TEXT === */
+/* =================== */
+a{
+	text-decoration: none;
+	color: #000000;
+}
+
+
+
+	
+/* === UL === */
+/* ========== */
+ul{
+	list-style-type: none;
+}
+
+
+
+
+/* === H TAGS === */
+/* ============== */
+h1{
+	margin-bottom: 24px;
+	padding: 0 0 24px 0;
+	font-size: 48px;
+	line-height: 48px;
+	text-transform: capitalize;
+	border-bottom: 1px silver solid;
+}
+h2{
+	font-size: 20px;
+	line-height: 20px;
+}
+h3{
+	font-size: 18px;
+	line-height: 18px;
+}
+h4{
+	font-size: 16px;
+	line-height: 16px;
+}
+
+
+
+
+/* === BORDER + OUTLINE === */
+/* ======================== */
+img, 
+.form-input, 
+.form-textarea, 
+input[type=submit]{
+	outline: none;
+	border: none;
+	border-width: 0; 
+}
+
+
+
+
+/* === MARGINS === */
+/* =============== */
+.container, 
+.forms, 
+.likes{
+	margin: 0 auto;
+}
+.main-nav-li-drop,
+.current-members-li,
+.profile-left-container > img,
+.profile-left-inner-row{ 
+	margin-top: 16px;
+}
+nav,
+.main-nav, 
+.form-input,
+.current-members-li a > img, 
+.error-messages,
+.success-messages{
+	margin-bottom: 24px;
+}
+
+
+
+
+/* === PADDINGS === */
+/* ================ */
+.container, 
+.main-nav, 
+.main-nav-li a,
+.forms,
+.form-input, 
+.button, 
+.current-members-li, 
+.profile-left-container, 
+.profile-left-inner-row, 
+.add-like, 
+.right-container-boxes-inner, 
+.error-messages,
+.success-messages{
+	padding: 16px;
+}
+
+
+
+
+/* === DISPLAYS === */
+/* ================ */
+article,
+nav, 
+section,
+.main-nav-li-drop li a,
+.button,
+.profile-left-inner-row, 
+.profile-right-inner-row, 
+.error-messages,
+.success-messages{
+	display: block;
+}
+.main-nav-li,  
+.current-members-li, 
+.profile-left-container, 
+.profile-left-inner-row > div, 
+.profile-right-container, 
+.right-container-boxes, 
+.right-container-boxes{
+	display: inline-block;
+}
+
+
+
+
+/* === BACKGROUND COLOURS === */
+/* ========================== */
+.container,
+.close-popup:hover, 
+.contact-forms, 
+.main-nav-li-drop, 
+.add-like:hover,
+.likes{
+	background-color: #ffffff;
+}
+.button:hover,
+.profile-left-container, 
+.add-like, 
+.right-container-boxes-inner{
+	background-color: #1abc9c;
+}
+.close-popup,
+.main-nav-li a:hover, 
+.button,
+.success-messages {
+	background-color: #1bd8b3;
+}
+.error-messages{
+	background-color: #f92828;
+}
+
+
+
+
+/* === FONT COLOURS === */
+/* ==================== */
+.main-nav-li a:hover, 
+.button, 
+.add-like, 
+.profile-left-inner-row,
+.profile-right-inner-row, 
+.error-messages,
+.success-messages{
+	color: #ffffff;
+}
+.add-like:hover{
+	color: #1abc9c;
+}
+
+
+
+
+/* === TEXT ALIGN === */
+/* ================== */
+.close-popup, .center-text{
+	text-align: center;
+}
+.main-nav-ul{
+	text-align: right;
+}
+.error-messages, .success-messages{
+	text-align: left;
+}
+
+
+
+
+/* === TEXT UNDERLINE === */
+/* ====================== */
+.password-link a:hover{
+	text-decoration: underline;
+}
+
+
+
+
+/* === POINTER === */
+/* =============== */
+.close-popup:hover,
+.button:hover, 
+.add-like:hover{
+	cursor: pointer;
+}
+
+
+
+
+/* === VERTICAL ALIGN TOP === */
+/* ========================== */
+.current-members-li, 
+.profile-left-container, 
+.profile-right-container, 
+.right-container-boxes{
+	vertical-align: top;
+}
+
+
+
+
+
+
+
+
+
+/* === CONTAINER (ALL PAGES) === */
+/* ============================= */
+.container{
+	max-width: 960px;
+	min-height: 450px;
+	border: 1px silver solid;
+}
+
+
+
+.main-nav{
+}
+/* === DROP DOWN NAV (ALL PAGES) === */
+/* ================================= */
+.main-nav-li-drop{
+	position: absolute;
+	width: 175px;
+	border: 1px silver solid;
+}
+.main-nav-li-drop li{
+	padding: 0;
+}
+.main-nav-li-drop li a{
+	width: 175px;
+}
+
+
+
+
+/* === FORMS (ALL FORMS) === */
+/* ========================= */
+.forms{
+	width: 50%;
+	border: 1px silver solid;
+}
+/* === FORM INPUT FIELDS (ALL FORM INPUTS) === */
+.form-input{
+	width: 100%;
+	border: 1px silver solid;
+}
+/* === VALID FORM STYLES === */
+.form-input.ng-valid{
+	border: 1px green solid;
+}
+
+.form-input.ng-dirty > .forms{
+	background: black;
+}
+/* === SUBMIT BUTTON (ALL FORM SUBMIT BUTTONS) === */
+.button{
+	border: none;	
+	width: 50%;
+}
+/* === FORGOT PASSWORD LINK (LOGIN PAGE) === */
+.password-link{
+	margin-top: -20px;
+	text-align: right;
+}
+
+
+
+
+/* === ALIGN LEFT FORMS (EDIT, SETINGS PAGES) === */
+/* ============================================== */
+.left-align-form{
+	margin: 0;
+	border: none;	
+}
+
+
+
+
+/* === LIST OF CURRENT MEMBERS (WELCOME PAGE) === */
+/* ============================================== */
+.current-members-li{
+	width: 16.6%;
+}
+.current-members-li a > img{
+	max-width: 100%;
+	border-radius: 50%;
+	border: 4px solid #ffffff;
+}
+.current-members-li a:hover > img{
+	border-color: #1abc9c;
+}
+
+
+
+
+/* === LEFT PROFILE CONTAINER (PROFILE PAGE) === */
+/* ============================================= */
+.profile-left-container{
+	width: 30%;
+	min-height: 394px;
+}
+
+.profile-left-container > img{
+	max-width: 100%;
+	border: 2px solid #ffffff;
+	border-radius: 50%;
+}
+/* === LIKE BUTTON (PROFILE PAGE) === */
+.add-like{
+	border: 2px #ffffff solid;
+	width: 75%;
+}
+
+
+
+
+/* === RIGHT PROFILE CONTAINER (PROFILE PAGE) === */
+/* ============================================== */
+.profile-right-container{
+	width: 70%;
+}
+
+/* === LEFT PROFILE CONTAINER (PROFILE PAGE) === */
+.right-container-boxes{
+	padding: 0 0 16px 16px;
+	width: 50%;
+	height: 205px;
+}
+/* === RIGHT BOXES INNER (PROFILE PAGE) === */
+.right-container-boxes-inner{
+	height: 100%;
+}
+/* === RIGHT PROFILE INNER TEXT ROW (PROFILE PAGE) === */
+.profile-right-inner-row{
+	height: 33%;
+}
+
+/* === RIGHT BOXES INNER LIKES CIRCLE (PROFILE PAGE) === */
+.likes{
+	width: 145px;
+	height: 145px;
+	line-height: 145px;
+	border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+.loader{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 9999;
+	width: 100px;
+	margin: -50px 0 0 -50px;
+}
+/**
+ * Flexible Google-style progress indicator
+ */
+@-webkit-keyframes progress {
+	50% { border-width: .5em 0; }
+	to { border-width: .5em 0 0 0; }
+}
+@-webkit-keyframes rotate {
+	to { -webkit-transform: rotate(-270deg); }
+}
+@keyframes progress {
+	50% { border-width: .5em 0; }
+	to { border-width: .5em 0 0 0; }
+}
+@keyframes rotate {
+	to { transform: rotate(-270deg); }
+}
+
+.loading { /* Size of the progress indicator */
+	margin: 16px auto;
+	text-align: center;
+	padding: 16px;
+}
+
+.progress {
+	font-size: 100px; /* Size of the progress indicator */
+	width: 1em; 
+	height: 1em;
+	border: solid red;
+	border-top-color: #1bd8b3;
+	border-width: 0 0 .5em 0;
+	border-radius: 50%;
+	box-sizing: border-box;
+	margin: .1em auto;
+	background: linear-gradient(red 50%, #1bd8b3 50%);
+	background-origin: border-box;
+	-webkit-transform: rotate(90deg);
+	-webkit-animation: rotate 1s steps(4) infinite,
+	           progress .25s linear infinite alternate;
+	transform: rotate(90deg);
+	animation: rotate 1s steps(4) infinite,
+	           progress .25s linear infinite alternate;
+	text-indent: 99em;
+	overflow: hidden;
+}

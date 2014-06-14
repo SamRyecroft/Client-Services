@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+	<title>Angular Tasks</title>
+	<link href="css/style.css" type="text/css" rel="stylesheet">
+	<link href="css/media-queries.css" type="text/css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/libs/html5shiv.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="container" ng-app="loginApp">
+		<nav class="main-nav" ng-controller="MainController">		
+			<ul class="main-nav-ul center-text">
+				<li class="main-nav-li"><a href="" ng-click="showPopup = !showPopup">Contact</a>					
+					<div class="popup" ng-show="showPopup">
+						<div id="pop" class="popup-inner-container">
+							<div class="loader" ng-show="loading">
+								<div class="progress"></div>
+								<div class="loading">Loading</div>
+							</div>
+							<div class="close-popup" ng-click="showPopup = !showPopup; clearInputs();">X</div>
+							<form class="contact-forms" name="contact_form" novalidate ng-submit="contactSubmit()">	
+								<small class="success-messages" ng-show="contact.success">&#x2713 {{ contact.success }}</small>
+								<small class="error-messages" ng-show="contact.error">&#x2718 {{ contact.error }}</small>
+								<input class="form-input" type="text" name="name" placeholder="Enter Name" required autocomplete="off" ng-model="contact.name" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/">
+									<div class="error-messages" ng-show="contact_form.name.$dirty && contact_form.name.$invalid && contact_form.submitted">
+										<small ng-show="contact_form.name.$error.required">&#x2718 A name is required</small>
+										<small ng-show="contact_form.name.$error.minlength">&#x2718 The name min character length is 2</small>
+										<small ng-show="contact_form.name.$error.maxlength">&#x2718 The name max character length is 20</small>
+										<small ng-show="contact_form.name.$error.pattern">&#x2718 Use only A-Z/a-z</small>
+									</div>
+								<input class="form-input" name="email" type="email" placeholder="Your Email Address" required ng-model="contact.email">
+									<div class="error-messages" ng-show="contact_form.email.$dirty && contact_form.email.$invalid && contact_form.submitted">
+										<small ng-show="contact_form.email.$error.required">&#x2718 An email address is required</small>
+										<small ng-show="contact_form.email.$error.email">&#x2718 A valid email address is required</small>
+									</div>
+								<textarea class="form-input" name="message" type="text" placeholder="Your Message..." required rows="7" ng-model="contact.message" ng-minlength=2 ng-maxlength=2000></textarea>
+									<div class="error-messages" ng-show="contact_form.message.$dirty && contact_form.message.$invalid && contact_form.submitted">
+										<small ng-show="contact_form.message.$error.required">&#x2718 A message is required</small>
+										<small ng-show="contact_form.message.$error.minlength">&#x2718 The message min character length is 2</small>
+										<small ng-show="contact_form.message.$error.maxlength">&#x2718 The message max character length is 2000</small>
+									</div>
+								<button class="button" type="submit" name="submit">SEND</button>
+							</form>
+						</div>
+					</div>	
+				</li
+				><li ng-show="loggedOut" class="main-nav-li"><a href="#/login">Log in</a></li
+				><li ng-show="loggedOut" class="main-nav-li"><a href="#/register">Sign up</a></li
+				><li ng-show="loggedIn" class="main-nav-li"><a href="#/welcome">The Team</a></li
+				><li ng-show="loggedIn" class="main-nav-li" id="toggle-nav"><a href="">{{ loggedUser.firstName }} {{ loggedUser.surname }} &#x25BE</a>
+					<ul id="drop-nav" class="main-nav-li-drop center-text">
+						<li ng-show="loggedIn" ng-click="userProfile()" class="main-nav-li"><a href="#/profile">Your Profile</a></li>
+						<li ng-show="loggedIn" class="main-nav-li"><a href="#/settings">Account Settings</a></li>
+						<li ng-show="loggedIn" class="main-nav-li"><a href="#/edit">Edit Profile</a></li>
+						<li ng-show="loggedIn" ng-click="logOut()" class="main-nav-li"><a href="#/login">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		
+		<div ng-view></div>
+	
+	</div>
+	
+	<script src="js/libs/angular.js"></script>
+	<script src="js/libs/angular-route.js"></script>
+	<script src="js/libs/angular-resource.js"></script>
+	<script src="js/libs/angular-cookies.js"></script>
+	<!-- <script src="js/controllers.js"></script> -->
+	<script src="js/controllers/app.js"></script>
+	<script src="js/controllers/editController.js"></script>
+	<script src="js/controllers/loginController.js"></script>
+	<!-- <script src="js/controllers/passwordController.js"></script> -->
+	<script src="js/controllers/passwordEmailController.js"></script>
+	<script src="js/controllers/passwordResetController.js"></script>
+	<script src="js/controllers/profileController.js"></script>
+	<script src="js/controllers/registerController.js"></script>
+	<script src="js/controllers/settingsController.js"></script>
+	<script src="js/controllers/welcomeController.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/factories.js"></script>
+	<script src="js/libs/jquery-1.11.1.js"></script>
+	<script src="js/nav-toggle.js"></script>
+</body>
+
+</html>
