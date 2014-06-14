@@ -319,7 +319,7 @@ function createRecoveryKey (emailAddress, callback) {
 					} else {
 												
 						mailServices.sendEmail(emailAddress, 'Account Recovery', 'Hi there, he is a link to recovery your account', 
-							'<a href=https://localhost:3000/#/password-reset?recoveryKey' + recoveryKey +'&emailAddress=' + emailAddress + '> click here </a>', function (err){
+							'<a href=https://localhost:3000/#/password-reset?recoveryKey=' + recoveryKey +'&emailAddress=' + emailAddress + '> click here </a>', function (err){
 
 								if (err != null){
 									serverLogger.error(err);
