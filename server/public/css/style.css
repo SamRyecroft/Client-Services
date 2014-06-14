@@ -292,7 +292,6 @@ section,
 /* ============================= */
 .container{
 	max-width: 960px;
-	min-height: 450px;
 	border: 1px silver solid;
 }
 
@@ -327,10 +326,6 @@ section,
 .form-input{
 	width: 100%;
 	border: 1px silver solid;
-}
-/* === VALID FORM STYLES === */
-.form-input.ng-valid{
-	border: 1px green solid;
 }
 
 .form-input.ng-dirty > .forms{

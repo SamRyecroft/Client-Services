@@ -11,13 +11,12 @@ loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$locatio
 				data: $.param($scope.login)
 			}).success(function(data, status){
 				loggedInFactory.setLoginStatus(true);
-				console.log('success from Login');
 				$scope.login = {};
-				userFactory.setUser($cookies.userInfoCookie);
-				//$location.path("/welcome");
+				console.log('Success from Login');
+				$location.path("/welcome");
 			}).error(function(error, status){
-				$scope.loginErrorMessage = "Login details are incorrect. Try again.";
-				console.log(error, status, 'success from Login');
+				$scope.loginErrorMessage = "Incorrect Dteails.";
+				console.log(error, status, ' from Login');
 			});
 		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
 			$scope.login_form.submitted = true;

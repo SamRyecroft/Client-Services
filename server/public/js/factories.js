@@ -12,34 +12,50 @@ loginApp.factory('memberFactory', function($http) {
 });
 */
 
-// === PROFILE FACTORY TO VIEW MEMBER PROFILE === //
-loginApp.factory('setMembersFactory', function(){
-	// Empty object to store chosen member array of values
-	var membs = [];	
+// === FACTORY TO SELECT LOGGED IN USER === //
+loginApp.factory('userFactory', function(){
+	// Empty object to logged in user
+	var user = [];	
 	return {
-		// getChosenMemb returns the value of the chosen_memb object
-		getMembs: function(){
-			return membs;
+		// getUser returns the value of the user object
+		getUser: function(){
+			return user;
 		},
-		// setChosenMemb passes in then sets the value of the chosen_memb object 
-		setMembs: function(val){
-			membs = val;
+		// setUser passes in then sets the value of the user object 
+		setUser: function(infoCookie){
+			user = infoCookie;
 		}
 	};
 });
 
-// === PROFILE FACTORY TO VIEW MEMBER PROFILE === //
-loginApp.factory('profileFactory', function(){
-	// Empty object to store chosen member array of values
-	var chosen_memb = [];	
+// === FACTORY TO SELECT ALL USERS === //
+loginApp.factory('UsersFactory', function(){
+	// Empty object to store users.
+	var users = [];	
 	return {
-		// getChosenMemb returns the value of the chosen_memb object
-		getChosenMemb: function(){
-			return chosen_memb;
+		// getUsers returns the value of the users object.
+		getUsers: function(){
+			return users;
 		},
-		// setChosenMemb passes in then sets the value of the chosen_memb object 
-		setChosenMemb: function(chose){
-			chosen_memb = chose;
+		// setUsers passes in then sets the value of the users object.
+		setUsers: function(val){
+			users = val;
+		}
+	};
+});
+
+// === PROFILE FACTORY TO VIEW USER PROFILE === //
+loginApp.factory('ProfileFactory', function(){
+	// Empty object to store chosen member array.
+	var user_profile = [];	
+	return {
+		// getUserProfile returns the value of the chosen_memb object
+		getUserProfile: function(){
+			return user_profile;
+		},
+		// setUserProfile passes in then sets the value of the chosen_memb object 
+		setUserProfile: function(chose){
+			user_profile = chose;
 		}
 	};
 });
@@ -56,22 +72,6 @@ loginApp.factory('loggedInFactory', function () {
 		// setLoginStatus passes in then sets the string or empty string of the logged var 
 		setLoginStatus: function(value) {
 			logged = value;
-		}
-	};
-});
-
-// === PROFILE FACTORY TO SELECT LOGGED IN MEMBER PROFILE === //
-loginApp.factory('userFactory', function(){
-	// Empty object to logged in user
-	var user = [];	
-	return {
-		// getUser returns the value of the user object
-		getUser: function(){
-			return user;
-		},
-		// setUser passes in then sets the value of the user object 
-		setUser: function(infoCookie){
-			user = infoCookie;
 		}
 	};
 });

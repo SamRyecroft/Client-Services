@@ -3,7 +3,7 @@
 var loginApp = angular.module('loginApp', ['ngResource', 'ngRoute', 'ngCookies']);
 
 // === MAIN CONTROLLER === //
-loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInFactory', 'userFactory', 'profileFactory', function($scope, $http, $cookies, loggedInFactory, userFactory, profileFactory){
+loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInFactory', 'userFactory', 'ProfileFactory', function($scope, $http, $cookies, loggedInFactory, userFactory, ProfileFactory){
 	
 	// Show popup variables.
 	$scope.showPopup = false; // If true the contact form will show.
@@ -14,12 +14,11 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInF
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
 	$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
 
-	// Submit contact form function.
+	// Submit contact form function - Currently does not work on node.js server.
 	$scope.contactSubmit = function(){
 		if($scope.contact_form.$valid){ // If the frm input is valid, do the following.
 			$scope.$emit('LOADING'); // Emit LOADING, which sets $scope.loading to true. Shows the loading indicator.
-			// $http contact form post success, error promise.
-			$http({
+			$http({ // $http contact form post success, error promise.
 				method: 'POST',
 				url: '../../process.php',
 				data: $.param($scope.contact),
@@ -68,12 +67,12 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInF
 
 	// Watches to get details for the logged in user to display in the drop down navigation.
 	$scope.$watch(userFactory.getUser, function() {
-		$scope.loggedUser = userFactory.getUser(); // Getting the logged in user.
+		$scope.loggedInUser = userFactory.getUser(); // Getting the logged in user.
 	});
 
 	// $scope.userProfile is triggered by a ng-click from the drop down nav.
 	$scope.userProfile = function(){
-		profileFactory.setChosenMemb($scope.loggedUser); // Setting the chosen member to the logged in member
+		ProfileFactory.setUserProfile($scope.loggedUser); // Setting the chosen member to the logged in member
 	};
 
 }]);

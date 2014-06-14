@@ -1,15 +1,15 @@
-<section ng-show="showPage" class="ng-view-section">
+<section class="ng-view-section">
 
 	<h1 class="center-text">Meet The Team</h1>
 
 	<nav>
-		<ul class="center-text">
+		<ul class="center-text" ng-show="!loading">
 			<li class="main-nav-li"><a href="" ng-click="sortField = 'username'; reverse = !reverse">Username</a></li>
 			<li class="main-nav-li"><a href="" ng-click="sortField = 'type'; reverse = !reverse">Type</a></li>
 		</ul>
 	</nav>
 	
-	<input class="form-input" type="text" name="searchMembers" placeholder="Type to filter members" ng-model="search.members.name" ng-minlength=2 ng-maxlength=20>
+	<input class="form-input" type="text" name="searchMembers" placeholder="Type to filter members" ng-model="search.members.name" ng-minlength=2 ng-maxlength=20 ng-show="!loading">
 	
 	<div class="loader" ng-show="loading">
 		<div class="progress"></div>

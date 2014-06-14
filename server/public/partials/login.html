@@ -2,7 +2,7 @@
 
 	<h1 class="center-text">Login</h1>
 	
-	<form class="forms" name="login_form" novalidate method="POST" ng-submit="loginSubmit()">		
+	<form class="forms" name="login_form" novalidate ng-submit="loginSubmit()">		
 		<small class="error-messages" ng-show="loginErrorMessage">&#x2718 {{ loginErrorMessage }}</small>
 		<input class="form-input" type="text" name="username" placeholder="Enter Username" required autocomplete="off" ng-model="login.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/">
 			<div class="error-messages" ng-show="login_form.username.$dirty && login_form.username.$invalid && login_form.submitted">

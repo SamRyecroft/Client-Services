@@ -10,7 +10,7 @@ app.all('/*', function(req, res, next) {
 
 
 
-app.get('/userAccount/accountTools/accountRecovery/genrateRecoveryKey', accounts_api.createRecoveryKeyForAccount);
+app.get('/userAccount/accountTools/accountRecovery/generateRecoveryKey', accounts_api.createRecoveryKeyForAccount);
 
 app.post('/userAccount/accountTools/accountRecovery/recoverAccountWithKey', accounts_api.recoverAccountWithRecoveryKey);
 

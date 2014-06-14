@@ -51,7 +51,7 @@
 				><li ng-show="loggedOut" class="main-nav-li"><a href="#/login">Log in</a></li
 				><li ng-show="loggedOut" class="main-nav-li"><a href="#/register">Sign up</a></li
 				><li ng-show="loggedIn" class="main-nav-li"><a href="#/welcome">The Team</a></li
-				><li ng-show="loggedIn" class="main-nav-li" id="toggle-nav"><a href="">{{ loggedUser.firstName }} {{ loggedUser.surname }} &#x25BE</a>
+				><li ng-show="loggedIn" class="main-nav-li" id="toggle-nav"><a href="">{{ loggedInUser.firstName }} &#x25BE</a>
 					<ul id="drop-nav" class="main-nav-li-drop center-text">
 						<li ng-show="loggedIn" ng-click="userProfile()" class="main-nav-li"><a href="#/profile">Your Profile</a></li>
 						<li ng-show="loggedIn" class="main-nav-li"><a href="#/settings">Account Settings</a></li>
@@ -72,15 +72,15 @@
 	<script src="js/libs/angular-cookies.js"></script>
 	<!-- <script src="js/controllers.js"></script> -->
 	<script src="js/controllers/app.js"></script>
-	<script src="js/controllers/editController.js"></script>
 	<script src="js/controllers/loginController.js"></script>
-	<!-- <script src="js/controllers/passwordController.js"></script> -->
+	<script src="js/controllers/registerController.js"></script>
+	<script src="js/controllers/welcomeController.js"></script>
+	<script src="js/controllers/profileController.js"></script>
+	<script src="js/controllers/settingsController.js"></script>
+	<script src="js/controllers/editController.js"></script>
 	<script src="js/controllers/passwordEmailController.js"></script>
 	<script src="js/controllers/passwordResetController.js"></script>
-	<script src="js/controllers/profileController.js"></script>
-	<script src="js/controllers/registerController.js"></script>
-	<script src="js/controllers/settingsController.js"></script>
-	<script src="js/controllers/welcomeController.js"></script>
+	<!-- <script src="js/controllers/passwordController.js"></script> -->
 	<script src="js/config.js"></script>
 	<script src="js/factories.js"></script>
 	<script src="js/libs/jquery-1.11.1.js"></script>

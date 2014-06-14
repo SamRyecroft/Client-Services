@@ -5,7 +5,7 @@
 //___________________________________________________________________________________________________________________________________________________________________
 //	AUTHENTICATION 
 
-//	### 	- register userAccount 			responsible for handling the creation of a new user
+//	### - register userAccount 			responsible for handling the creation of a new user
 //	###	- logInUserAccount				responsible for logging in a user using the assigned password
 //	###	- logOutUser					responsible for logging the user out, invalidinting the token and clearing cookies
 //___________________________________________________________________________________________________________________________________________________________________
@@ -58,38 +58,38 @@ function registerUserAccount(req, res, next) {
 
 		var data = qs.parse(body);
 
-		var error = [];
+		var errors = [];
 
 		console.log(data);
 
 		if (!data.username)
-			error.push('No username specified');
+			errors.push('No username specified');
 
 		if (!data.password)
-			error.push('No password specified');
+			errors.push('No password specified');
 
-		else if (data.password.length < 8)
-			error.push('Password length must be atleast 8 characters');
+		else if (data.password.length < 6)
+			error.push('Password length must be atleast 6 characters');
 
 		if (!data.email)
-			error.push('No email address specified');
+			errors.push('No email address specified');
 
 		if (!data.firstName)
-			error.push('No first name specified');
+			errors.push('No first name specified');
 
 		if (!data.surname)
-			error.push('No surname specified');
+			errors.push('No surname specified');
 
 		if (!data.middleName)
 			data.middleName = '';
 
 		// Checks to see if the error array
-		if (error.length) {
+		if (errors.length) {
 
 			res.statusCode = 400;
 			res.end(JSON.stringify({
 				status : 'error',
-				error : error
+				error : errors
 			}));
 			
 			return;
@@ -143,7 +143,7 @@ function registerUserAccount(req, res, next) {
 							httpOnly : true
 						});
 
-						res.statusCode = 200
+						res.statusCode = 200;
 						res.end (JSON.stringify({
 							status : 'sucsess'
 							
@@ -426,7 +426,9 @@ function changePassword(req, res) {
 }
 
 function createRecoveryKeyForAccount (req, res){
+
 	console.log(req.query.emailAddress);
+
 	userModel.isEmailAddressRegisterd (req.query.emailAddress, function (err, exsists ){		
 		if (err != null){
 			

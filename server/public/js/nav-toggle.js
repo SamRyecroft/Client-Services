@@ -4,14 +4,14 @@ $(document).ready(function(){
 	$("#toggle-nav").click(function(){
 		$("#drop-nav").toggle();
 	});
-	
-	$(window).resize(function() {
-    	$('.container').height($(window).height() -50);
-	});
-
-	$(window).trigger('resize');
 });
 
 $(document).ready(function(){
+	
+	$(window).resize(function() {
+    	$('.container').height($(window).height() -32);
+	});
+
+	$(window).trigger('resize');
 });
 

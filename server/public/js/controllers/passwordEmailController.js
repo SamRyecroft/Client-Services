@@ -5,13 +5,12 @@ loginApp.controller('PasswordEmailController', ['$scope', '$http', function($sco
 	$scope.passwordEmailSubmit = function(){
 		if($scope.email_form.$valid){
 			$http({
-				method: 'POST',
-				url: 'https://localhost:3000/',
-				data: $.param($scope.password.emailAddress),
-				withCredentials: true
+				method: 'GET',
+				url: 'https://localhost:3000/userAccount/accountTools/accountRecovery/generateRecoveryKey',
+				data: $.param($scope.password.emailAddress)
 			}).success(function(data){
 				$scope.emailAddressSuccessMessage = "Check your email in a minute or so";
-				console.log('success', $scope.password.email);
+				console.log('success', $scope.password.emailAddress);
 			}).error(function(error, status){
 				$scope.emailAddressErrorMessage = "Looks like there was a: " + status + " error";
 				console.log('error');
