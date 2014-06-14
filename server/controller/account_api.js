@@ -322,7 +322,7 @@ function getAllAccounts(req, res) {
 		
 		res.statusCode = 403;
 		res.contentType = 'application/json';
-		res.end(JSON.strongify({
+		res.end(JSON.stringify({
 			status : 'error',
 			error : 'No cridentials provided'
 		}));
