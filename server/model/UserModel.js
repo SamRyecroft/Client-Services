@@ -17,7 +17,10 @@ var userSchema = mongoDB
 
 			username : {
 				type : String,
-				required : true
+				required : true,
+				index :{
+					unique : true
+				}
 			},
 			emailAddress : {
 				type : String,
@@ -58,7 +61,6 @@ var userSchema = mongoDB
 					required : false
 				}
 			},
-
 			// User information
 			firstName : {
 				type : String,
@@ -156,8 +158,6 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 				
 				if (userAccount.numberOfFaildLoginAttempts > MAXIMUM_FAILED_LOGIN_ATTEMPTS){
 					
-					
-					console.log("account lock code run");
 					userAccount.accountLockedUntill = ((new Date).setHours((new Date).getHours() + LOCK_OUT_TIME));
 				}
 				
@@ -394,10 +394,12 @@ function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, c
 	});
 }
 
-function updateUserInfomation (emailAddress, firstName, middleName, surname, profileInfomation, callback){
+function updateUserInfomation (emailAddress, firstName, middleName, surname, profileInfomation, newEmailAddress, callback){
 	
-	userModel.findOne({emailAddress : emailAddress} , function(err, userAccount){
+	userModel.findOne({emailAddress : emailAddress} ,function(err, userAccount){
 
+		console.log(firstName);
+		
 		if (firstName != undefined) {
 
 			userAccount.firstName = firstName;
@@ -421,8 +423,8 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 
 		}
 
-		userAccount.save(function(err){
-
+		userAccount.save(function(err, userAccount){
+			
 			if (err){
 									
 				databaseLogger.error(err.message);

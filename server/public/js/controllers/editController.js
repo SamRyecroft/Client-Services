@@ -29,9 +29,9 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 	$scope.editName = function(){
 		if($scope.name_form.$valid){ // If the form is valid do the following.
 			$http({
-					method: 'POST',
-					url: 'https://localhost:3000/',
-					data: $.param($scope.edit.firstName, $scope.edit.surname)
+					method: 'PATCH',
+					url: 'https://localhost:3000/userAccount/profileUtilities/updateDetails',
+					data: $.param($scope.edit)
 				}).success(function(data){
 					$scope.successFirstNameChange = 'Your First name has been changed';
 					$scope.successSurnameChange = 'Your Surname name has been changed';
@@ -39,8 +39,8 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 					$scope.sameSurnameError = '';
 					console.log('success');
 				}).error(function(error, status){
-					$scope.sameFirstNameError = 'That is the First name you currently use';
-					$scope.sameSurnameError = 'That is the Surname you currently use';
+					$scope.sameFirstNameError = 'my problem';
+					$scope.sameSurnameError = 'my problem';
 					$scope.successFirstNameChange = '';
 					$scope.successSurnameChange = '';
 					console.log(error, status, 'error');
@@ -64,34 +64,6 @@ if($scope.user.fname != $scope.edit.fnam){ // If old fname & new fname are not t
 		}
 	};
 	
-	// Edit username
-	$scope.editUsername = function(){
-		if($scope.username_form.$valid){ // If the form is valid do the following.
-			$http({
-					method: 'POST',
-					url: 'https://localhost:3000/',
-					data: $.param($scope.edit.username)
-				}).success(function(data){
-					$scope.successUsernameChange = 'Your Username has been changed';
-					$scope.sameUsernameError = '';
-					console.log('success');
-				}).error(function(error, status){
-					$scope.sameUsernameError = 'That is the Username you currently use';
-					$scope.successUsernameChange = '';
-					console.log(error, status, 'error');
-				});
-			/*
-if($scope.user.username != $scope.edit.username){ // If old uname & new uname are not the same change the uname.
-				$scope.user.username = $scope.edit.username
-				$scope.successUsernameChange = 'Your Username has been changed';
-			}else{ // If the unames are the same.
-				$scope.sameUsernameError = 'That is the Username you currently use';
-			};
-*/
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
-			$scope.username_form.submitted = true;
-		}
-	};
 	
 	// Edit website
 	$scope.editWebsite = function(){

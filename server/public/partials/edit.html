@@ -33,20 +33,6 @@
 		<button class="button" type="submit" name="submit">UPDATE NAME</button>
 	</form>
 	
-	<!-- CHANGE USERNAME FORM -->
-	<form class="forms left-align-form" name="username_form" novalidate ng-submit="editUsername()">
-		<small class="success-messages" ng-show="successUsernameChange && !sameUsernameError">&#x2713 {{ successUsernameChange }}</small>
-		<small class="error-messages" ng-show="sameUsernameError && !successUsernameChange">&#x2718 {{ sameUsernameError }}</small>
-		<input class="form-input" type="text" name="uname" placeholder="{{user.username}}" required autocomplete="off" ng-model="edit.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/"/>
-			<div class="error-messages" ng-show="username_form.username.$dirty && username_form.username.$invalid && username_form.submitted">
-				<small ng-show="username_form.username.$error.required">&#x2718 A Username is required</small>
-				<small ng-show="username_form.username.$error.minlength">&#x2718 The Username min character length is 2</small>
-				<small ng-show="username_form.username.$error.maxlength">&#x2718 The Username max character length is 20</small>
-				<small ng-show="username_form.username.$error.pattern">&#x2718 Use only A-Z a-z characters & 0-9 numbers.</small>
-			</div>
-		<button class="button" type="submit" name="submit">UPDATE USERNAME</button>
-	</form>
-	
 	<!-- CHANGE WEBSITE FORM -->
 	<form class="forms left-align-form" name="website_form" novalidate ng-submit="editWebsite()">
 		<small class="success-messages" ng-show="successWebsiteChange && !sameWebsiteError">&#x2713 {{ successWebsiteChange }}</small>

@@ -235,10 +235,12 @@ function logInUserAccount(req, res) {
 						userDetails.surname = accountData.surname;
 						userDetails.emailAddress = accountData.emailAddress;
 						userDetails.username = accountData.username;
+						userDetails.username = accountData.profileImage;
 						
 						res.cookie('authenticationCookie', JSON.stringify(token), {
 							maxAge : 900000,
-							httpOnly : true
+							httpOnly : true,
+							secure : true
 						});
 						
 						res.cookie('userInfoCookie', JSON.stringify(userDetails), {
@@ -274,7 +276,7 @@ function logOutUser(req, res) {
 	res.clearCookie('authenticationCookie');
 	res.clearCookie('userInfoCookie');
 	res.contentType = 'application/json';
-	res.end(JSON.strigify({
+	res.end(JSON.stringify({
 		status : 'sucsess'
 	}));
 	
@@ -552,8 +554,8 @@ function updateAccountDetails(req, res){
 			tokenModel.verifyToken(token,function(validToken) {
 
 				if (validToken) {
-					
-					userModel.updateUserInfomation(token.emailAddress,data.firstName,data.middleName,data.surname,data.profileInfomation, function(err) {
+					console.log(data);
+					userModel.updateUserInfomation(token.emailAddress,data.firstName,data.middleName,data.surname,data.profileInfomation, data.emailAddress, function(err, userAccount) {
 
 						if (err != null) {
 
@@ -567,7 +569,18 @@ function updateAccountDetails(req, res){
 							return;
 
 						} else {
-
+							
+							userDetails.firstName = accountData.firstName;
+							userDetails.middleName = accountData.middleName;
+							userDetails.surname = accountData.surname;
+							userDetails.emailAddress = accountData.emailAddress;
+							userDetails.username = accountData.username;
+							userDetails = accountData.profileImage;
+							
+							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+								maxAge : 900000,	
+								httpOnly : false									});
+								
 							res.statusCode = 200;
 							res.contentType = 'application/json';
 							res.end(JSON.stringify({

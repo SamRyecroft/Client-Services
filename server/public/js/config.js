@@ -3,6 +3,9 @@
 // === LOGIN APP ROUTE CONFIG === //
 loginApp.config(function($routeProvider, $httpProvider) {
     $httpProvider.defaults.withCredentials = true;
+	$httpProvider.defaults.headers.patch = {
+	    'Content-Type': 'application/json;charset=utf-8'
+	}
 	$routeProvider.
 	when('/index', {
 		templateUrl: 'partials/index.html',
