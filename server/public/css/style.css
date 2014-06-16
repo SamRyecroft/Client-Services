@@ -301,9 +301,11 @@ section,
 }
 /* === DROP DOWN NAV (ALL PAGES) === */
 /* ================================= */
+
 .main-nav-li-drop{
-	position: absolute;
-	width: 175px;
+	position: fixed;
+	margin-left: -100px;
+	max-width: 175px;
 	border: 1px silver solid;
 }
 .main-nav-li-drop li{

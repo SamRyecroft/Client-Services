@@ -1,17 +1,10 @@
 'use strict';
 
-loginApp.controller('WelcomeController', ['$scope', '$http', '$cookies', 'userFactory', 'ProfileFactory', 'loggedInFactory', 'UsersFactory', function($scope, $http, $cookies, userFactory, ProfileFactory, loggedInFactory, UsersFactory){
-  
-	$scope.showPage = loggedInFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.	
-	
-	var cookie = ''
-	cookie = angular.fromJson($cookies.userInfoCookie);
-	if(cookie != '') {
-		userFactory.setUser(cookie)
-	};
-	
+loginApp.controller('WelcomeController', ['$scope', '$http', '$cookies', 'LoggedInUserFactory', 'ProfileFactory', 'LoginStatusFactory', 'UsersFactory', function($scope, $http, $cookies, LoggedInUserFactory, ProfileFactory, LoginStatusFactory, UsersFactory){
 
-	// Loading indicators.
+	var userCookie = $cookies.userInfoCookie;
+  	if(userCookie != undefined) { $scope.showPage = true; }
+	
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
 	$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
 	
@@ -22,12 +15,10 @@ loginApp.controller('WelcomeController', ['$scope', '$http', '$cookies', 'userFa
 	}).success(function(data) {
 	    UsersFactory.setUsers(data);
 	    $scope.members = UsersFactory.getUsers().userAccounts;
-	    console.log('success from Welcome');
 	    $scope.$emit('LOADED'); // Emit LOADED, sets $scope.loading to false. Hides loading indicator
 	}).error(function(error, status) { 
 	    console.log(error, status, 'error. Welcome.');
 	});
-	
 	
 	// Function called when user clicks a member in the welcome view.
 	$scope.clickedMember = function(member){

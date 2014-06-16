@@ -1,7 +1,7 @@
 THIS NEEDS UPDATING!!!!
 =======================
 
-
+The app requires a node.js server. The one i am using with this is by Sam Ryecroft. (NodeServer).
 
 Angular-Login
 =============

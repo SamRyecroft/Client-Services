@@ -1,23 +1,35 @@
 'use strict';
 
-loginApp.controller('PasswordResetController', ['$scope', '$http', function($scope, $http){
+loginApp.controller('PasswordResetController', ['$scope', '$http', '$cookies', '$location', function($scope, $http, $cookies, $location){
+
+	var userCookie = $cookies.userInfoCookie;
+  	if(userCookie != undefined) { $scope.showPage = true; }
+	
 	// Retrieve password function.
 	$scope.passwordResetSubmit = function(){
-		if($scope.reset_form.$valid){ // If the form is valid do the following.	
-			$scope.password.url = '';
-			$http({
-				method: 'POST',
-				url: 'https://localhost:3000/accountActions/newPassword',
-				data: $.param($scope.password),
-				withCredentials: true
-			}).success(function(data){
-				$scope.resetSuccessMessage = "Your Password was reset successfully";
-				console.log('success', $scope.password.url);
-			}).error(function(error, status){
-				$scope.resetErrorMessage = "Looks like there was a: " + status + " error";
-				console.log('error');
-			});
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+		if($scope.reset_form.$valid){ // If the form is valid do the following.
+			if($scope.reset.newPassword == $scope.reset.confirmPassword){
+				$scope.reset.recoveryKey = $location.$$search.recoveryKey;
+				$scope.reset.emailAddress = $location.$$search.emailAddress;
+				$http({
+					method: 'POST',
+					url: 'https://localhost:3000/userAccount/accountTools/accountRecovery/recoverAccountWithKey',
+					data: $.param($scope.reset),
+					withCredentials: true
+				}).success(function(data){
+					$scope.resetSuccessMessage = "Your Password was reset successfully";
+					$scope.resetErrorMessage = "";
+					console.log('success', $scope.reset.recovery, $scope.reset.email);
+				}).error(function(error, status){
+					$scope.resetErrorMessage = "Oops. Looks like there was a: " + status + " error";
+					$scope.resetSuccessMessage = "";
+					console.log(error, status, 'error');
+				});
+			}else{
+				$scope.passwordMatch = 'The password do not match';
+			}
+			
+		}else{ // Else the form input is not valid. Set submitted to true (shows error messages).
 			$scope.reset_form.submitted = true;
 		}
 	};

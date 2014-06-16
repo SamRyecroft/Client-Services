@@ -1,11 +1,11 @@
 <section ng-show="showPage" class="ng-view-section">
 
-	<h1 class="center-text">{{ chosen.firstName }}'s Profile</h1>
+	<h1 class="center-text">{{ profile.firstName }}'s Profile</h1>
 	
 	<article class="profile-container">
 		<section class="profile-left-container center-text">
-			<img ng-src="{{ chosen.imgURL }}" width="120" height="120"/>
-			<div class="profile-left-inner-row">{{ chosen.firstName }} {{ chosen.surname }}</div>
+			<img ng-src="{{ profile.imgURL }}" width="120" height="120"/>
+			<div class="profile-left-inner-row">{{ profile.firstName }} {{ profile.surname }}</div>
 			<div class="profile-left-inner-row">
 				<button class="add-like" ng-click="addLike()">Like</button>
 			</div>
@@ -13,9 +13,9 @@
 		><section class="profile-right-container">
 			<div class="right-container-boxes">
 				<div class="right-container-boxes-inner">
-					<div class="profile-right-inner-row">{{ chosen.firstName }}</div>
-					<div class="profile-right-inner-row">{{ chosen.surname }}</div>
-					<div class="profile-right-inner-row">{{ chosen.emailAddress }}</div>
+					<div class="profile-right-inner-row">{{ profile.firstName }}</div>
+					<div class="profile-right-inner-row">{{ profile.surname }}</div>
+					<div class="profile-right-inner-row">{{ profile.emailAddress }}</div>
 				</div>
 			</div
 			><div class="right-container-boxes">

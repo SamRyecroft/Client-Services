@@ -500,30 +500,30 @@ function recoverAccountWithRecoveryKey (req, res){
 			
 			var data = qs.parse(body);
 			
-			userModel.changePasswordViaRecoveryKey(data.password, data.recoveryKey, data.emailAddress, function(err){
+			userModel.changePasswordViaRecoveryKey(data.newPassword, data.recoveryKey, data.emailAddress, function(err){
 			
-			if (err != null){
-				
-				// 500 error if invalid?
-				res.statusCode = 500;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'error',
-					error :  'Account not found with that recovery key'
-				 }));
-				
-				return;
-				
-			}else {
-				
-				res.statusCode = 200;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'sucsess'
-				}));
-				
-				return;
-			}
+				if (err != null){
+					
+					// 500 error if invalid?
+					res.statusCode = 400;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error :  'Account not found with that recovery key'
+					 }));
+					
+					return;
+					
+				}else {
+					
+					res.statusCode = 200;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'sucsess'
+					}));
+					
+					return;
+				}
 		});
 	});
 }

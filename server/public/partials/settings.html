@@ -4,8 +4,8 @@
 
 	<!-- CHANGE EMAIL FORM -->
 	<form class="forms left-align-form" name="email_form" novalidate ng-submit="settingsEmail()">
-		<small class="success-messages" ng-show="successEmailAddressChange">&#x2713 {{ successEmailAddressChange }}</small>
-		<small class="error-messages" ng-show="sameEmailAddressError">&#x2718 {{ sameEmailAddressError }}</small>
+		<small class="success-messages" ng-show="successEmailAddressChange && !sameEmailAddressError">&#x2713 {{ successEmailAddressChange }}</small>
+		<small class="error-messages" ng-show="sameEmailAddressError && !successEmailAddressChange">&#x2718 {{ sameEmailAddressError }}</small>
 		<input class="form-input" type="email" name="emailAddress" placeholder="{{user.emailAddress}}" required autocomplete="off" ng-model="change.emailAddress" ng-minlength=2 ng-maxlength=30>
 			<div class="error-messages" ng-show="email_form.emailAddress.$dirty && email_form.emailAddress.$invalid && email_form.submitted">
 				<small ng-show="email_form.emailAddress.$error.required">&#x2718 A Email is required</small>
@@ -18,8 +18,8 @@
 
 	<!-- CHANGE PASSWORD FORM -->
 	<form class="forms left-align-form" name="password_form" novalidate ng-submit="settingsPassword()">
-		<small class="success-messages" ng-show="successPassChange">&#x2713 {{ successPassChange }}</small>
-		<small class="error-messages" ng-show="samePasswordError">&#x2718 {{ samePasswordError }}</small>
+		<small class="success-messages" ng-show="successPassChange && !samePasswordError">&#x2713 {{ successPassChange }}</small>
+		<small class="error-messages" ng-show="samePasswordError && !successPassChange">&#x2718 {{ samePasswordError }}</small>
 		<input class="form-input" type="password" name="oldPass" placeholder="Current Password" required autocomplete="off" ng-model="change.oldPass" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
 			<div class="error-messages" ng-show="password_form.oldPass.$dirty && password_form.oldPass.$invalid && password_form.submitted">
 				<small ng-show="password_form.oldPass.$error.required">&#x2718 A Password is required</small>

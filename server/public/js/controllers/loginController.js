@@ -1,24 +1,26 @@
 'use strict';
 
-loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$location', 'loggedInFactory', 'userFactory', function($scope, $http, $cookies, $location, loggedInFactory, userFactory){
+loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$timeout', '$location', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, $timeout, $location, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
 	
-	// Log in submit funciton
 	$scope.loginSubmit = function(){
-		if($scope.login_form.$valid){ // If login_form is valid, do the following
+		if($scope.login_form.$valid){
 			$http({
 				method: 'POST',
 				url: 'https://localhost:3000/auth/login',
 				data: $.param($scope.login)
-			}).success(function(data, status){
-				loggedInFactory.setLoginStatus(true);
+			}).success(function(data){
+				LoginStatusFactory.setLoginStatus(true);
 				$scope.login = {};
-				console.log('Success from Login');
-				$location.path("/welcome");
+				$timeout(function() {
+					LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
+					ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
+					$location.path('/welcome');
+				}, 100);
 			}).error(function(error, status){
-				$scope.loginErrorMessage = "Incorrect Dteails.";
+				$scope.loginErrorMessage = "Oops. " + error.error;
 				console.log(error, status, ' from Login');
 			});
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+		}else{
 			$scope.login_form.submitted = true;
 		}
 	};

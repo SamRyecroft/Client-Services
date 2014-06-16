@@ -3,9 +3,9 @@
 var loginApp = angular.module('loginApp', ['ngResource', 'ngRoute', 'ngCookies']);
 
 // === MAIN CONTROLLER === //
-loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInFactory', 'userFactory', 'ProfileFactory', function($scope, $http, $cookies, loggedInFactory, userFactory, ProfileFactory){
+loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
 	
-	// Show popup variables.
+	// Contact form variables
 	$scope.showPopup = false; // If true the contact form will show.
 	$scope.submitted = false; // If true the error message will be able to be shown.
 	$scope.contact = {}; // Holds the text that will be binded to and from the view
@@ -14,11 +14,11 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInF
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
 	$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
 
-	// Submit contact form function - Currently does not work on node.js server.
+	// Contact form submit function - Currently does not work on node.js server.
 	$scope.contactSubmit = function(){
-		if($scope.contact_form.$valid){ // If the frm input is valid, do the following.
-			$scope.$emit('LOADING'); // Emit LOADING, which sets $scope.loading to true. Shows the loading indicator.
-			$http({ // $http contact form post success, error promise.
+		if($scope.contact_form.$valid){
+			$scope.$emit('LOADING');
+			$http({
 				method: 'POST',
 				url: '../../process.php',
 				data: $.param($scope.contact),
@@ -28,16 +28,17 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInF
 				$scope.contact.name = '';
 				$scope.contact.email = '';
 				$scope.contact.message = '';
-				$scope.$emit('LOADED'); // Emit LOADED, which sets $scope.loading to false. Hides the loading indicator
+				$scope.$emit('LOADED');
 			}).error(function(error, status){
+				$scope.$emit('LOADED');
 				$scope.contact.error = 'Looks like there was a ' + status + ' error';
 			});
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+		}else{
 			$scope.contact_form.submitted = true;
 		};
 	};
 	
-	// Clear contact form inputs by clicking the close button.
+	// Clear contact form inputs by clicking the close form button.
 	$scope.clearInputs = function(){
 		$scope.contact = '';
 		$scope.contact_form.submitted = false;
@@ -47,32 +48,33 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'loggedInF
 	$scope.logOut = function(){
 		$http({ 	
 			method: 'GET',
-			url: 'https://localhost:3000/auth/logout',
-			withCredentials: true
+			url: 'https://localhost:3000/auth/logout'
 		}).success(function(data) {
-			loggedInFactory.setLoginStatus(false); // Setting the login status to false to log the user out.
-			$scope.flag = true;
-			console.log('success from Logout');
+			LoginStatusFactory.setLoginStatus(false); // Setting the login status to false to log the user out.
+			LoggedInUserFactory.setUser([]); // Clearing the user from LoggedInUserFactory.
 		}).error(function(error, status) { 
 			console.log(error, status, 'error occured during logout.');
 		});
 	};
 
 	// Watches to get the login status of a member to decide what nav to show.
-	$scope.$watch(loggedInFactory.getLoginStatus, function() {
-		$scope.loggedIn = loggedInFactory.getLoginStatus(); // Getting the login status	
-		if (!$scope.loggedIn) $scope.loggedOut = true; // If $scope.loggedIn is false, user is logged out.
-		else $scope.loggedOut = false;// Else $scope.loggedOut is false, so $scope.loggedIn is true, user is logged in.
+	$scope.$watch(LoginStatusFactory.getLoginStatus, function() {
+		$scope.loggedIn = LoginStatusFactory.getLoginStatus();
+		if (!$scope.loggedIn){
+			$scope.loggedOut = true;
+		} else {
+			$scope.loggedOut = false;
+		}	
 	});
 
-	// Watches to get details for the logged in user to display in the drop down navigation.
-	$scope.$watch(userFactory.getUser, function() {
-		$scope.loggedInUser = userFactory.getUser(); // Getting the logged in user.
+	// Watches to get details for the logged in user. Displays name in the drop down navigation, and passes user to userProfile.
+	$scope.$watch(LoggedInUserFactory.getUser, function() {
+		$scope.loggedInUser = LoggedInUserFactory.getUser();	
 	});
 
 	// $scope.userProfile is triggered by a ng-click from the drop down nav.
-	$scope.userProfile = function(){
-		ProfileFactory.setUserProfile($scope.loggedUser); // Setting the chosen member to the logged in member
+	$scope.userProfile = function(loggedInUser){
+		ProfileFactory.setUserProfile(loggedInUser); // Setting setUserProfile to the logged in user for the profile page.
 	};
 
 }]);

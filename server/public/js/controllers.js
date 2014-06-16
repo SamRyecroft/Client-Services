@@ -1,129 +1,111 @@
 'use strict';
 
-var loginApp = angular.module('loginApp', ['ngResource', 'ConfigModule']);
+var loginApp = angular.module('loginApp', ['ngResource', 'ngRoute', 'ngCookies']);
 
 // === MAIN CONTROLLER === //
 // ======================= //
-loginApp.controller('MainController', ['$scope', '$http', 'loggedInFactory', 'userFactory', 'profileFactory', function($scope, $http, loggedInFactory, userFactory, profileFactory){
-
+// === MAIN CONTROLLER === //
+loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
+	
+	// Show popup variables.
 	$scope.showPopup = false; // If true the contact form will show.
 	$scope.submitted = false; // If true the error message will be able to be shown.
-	$scope.contact = {}; // Holds the text that will be binded to anf from the view
+	$scope.contact = {}; // Holds the text that will be binded to and from the view
 
 	// Loading indicators.
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
 	$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
 
-	// Submit contact form function.
+	// Submit contact form function - Currently does not work on node.js server.
 	$scope.contactSubmit = function(){
 		if($scope.contact_form.$valid){ // If the frm input is valid, do the following.
 			$scope.$emit('LOADING'); // Emit LOADING, which sets $scope.loading to true. Shows the loading indicator.
-			// $http contact form post success, error promise.
-			$http({
-				method : 'POST',
-				url : 'process.php',
-				data : $.param($scope.contact),
-				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+			$http({ // $http contact form post success, error promise.
+				method: 'POST',
+				url: '../../process.php',
+				data: $.param($scope.contact),
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data){
 				$scope.contact.success = 'Your message has been submitted';
 				$scope.contact.name = '';
 				$scope.contact.email = '';
 				$scope.contact.message = '';
+				$scope.$emit('LOADED'); // Emit LOADED, which sets $scope.loading to false. Hides the loading indicator
 			}).error(function(error, status){
 				$scope.contact.error = 'Looks like there was a ' + status + ' error';
 			});
 		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
 			$scope.contact_form.submitted = true;
 		};
-		$scope.$emit('LOADED'); // Emit LOADED, which sets $scope.loading to false. Hides the loading indicator
 	};
 	
-	// Clear inputs for contact form. Called when the close form button is clicked.
+	// Clear contact form inputs by clicking the close button.
 	$scope.clearInputs = function(){
-		$scope.contact.success = '';
-		$scope.contact.name = '';
-		$scope.contact.email = '';
-		$scope.contact.message = '';
+		$scope.contact = '';
 		$scope.contact_form.submitted = false;
-	}
-
-	// Watches to get the login status of a member to decide what nav to show.
-	$scope.$watch(loggedInFactory.getLoginStatus, function() {
-		$scope.loggedIn = loggedInFactory.getLoginStatus(); // Getting the login status	
-		if (!$scope.loggedIn) $scope.loggedOut = true; // If !$scope.loggedIn user is logged out.
-		else $scope.loggedOut = false;// Else $scope.loggedOut is false, user is logged in.
-	});
-
-	// Watches to get details for the logged in user to display  in the drop down navigation.
-	$scope.$watch(userFactory.getUser, function() {
-		$scope.welcome = userFactory.getUser(); // Getting the logged in user.
-	});
-
-	// $scope.userProfile is triggered by a ng-click from the drop down nav.
-	$scope.userProfile = function(){
-		profileFactory.setChosenMemb($scope.welcome); // Setting the chosen member to the logged in member
 	};
 
 	// $scope.logOut is triggered by a ng-click from the drop down nav.
 	$scope.logOut = function(){
-		loggedInFactory.setLoginStatus(false); // Setting the login status to false to log the user out.
+		$http({ 	
+			method: 'GET',
+			url: 'https://localhost:3000/auth/logout',
+			withCredentials: true
+		}).success(function(data) {
+			LoginStatusFactory.setLoginStatus(false); // Setting the login status to false to log the user out.
+		}).error(function(error, status) { 
+			console.log(error, status, 'error occured during logout.');
+		});
+	};
+
+	// Watches to get the login status of a member to decide what nav to show.
+	$scope.$watch(LoginStatusFactory.getLoginStatus, function() {
+		$scope.loggedIn = LoginStatusFactory.getLoginStatus();
+		if (!$scope.loggedIn){
+			$scope.loggedOut = true;
+		} else {
+			$scope.loggedOut = false;
+		}	
+	});
+
+	// Watches to get details for the logged in user. Displays name in the drop down navigation, and passes user to userProfile.
+	$scope.$watch(LoggedInUserFactory.getUser, function() {
+		$scope.loggedInUser = LoggedInUserFactory.getUser();
+	});
+
+	// $scope.userProfile is triggered by a ng-click from the drop down nav.
+	$scope.userProfile = function(loggedInUser){
+		ProfileFactory.setUserProfile(loggedInUser); // Setting setUserProfile to the logged in user for the profile page.
 	};
 
 }]);
 
 
 
-
 // === LOGIN CONTROLLER === //
 // ======================== //
-loginApp.controller('LoginController', ['$scope', '$http', '$location', 'memberFactory', 'loggedInFactory', 'userFactory', function($scope, $http, $location, memberFactory, loggedInFactory, userFactory){
-
-	// Getting current members from the memberFactory. Then suing the success, error promises.
-	memberFactory.getMembers().
-		success(function(data, status){
-			$scope.members = data;
-		}).
-		error(function(error, status){
-			console.log(error, status);
-		});
-
-	$scope.submitted = false; // If true the error message will be able to be shown.
-
-	$scope.loginValid = false; // If true $scope.loginErrorMessage will not be used.
+loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$timeout', '$location', 'LoginStatusFactory', 'LoggedInUserFactory', function($scope, $http, $cookies, $timeout, $location, LoginStatusFactory, LoggedInUserFactory){
 	
-	// Log in submit funciton
 	$scope.loginSubmit = function(){
-		if($scope.login_form.$valid){ // If login_form is valid, do the following 
-			/*	
-				$http({
-			        method  : 'POST',
-			        url     : 'https://localhost:3000/login',
-			        data    : $.param($scope.login),
-			        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-			    }).success(function(data){
-			    	console.log('success');
-			    }).error(function(error, status){
-			    	console.log(error, status);
-			    });
-			*/			
-			for (var i=0; i<$scope.members.length; i++){ // Loop through $scope.members
-				// If the username and password do have a match
-				if ($scope.members[i].username == $scope.login.username && $scope.members[i].password == $scope.login.password){
-					loggedInFactory.setLoginStatus(true); // Set loggedInFactory to true
-					$scope.loginValid = true; // Set loginValid to true.
-					userFactory.setUser($scope.members[i]); // Set the current member to userFactory.setUser($scope.members[i])
-					$location.path("/welcome"); // Direct the location to the /welcome view. 
-					break;
-				};
-			};
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+		if($scope.login_form.$valid){
+			$http({
+				method: 'POST',
+				url: 'https://localhost:3000/auth/login',
+				data: $.param($scope.login)
+			}).success(function(data){
+				LoginStatusFactory.setLoginStatus(true);
+				$scope.login = {};
+				$timeout(function() {
+					LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
+				}, 100);
+				$location.path('/welcome');
+			}).error(function(error, status){
+				$scope.loginErrorMessage = "Oops. " + error.error;
+				console.log(error, status, ' from Login');
+			});
+		}else{
 			$scope.login_form.submitted = true;
 		}
-
-		// If $scope.loginValid is false and the login_form is valid set $scope.loginErrorMessage.
-		if(!$scope.loginValid && $scope.login_form.$valid){
-			$scope.loginErrorMessage = "Login details are incorrect. Try again.";
-		};	
 	};
 
 }]);
@@ -133,24 +115,33 @@ loginApp.controller('LoginController', ['$scope', '$http', '$location', 'memberF
 
 // === WELCOME CONTROLLER === //
 // ========================== //
-loginApp.controller('WelcomeController', ['$scope', 'memberFactory', 'profileFactory', 'loggedInFactory', function($scope, memberFactory, profileFactory, loggedInFactory){
+loginApp.controller('WelcomeController', ['$scope', '$http', '$cookies', 'LoggedInUserFactory', 'ProfileFactory', 'LoginStatusFactory', 'UsersFactory', function($scope, $http, $cookies, LoggedInUserFactory, ProfileFactory, LoginStatusFactory, UsersFactory){
+  
+	$scope.showPage = LoginStatusFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.	
+	
 	
 	// Loading indicators.
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
 	$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
 	
-	$scope.$emit('LOADING'); // Emit LOADING, which sets $scope.loading to true. Shows the loading indicator.
-	
-	memberFactory.getMembers().success(function(data){
-		$scope.members = data;
-		$scope.$emit('LOADED'); // Emit LOADED, which sets $scope.loading to false. Hides the loading indicator
+	$scope.$emit('LOADING'); // Emit LOADING, sets $scope.loading to true. Shows loading indicator.
+	$http({ 	
+	    method: 'GET',
+	    url: 'https://localhost:3000/accountResources/users'
+	}).success(function(data) {
+	    UsersFactory.setUsers(data);
+	    $scope.members = UsersFactory.getUsers().userAccounts;
+	    console.log('success from Welcome');
+	    $scope.$emit('LOADED'); // Emit LOADED, sets $scope.loading to false. Hides loading indicator
+	}).error(function(error, status) { 
+	    console.log(error, status, 'error. Welcome.');
 	});
 	
-	$scope.showPage = loggedInFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
+	
 	
 	// Function called when user clicks a member in the welcome view.
 	$scope.clickedMember = function(member){
-		profileFactory.setChosenMemb(member); // Passing the clicked member to the profile factory for the chosen member.
+		ProfileFactory.setUserProfile(member); // Passing the clicked member to the profile factory for the chosen member.
 	};
 	
 	$scope.sortField = 'username'; // ng-click sets a different string to $scope.sortField to filter the list with orderBy
@@ -164,17 +155,19 @@ loginApp.controller('WelcomeController', ['$scope', 'memberFactory', 'profileFac
 
 // === PROFILE CONTROLLER === //
 // ========================== //
-loginApp.controller('ProfileController', ['$scope', 'profileFactory', 'loggedInFactory', function($scope, profileFactory, loggedInFactory){
+loginApp.controller('ProfileController', ['$scope', 'ProfileFactory', 'LoginStatusFactory', function($scope, ProfileFactory, LoginStatusFactory){
 	
-	$scope.showPage = loggedInFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
+	$scope.showPage = LoginStatusFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
 	
 	// Watches to get the current chosen member when changed in the /welcome view.
-	$scope.$watch(profileFactory.getChosenMemb, function () {
-		$scope.chosen = profileFactory.getChosenMemb(); // Setting $scope.chosen to the current chosen members
+	$scope.$watch(ProfileFactory.getUserProfile, function () {
+		$scope.profile = ProfileFactory.getUserProfile(); // Setting $scope.chosen to the current chosen members
+			console.log($scope.profile);
 	});
 	
-	$scope.addLike = function(){ // Adds 1 like per call to the chosen members' likes.
-		$scope.chosen.likes++;
+	$scope.likes = Math.floor((Math.random() * 10) + 1);
+	$scope.addLike = function(){ // Adds 1 like per call to the chosen members' likes. 
+		$scope.likes++;
 	};
 	
 }]);
@@ -184,20 +177,20 @@ loginApp.controller('ProfileController', ['$scope', 'profileFactory', 'loggedInF
 
 // === SETTINGS CONTROLLER === //
 // =========================== //
-loginApp.controller('SettingsController', ['$scope', 'loggedInFactory', 'userFactory', function($scope, loggedInFactory, userFactory){
+loginApp.controller('SettingsController', ['$scope', 'LoginStatusFactory', 'LoggedInUserFactory', function($scope, LoginStatusFactory, LoggedInUserFactory){
 
-	$scope.user = userFactory.getUser(); // Getting the logged in user and putting it in $scope.user
+	$scope.user = LoggedInUserFactory.getUser(); // Getting the logged in user and putting it in $scope.user
 	
-	$scope.showPage = loggedInFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
+	$scope.showPage = LoginStatusFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
 
 	// Update email address.
 	$scope.settingsEmail = function(){
 		if($scope.email_form.$valid){ // If email form is valid do the following.		
-			if($scope.user.email != $scope.change.mail){
-				$scope.user.email = $scope.change.mail; // Set the users email to the new email
-				$scope.successEmailChange = 'Your Email has been changed';
+			if($scope.user.emailAddress != $scope.change.emailAddress){
+				$scope.user.emailAddress = $scope.change.emailAddress; // Set the users email to the new email
+				$scope.successEmailAddressChange = 'Your Email has been changed';
 			}else{ // Else the emails are the same.
-				$scope.sameEmailError = 'That is the email you are currently using';
+				$scope.sameEmailAddressError = 'That is the email you are currently using';
 			}
 		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
 			$scope.email_form.submitted = true;
@@ -222,11 +215,9 @@ loginApp.controller('SettingsController', ['$scope', 'loggedInFactory', 'userFac
 		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
 			$scope.password_form.submitted = true;
 		}
-		
 	};
 	
 }]);
-
 
 
 
@@ -311,48 +302,26 @@ loginApp.controller('EditController', ['$scope', 'loggedInFactory', 'userFactory
 
 // === REGISTER CONTROLLER === //
 // =========================== //
-loginApp.controller('RegisterController', ['$scope', '$http', 'memberFactory', 'loggedInFactory', function($scope, $http, memberFactory, loggedInFactory){
+loginApp.controller('RegisterController', ['$scope', '$http', 'LoginStatusFactory', function($scope, $http, LoginStatusFactory){
 	
-	memberFactory.getMembers().
-		success(function(data, status){
-			$scope.members = data;
-		}).
-		error(function(error, status){
-			console.log(error, status);
-		});
-	
-	$scope.showPage = loggedInFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
-	
+	$scope.showPage = LoginStatusFactory.getLoginStatus(); // If $scope.showPage = true the page is shown, if false it's not.
 	
 	// Register form submit function
 	$scope.registerSubmit = function(){
-		if($scope.register_form.$valid){ // If the form is valid do the following.			    
-			for (var i=0; i<$scope.members.length; i++) {
-			 	// If a username that is in the members list is the same as the users destired username do the following.
-				if ($scope.members[i].username == $scope.register.username) {
-					$scope.registrationErrorMessage = "Select a different username"; // Set error message.
-					$scope.registrationError = true; // When true the user account is not registered.
-					break;
-				}
-			}
+		if($scope.register_form.$valid){ // If the form is valid do the following.
+			$http({
+				method: 'POST',
+				url: 'https://localhost:3000/userAccount/accountTools/CreateNewAccount',
+				data: $.param($scope.register),
+				withCredentials: true
+			}).success(function(data){
+				$scope.registrationSuccessMessage = "Your account was created successfully";
+				$scope.register = {};
+			}).error(function(error, status){
+				$scope.registrationErrorMessage = "Looks like there was a: " + status + " error";
+			});
 		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
 			$scope.register_form.submitted = true;
-		}
-		
-		// If $scope.registrationError is false and the form is valid do the following, the registration is valid.
-		if (!$scope.registrationError && $scope.register_form.$valid){
-			$scope.members.push( // Push the registration details to $scope.members
-				{
-					username:$scope.register.username, 
-					fname:$scope.register.firstName, 
-					lname:$scope.register.surname, 
-					email:$scope.register.email,
-					imgURL:'https://pbs.twimg.com/profile_images/466574846608949248/V3xkb-VP_400x400.png',
-					likes: Math.floor(Math.random() * 100),
-					password:$scope.register.password
-				}
-			);
-			$scope.registrationSuccessMessage = "Your account was created successfully"; // Set a success message.
 		}
 	};
 
@@ -360,44 +329,62 @@ loginApp.controller('RegisterController', ['$scope', '$http', 'memberFactory', '
 
 
 
+// === PASSWORD email CONTROLLER === //
+// ================================= //
+loginApp.controller('PasswordEmailController', ['$scope', '$http', function($scope, $http){
+	// Retrieve password function.
+	$scope.passwordEmailSubmit = function(){
+		// Loading indicators.
+		$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
+		$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
+		
+		if($scope.email_form.$valid){
+			$scope.$emit('LOADING');
+			$http({
+				method: 'GET',
+				url: 'https://localhost:3000/userAccount/accountTools/accountRecovery/generateRecoveryKey',
+				params: {emailAddress: $scope.password.emailAddress}
+			}).success(function(data){
+				$scope.emailAddressSuccessMessage = "We have sent you an email";
+				$scope.password.emailAddress = {};
+				console.log('success', $scope.password.emailAddress);
+				$scope.$emit('LOADED'); // Emit LOADING, sets $scope.loading to true. Shows loading indicator.
+			}).error(function(error, status){
+				$scope.emailAddressErrorMessage = "Looks like there was a: " + status + " error";
+				console.log('error');
+				$scope.$emit('LOADED'); // Emit LOADING, sets $scope.loading to true. Shows loading indicator.
+			});
+		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+			$scope.email_form.submitted = true;
+		}		
+	};
+}]);
 
-// === PASSWORD CONTROLLER === //
-// =========================== //
-loginApp.controller('PasswordController', ['$scope', 'memberFactory', function($scope, memberFactory){
-	
-	memberFactory.getMembers().
-		success(function(data, status){
-			$scope.members = data;
-		}).
-		error(function(error, status){
-			console.log(error, status);
-		});
-	
-	$scope.passwordRetrieve = "Forgot Password"; // When details are valid this will be set to the users' password.
-	
-	$scope.passwordAuth = false; // If true, the if statemenet at the bottom will not run.
+
+
+// === PASSWORD RESET CONTROLLER === //
+// ================================= //
+loginApp.controller('PasswordResetController', ['$scope', '$http', '$location', function($scope, $http, $location){
 	
 	// Retrieve password function.
-	$scope.passwordSubmit = function(){
-		if($scope.password_form.$valid){ // If the form is valid do the following.	
-			for (var i=0; i<$scope.members.length; i++) {
-				// If the username and email entered are the same as ones in the list do the following.
-				if ($scope.members[i].username == $scope.password.username && $scope.members[i].email == $scope.password.email) {
-					$scope.passwordRetrieve = "Your Password Is: " + $scope.members[i].password; // Set the password
-					$scope.passwordAuth = true; // Set password error to true, which will stop $scope.passwordErrorMessage being set.
-					break;
-				}
-			}
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
-			$scope.password_form.submitted = true;
+	$scope.passwordResetSubmit = function(){
+		if($scope.reset_form.$valid){ // If the form is valid do the following.
+			$scope.recovery = $location.$$search.recoveryKey;
+			$scope.email = $location.$$search.emailAddress;
+			$http({
+				method: 'POST',
+				url: 'https://localhost:3000/userAccount/accountTools/accountRecovery/recoverAccountWithKey',
+				data: $.param($scope.recovery, $scope.email, $scope.password),
+				withCredentials: true
+			}).success(function(data){
+				$scope.resetSuccessMessage = "Your Password was reset successfully";
+				console.log('success', $scope.recovery, $scope.email);
+			}).error(function(error, status){
+				$scope.resetErrorMessage = "Oops. Looks like there was a: " + status + " error";
+				console.log('error');
+			});
+		}else{ // Else the form input is not valid. Set submitted to true (shows error messages).
+			$scope.reset_form.submitted = true;
 		}
-		
-		// If $scope.passwordAuth is false anf the form is valid.
-		if (!$scope.passwordAuth && $scope.password_form.$valid){
-			$scope.passwordErrorMessage = "Those details don't match any we have"; // Set an error message.
-		}
-		
-		
 	};
-	
 }]);

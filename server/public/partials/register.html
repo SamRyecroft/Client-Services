@@ -3,8 +3,8 @@
 	<h1 class="center-text">Register</h1>
 
 	<form class="forms" name="register_form" novalidate ng-submit="registerSubmit()">
-		<small class="error-messages" ng-show="registrationErrorMessage">&#x2718 {{registrationErrorMessage}}</small>
-		<small class="success-messages" ng-show="registrationSuccessMessage">&#x2713 {{ registrationSuccessMessage }}</small>
+		<small class="error-messages" ng-show="registrationErrorMessage && !registrationSuccessMessage">&#x2718 {{registrationErrorMessage}}</small>
+		<small class="success-messages" ng-show="registrationSuccessMessage && !registrationErrorMessage">&#x2713 {{ registrationSuccessMessage }}</small>
 		<input class="form-input" name="username" type="text" placeholder="Desired Username" required ng-model="register.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
 			<div class="error-messages" ng-show="register_form.username.$dirty && register_form.username.$invalid && register_form.submitted">
 				<small ng-show="register_form.username.$error.required">&#x2718 A username is required</small>

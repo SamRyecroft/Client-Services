@@ -306,11 +306,13 @@ function createRecoveryKey (emailAddress, callback) {
 
 				} while (recoveryKey.length != 40);
 
-				userAccount.accountRecovery.key = recoveryKey;
+				
 				userAccount.accountRecovery.experationTime = ((new Date).setHours((new Date).getHours() + PASSWORD_RECOVERY_KEY_LIFE_SPAN));
+				userAccount.accountRecovery.recoveryKey = recoveryKey;
 						
 				userAccount.save(function (err, userAccount){
-							
+					
+					console.log(userAccount.accountRecovery.key);
 					if (err){
 									
 						databaseLogger.error(err.message);
@@ -363,10 +365,13 @@ function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, c
 			callback(new Error('recovery key expiered'));
 
 		}else {
-
+			
+			userAccount.salt = saltValue;
+			
 			userAccount.password =  createHash(newPassword, saltValue);
-			userAccount.saltValue = saltValue;
-
+			
+			userAccount.accountRecovery.recoveryKey = '';
+			
 			userAccount.save(function (err, userAccount){
 
 				if (err){

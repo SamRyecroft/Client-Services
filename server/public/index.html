@@ -6,15 +6,13 @@
 	<title>Angular Tasks</title>
 	<link href="css/style.css" type="text/css" rel="stylesheet">
 	<link href="css/media-queries.css" type="text/css" rel="stylesheet">
-	<!--[if lt IE 9]>
-		<script src="js/libs/html5shiv.js"></script>
-	<![endif]-->
+	<!--[if lt IE 9]><script src="js/libs/html5shiv.js"></script><![endif]-->
 </head>
 <body>
 	<div class="container" ng-app="loginApp">
-		<nav class="main-nav" ng-controller="MainController">		
+		<nav class="main-nav" ng-controller="MainController">
 			<ul class="main-nav-ul center-text">
-				<li class="main-nav-li"><a href="" ng-click="showPopup = !showPopup">Contact</a>					
+				<li class="main-nav-li"><a href="" ng-click="showPopup = !showPopup">Contact</a>
 					<div class="popup" ng-show="showPopup">
 						<div id="pop" class="popup-inner-container">
 							<div class="loader" ng-show="loading">
@@ -22,7 +20,7 @@
 								<div class="loading">Loading</div>
 							</div>
 							<div class="close-popup" ng-click="showPopup = !showPopup; clearInputs();">X</div>
-							<form class="contact-forms" name="contact_form" novalidate ng-submit="contactSubmit()">	
+							<form class="contact-forms" name="contact_form" novalidate ng-submit="contactSubmit()">
 								<small class="success-messages" ng-show="contact.success">&#x2713 {{ contact.success }}</small>
 								<small class="error-messages" ng-show="contact.error">&#x2718 {{ contact.error }}</small>
 								<input class="form-input" type="text" name="name" placeholder="Enter Name" required autocomplete="off" ng-model="contact.name" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/">
@@ -53,7 +51,7 @@
 				><li ng-show="loggedIn" class="main-nav-li"><a href="#/welcome">The Team</a></li
 				><li ng-show="loggedIn" class="main-nav-li" id="toggle-nav"><a href="">{{ loggedInUser.firstName }} &#x25BE</a>
 					<ul id="drop-nav" class="main-nav-li-drop center-text">
-						<li ng-show="loggedIn" ng-click="userProfile()" class="main-nav-li"><a href="#/profile">Your Profile</a></li>
+						<li ng-show="loggedIn" ng-click="userProfile(loggedInUser)" class="main-nav-li"><a href="#/profile">Your Profile</a></li>
 						<li ng-show="loggedIn" class="main-nav-li"><a href="#/settings">Account Settings</a></li>
 						<li ng-show="loggedIn" class="main-nav-li"><a href="#/edit">Edit Profile</a></li>
 						<li ng-show="loggedIn" ng-click="logOut()" class="main-nav-li"><a href="#/login">Logout</a></li>
@@ -80,9 +78,8 @@
 	<script src="js/controllers/editController.js"></script>
 	<script src="js/controllers/passwordEmailController.js"></script>
 	<script src="js/controllers/passwordResetController.js"></script>
-	<!-- <script src="js/controllers/passwordController.js"></script> -->
-	<script src="js/config.js"></script>
 	<script src="js/factories.js"></script>
+	<script src="js/config.js"></script>
 	<script src="js/libs/jquery-1.11.1.js"></script>
 	<script src="js/nav-toggle.js"></script>
 </body>
