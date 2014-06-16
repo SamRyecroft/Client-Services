@@ -19,7 +19,7 @@
 	<ul>
 		<li class="current-members-li" ng-repeat="member in members | filter:search.members.name | orderBy:sortField:reverse">
 			<a href="#/profile" ng-click="clickedMember(member)">
-				<img ng-src="{{ member.imgURL }}" width="200"/>
+				<img ng-src="{{ member.profileImage }}" width="200"/>
 				<div class="center-text">{{ member.firstName }}</div>
 			</a>
 		</li>
