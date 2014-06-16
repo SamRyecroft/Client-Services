@@ -407,3 +407,4 @@
 {"level":"info","message":"Connected to database","timestamp":"2014-06-16T11:36:03.938Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-16T11:46:48.618Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-16T11:56:55.691Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-16T12:18:08.345Z"}

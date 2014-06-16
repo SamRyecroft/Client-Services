@@ -45,8 +45,7 @@ var userSchema = mongoDB
 			},
 			accountLockedUntill : {
 				type : Date,
-				required : false,
-				defult : new Date
+				required : false
 				
 			},
 			accountRecovery : {
@@ -76,6 +75,11 @@ var userSchema = mongoDB
 			profileInfomation : {
 				type : String,
 				required : false
+			},
+			profileImage : {
+				type : String,
+				required : false,
+				default: 'https://pbs.twimg.com/profile_images/466574846608949248/V3xkb-VP_400x400.png',
 			}
 
 		});
