@@ -443,7 +443,31 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 			userAccount.profileInfomation = profileInfomation;
 
 		}
-
+		
+		if (newEmailAddress != undefined){
+			
+			isEmailAddressRegisterd(newEmailAddress, function (err , exsists){
+				
+				if (err != null){
+					
+					if (exsits){
+						
+						callback(new Error ('Email address already in use'));
+						return
+						
+					}else {
+						
+						userAccount.emailAddress = newEmailAddress;		
+					}
+					
+				}else {
+					
+					callback(new Error ('internal error'));
+					return;
+				}
+			});	
+		}
+		
 		userAccount.save(function(err, userAccount){
 			
 			if (err){
@@ -453,7 +477,7 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 									
 			} else {
 
-				callback(null);
+				callback(null, userAccount);
 
 			}
 

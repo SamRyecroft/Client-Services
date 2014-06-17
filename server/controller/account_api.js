@@ -634,12 +634,12 @@ function updateAccountDetails(req, res){
 							
 							var userDetails = new Object;
 							
-							userDetails.firstName = accountData.firstName;
-							userDetails.middleName = accountData.middleName;
-							userDetails.surname = accountData.surname;
-							userDetails.emailAddress = accountData.emailAddress;
-							userDetails.username = accountData.username;
-							userDetails = accountData.profileImage;
+							userDetails.firstName = userAccount.firstName;
+							userDetails.middleName = userAccount.middleName;
+							userDetails.surname = userAccount.surname;
+							userDetails.emailAddress = userAccount.emailAddress;
+							userDetails.username = userAccount.username;
+							userDetails = userAccount.profileImage;
 							
 							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
 								maxAge : 900000,	
