@@ -8,7 +8,7 @@ app.all('/*', function(req, res, next) {
     next();
 });
 
-app.get('accountResources/existingUsername', accounts_api.isUsernameRegistered);
+app.get('/accountResources/existingUsername', accounts_api.isUsernameRegistered);
 
 app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);
 

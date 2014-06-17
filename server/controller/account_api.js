@@ -334,7 +334,6 @@ function getAllAccounts(req, res) {
 
 function isUsernameRegistered (req, res) {
 		
-		console.log('sdsd');
 		if (req.query.username == undefined){
 			
 			res.statusCode = 400;
