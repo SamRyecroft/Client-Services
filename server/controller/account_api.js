@@ -284,7 +284,7 @@ function logOutUser(req, res) {
 }
 
 function getAllAccounts(req, res) {
-
+	
 	if (req.headers.cookie != undefined) {
 
 		var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
@@ -335,16 +335,28 @@ function getAllAccounts(req, res) {
 }
 
 function isUsernameRegistered (req, res) {
-
+		
+		if (req.query.username == undefined){
+			
+			res.statusCode = 400;
+			res.contentType='application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'No username specified'
+			}))
+			
+			return;
+		}
+		
 		userModel.doseUserExsist(req.query.username, function(err, exsists) {
 		
 		if (err != null){
 			res.statusCode = 500;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'error',
-					error : 'internal error'
-				}));
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'internal error'
+			}));
 			
 			return;
 			
@@ -357,7 +369,7 @@ function isUsernameRegistered (req, res) {
 				result : exsists
 			}));
 		
-		return;
+			return;
 		
 		}
 	});
@@ -366,6 +378,19 @@ function isUsernameRegistered (req, res) {
 
 function isEmailAddressRegistered (req, res) {
 
+		if (req.query.username == undefined){
+					
+			res.statusCode = 400;
+			res.contentType='application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'No username specified'
+			}));
+			
+			return;
+					
+		}
+				
 		userModel.isEmailAddressRegisterd(req.query.emailAddress, function(err, exsists) {
 			
 			if (err != null){
@@ -393,64 +418,80 @@ function isEmailAddressRegistered (req, res) {
 
 function changePassword(req, res) {
 
-	if (req.headers.cookie != undefined) {
+	var body = '';
 
-		var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+	req.on('data', function(data) {
+		body += data;
 
-		tokenModel.verifyToken(token, function(validToken) {
+		if (body.length > 1e6) {
 
-			if (validToken) {
+			req.connection.destroy();
+		}
+	});
 
-				userModel.setNewPassword(token.emailAddress, req.query.oldPassword, req.query.newPassword, function(err) {
+	req.on('end', function() {
+		
+		if (req.headers.cookie != undefined) {
+			
+			var data = qs.parse(body);
+			
+			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+			tokenModel.verifyToken(token, function(validToken) {
+
+				if (validToken) {
+
+					userModel.setNewPassword(token.emailAddress, data.oldPassword, data.newPassword, function(err) {
+						
+						if (!err) {
+							
+							res.statusCode = 500;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'error',
+								error : 'internal error'
+							}));
+							
+							return;
+							
+						} else {
+
+							res.statusCode = 200;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'sucsess'
+							}));
+							
+							return;
+						}
+					});
 					
-					if (!err) {
-						
-						res.statusCode = 500;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'error',
-							error : 'internal error'
-						}));
-						
-						return;
-						
-					} else {
+				} else {
+					
+					res.statusCode = 403;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error : 'Invalid cridentials'
+					}));
+					
+					return;
 
-						res.statusCode = 200;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'sucsess'
-						}));
-						
-						return;
-					}
-				});
-				
-			} else {
-				
-				res.statusCode = 403;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'error',
-					error : 'Invalid cridentials'
-				}));
-				
-				return;
+				}
+			});
 
-			}
-		});
-
-	} else {
-		
-		res.statusCode = 403;
-		res.contentType = 'application/json';
-		res.end(JSON.stringify({
-			status : 'error',
-			error : 'Invalid cridentials'
-		}));
-		
-		return;
-	}
+		} else {
+			
+			res.statusCode = 403;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'Invalid cridentials'
+			}));
+			
+			return;
+		}
+	});
 }
 
 function createRecoveryKeyForAccount (req, res){

@@ -30,5 +30,4 @@ app.get('/accountResources/exsistingUsername', accounts_api.isUsernameRegistered
 
 app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);
 
-app.post('accountActions/newPassword', accounts_api.changePassword);
 
