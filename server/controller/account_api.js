@@ -337,31 +337,57 @@ function getAllAccounts(req, res) {
 function isUsernameRegistered (req, res) {
 
 		userModel.doseUserExsist(req.query.username, function(err, exsists) {
-
-		res.statusCode = 200;
-		res.contentType = 'application/json';
-		res.end(JSON.stringify({
-			status : 'sucsess',
-			result : exsists
-		}));
 		
-		return;
-	});
-
-}
-
-function isEmailAddressRegistered (req, res) {
-
-		userModel.isEmailAddressRegisterd(req.query.username, function(err, exsists) {
-
+		if (err != null){
+			res.statusCode = 500;
+				res.contentType = 'application/json';
+				res.end(JSON.stringify({
+					status : 'error',
+					error : 'internal error'
+				}));
+			
+			return;
+			
+		}else {
+			
 			res.statusCode = 200;
 			res.contentType = 'application/json';
 			res.end(JSON.stringify({
 				status : 'sucsess',
 				result : exsists
 			}));
+		
+		return;
+		
+		}
+	});
+
+}
+
+function isEmailAddressRegistered (req, res) {
+
+		userModel.isEmailAddressRegisterd(req.query.emailAddress, function(err, exsists) {
+			
+			if (err != null){
+				res.statusCode = 500;
+				res.contentType = 'application/json';
+				res.end(JSON.stringify({
+					status : 'error',
+					error : 'internal error'
+				}));
+						
+				return;
+						
+			}else{
+				res.statusCode = 200;
+				res.contentType = 'application/json';
+				res.end(JSON.stringify({
+					status : 'sucsess',
+					result : exsists
+				}));
 			
 			return;
+		}
 	});
 }
 

@@ -450,3 +450,5 @@
 {"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:03:59.911Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:34:18.736Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:35:10.650Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:54:05.243Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:55:00.548Z"}
