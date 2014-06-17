@@ -441,7 +441,7 @@ function changePassword(req, res) {
 
 				if (validToken) {
 
-					userModel.setNewPassword("cake@lotsofit.com", data.oldPassword, data.newPassword, function(err) {
+					userModel.setNewPassword(token.emailAddress, data.oldPassword, data.newPassword, function(err) {
 						
 						if (err == null) {
 							
