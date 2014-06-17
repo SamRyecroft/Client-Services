@@ -632,6 +632,8 @@ function updateAccountDetails(req, res){
 
 						} else {
 							
+							var userDetails = new Object;
+							
 							userDetails.firstName = accountData.firstName;
 							userDetails.middleName = accountData.middleName;
 							userDetails.surname = accountData.surname;
