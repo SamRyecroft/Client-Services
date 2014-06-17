@@ -262,7 +262,6 @@ function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 			
 		}else {
 			
-			console.log (userAccount);
 			if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
 				
 				userAccount.salt = saltValue;
@@ -287,7 +286,6 @@ function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 			}else {
 				
 				callback(new Error('Invalid password'));
-				console.log('code run');
 				return;
 				
 			}
@@ -342,7 +340,6 @@ function createRecoveryKey (emailAddress, callback) {
 						
 				userAccount.save(function (err, userAccount){
 					
-					console.log(userAccount.accountRecovery.key);
 					if (err){
 									
 						databaseLogger.error(err.message);
@@ -423,8 +420,6 @@ function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, c
 function updateUserInfomation (emailAddress, firstName, middleName, surname, profileInfomation, newEmailAddress, callback){
 	
 	userModel.findOne({emailAddress : emailAddress} ,function(err, userAccount){
-
-		console.log(firstName);
 		
 		if (firstName != undefined) {
 

@@ -3,7 +3,8 @@ var userId = mongoDB.Schema.ObjectId;
 var Schema = mongoDB.Schema;
 var serverConfiguration = require('../config');
 var crypto = require('crypto');
-
+var logingUtilities = require('../utilities/logger.js');
+var serverLogger = logingUtilities.logger.loggers.get('Server error');
 var tokenSchema = mongoDB.Schema({
 
 	emailAddress : String,
@@ -27,7 +28,7 @@ function createToken(emailAddress, callback) {
 		token.save(function(err, token) {
 
 			if (err) {
-				console.error(err);
+				serverLogger.error('Token could not be created for user, ' + err.message);
 				callback(new Error("Token genration error"), null);
 
 			} else {
@@ -61,8 +62,7 @@ function invalidateToken(token) {
 		series : token.series,
 		issueTime : token.issueTime
 	}, function(err, removed) {
-
-		console.log('removed');
+	
 	});
 
 }

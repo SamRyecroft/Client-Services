@@ -60,7 +60,6 @@ function registerUserAccount(req, res, next) {
 
 		var errors = [];
 
-		console.log(data);
 
 		if (!data.username)
 			errors.push('No username specified');
@@ -295,7 +294,6 @@ function getAllAccounts(req, res) {
 				
 				userModel.getAllUsers(function(err, userAccounts) {
 					
-					console.log(userAccounts);
 					res.statusCode = 200;
 					res.contentType = 'application/json';
 					res.end(JSON.stringify({
@@ -495,8 +493,6 @@ function changePassword(req, res) {
 
 function createRecoveryKeyForAccount (req, res){
 
-	console.log(req.query.emailAddress);
-
 	userModel.isEmailAddressRegisterd (req.query.emailAddress, function (err, exsists ){		
 		if (err != null){
 			
@@ -620,7 +616,7 @@ function updateAccountDetails(req, res){
 			tokenModel.verifyToken(token,function(validToken) {
 
 				if (validToken) {
-					console.log(data);
+					
 					userModel.updateUserInfomation(token.emailAddress,data.firstName,data.middleName,data.surname,data.profileInfomation, data.emailAddress, function(err, userAccount) {
 
 						if (err != null) {
