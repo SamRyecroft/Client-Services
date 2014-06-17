@@ -354,14 +354,14 @@ function isEmailAddressRegistered (req, res) {
 
 		userModel.isEmailAddressRegisterd(req.query.username, function(err, exsists) {
 
-		res.statusCode = 200;
-		res.contentType = 'application/json';
-		res.end(JSON.stringify({
-			status : 'sucsess',
-			result : exsists
-		}));
-		
-		return;
+			res.statusCode = 200;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'sucsess',
+				result : exsists
+			}));
+			
+			return;
 	});
 }
 
@@ -672,6 +672,7 @@ exports.recoverAccountWithRecoveryKey = recoverAccountWithRecoveryKey;
 exports.updateAccountDetails = updateAccountDetails;
 exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
+exports.isEmailAddressRegistered = isEmailAddressRegistered;
 exports.logInUserAccount = logInUserAccount;
 exports.logOutUser = logOutUser;
 exports.isUsernameRegistered = isUsernameRegistered;

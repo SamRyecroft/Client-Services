@@ -22,11 +22,13 @@ app.post('/userAccount/accountTools/CreateNewAccount', accounts_api.registerUser
 
 app.post('/auth/login', accounts_api.logInUserAccount);
 
-app.get('/auth/logout', accounts_api.logOutUser)
+app.get('/auth/logout', accounts_api.logOutUser);
 
 app.get('/accountResources/users', accounts_api.getAllAccounts);
 
-app.get('/accountResources/isValidUserAccount', accounts_api.isUsernameRegistered);
+app.get('/accountResources/exsistingUsername', accounts_api.isUsernameRegistered);
+
+app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);
 
 app.post('accountActions/newPassword', accounts_api.changePassword);
 

@@ -430,3 +430,23 @@
 {"level":"info","message":"Connected to database","timestamp":"2014-06-16T15:58:41.879Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-16T18:26:20.626Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-16T18:26:22.417Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:04.993Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:05.993Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:06.995Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:07.999Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:08.999Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:10.002Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:11.004Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:12.007Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:13.007Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:14.008Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:15.011Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:16.013Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:17.015Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:18.017Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:19.018Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:20.020Z"}
+{"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-17T07:14:21.024Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:03:59.911Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:34:18.736Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-17T09:35:10.650Z"}

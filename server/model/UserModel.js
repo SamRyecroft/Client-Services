@@ -205,7 +205,7 @@ function doseUserExsist(username, callback) {
 
 	userModel.find({
 		username : username
-	}, null, function(err, results) {
+	}, null, function(err, result) {
 
 		if (err){
 					
