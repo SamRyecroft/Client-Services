@@ -18,6 +18,8 @@ app.patch('/userAccount/profileUtilities/updateDetails', accounts_api.updateAcco
 
 app.patch('/userAccount/profileUtilities/changePassword', accounts_api.changePassword); 
 
+app.patch('/userAccounts/profileUtilities/changeEmailAddress', accounts_api.updateEmailAddress);
+
 app.post('/userAccount/accountTools/CreateNewAccount', accounts_api.registerUserAccount);
 
 app.post('/auth/login', accounts_api.logInUserAccount);

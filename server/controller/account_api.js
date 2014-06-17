@@ -592,6 +592,96 @@ function recoverAccountWithRecoveryKey (req, res){
 	});
 }
 
+function updateEmailAddress(req, res){
+	
+	var body = '';
+
+		req.on('data', function(data) {
+			body += data;
+
+			if (body.length > 1e6) {
+
+				req.connection.destroy();
+			}
+		});
+
+		req.on('end', function() {
+			
+			if (req.headers.cookie != undefined) {
+				
+			var data = qs.parse(body);
+
+			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+			tokenModel.verifyToken(token,function(validToken) {
+
+				if (validToken) {
+					
+					userModel.changeEmailAddress(Token.emailAddress, data.emailAddress, function (err, userAccount){
+
+						if (err != null) {				
+							
+							res.statusCode = 500;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'error',
+								error : 'internal error'
+							}));
+							
+						return;
+						
+						} else {
+								
+							var userDetails = new Object;
+							
+							userDetails.firstName = userAccount.firstName;
+							userDetails.middleName = userAccount.middleName;
+							userDetails.surname = userAccount.surname;
+							userDetails.emailAddress = userAccount.emailAddress;
+							userDetails.username = userAccount.username;
+							userDetails = userAccount.profileImage;
+						
+							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+								maxAge : 900000,
+								httpOnly : false
+							});
+							
+							res.statusCode = 200;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'sucess'
+							}));
+							
+							return;
+						}
+					});
+					
+				}else {
+					
+					res.statusCode = 401;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error : 'invalid cridentials'
+					}));
+										
+					return;
+					
+				}
+			});
+			
+		} else {
+				
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'invalid cridentials'
+			}));
+															return;
+		}
+	});
+}
+
 function updateAccountDetails(req, res){
 
 	var body = '';
@@ -730,6 +820,7 @@ function deleteAccount (req, res){
 	}	
 }
 
+exports.updateEmailAddress = updateEmailAddress;
 exports.deleteAccount = deleteAccount;
 exports.createRecoveryKeyForAccount = createRecoveryKeyForAccount;
 exports.recoverAccountWithRecoveryKey = recoverAccountWithRecoveryKey;

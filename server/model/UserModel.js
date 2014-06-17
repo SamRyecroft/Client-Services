@@ -417,6 +417,53 @@ function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, c
 	});
 }
 
+function changeEmailAddress (emailAddress ,newEmailAddress, callback){
+	
+	userModel.findOne({emailAddress : emailAddress} ,function(err, userAccount){
+		
+		if (userAccount == null){
+			
+			callback(new Error('User account not found'));
+			
+		}else {
+		
+			isEmailAddressRegisterd(newEmailAddress, function (err , exsists){
+							
+				if (err != null){
+								
+					if (exsits){
+									
+						callback(new Error ('Email address already in use'));
+						return;
+									
+					} else {
+										
+						userAccount.emailAddress = newEmailAddress;
+						userAccount.save(function(err, userAccount){
+										
+							if (err){
+																				databaseLogger.error(err.message);
+								callback(err);
+																	
+							} else {
+
+								callback(null, userAccount);
+
+							}
+						});											
+					}
+									
+				}else {
+										
+					callback(new Error ('internal error'));
+					return;
+							
+				}
+			});
+		}
+	});
+}
+
 function updateUserInfomation (emailAddress, firstName, middleName, surname, profileInfomation, newEmailAddress, callback){
 	
 	userModel.findOne({emailAddress : emailAddress} ,function(err, userAccount){
@@ -446,26 +493,7 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 		
 		if (newEmailAddress != undefined){
 			
-			isEmailAddressRegisterd(newEmailAddress, function (err , exsists){
 				
-				if (err != null){
-					
-					if (exsits){
-						
-						callback(new Error ('Email address already in use'));
-						return
-						
-					}else {
-						
-						userAccount.emailAddress = newEmailAddress;		
-					}
-					
-				}else {
-					
-					callback(new Error ('internal error'));
-					return;
-				}
-			});	
 		}
 		
 		userAccount.save(function(err, userAccount){
@@ -502,6 +530,7 @@ function removeAccount (emailAddress, callback){
 	});
 }
 
+exports.changeEmailAddress = changeEmailAddress;
 exports.removeAccount = removeAccount;
 exports.updateUserInfomation = updateUserInfomation;
 exports.changePasswordViaRecoveryKey = changePasswordViaRecoveryKey;
