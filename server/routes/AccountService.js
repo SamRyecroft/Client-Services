@@ -7,7 +7,7 @@ app.all('/*', function(req, res, next) {
 	res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
     next();
 });
-
+ 
 app.get('/accountResources/existingUsername', accounts_api.isUsernameRegistered);
 
 app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);
