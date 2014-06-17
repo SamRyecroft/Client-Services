@@ -8,7 +8,9 @@ app.all('/*', function(req, res, next) {
     next();
 });
 
+app.get('accountResources/existingUsername', accounts_api.isUsernameRegistered);
 
+app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);
 
 app.get('/userAccount/accountTools/accountRecovery/generateRecoveryKey', accounts_api.createRecoveryKeyForAccount);
 
@@ -28,8 +30,6 @@ app.get('/auth/logout', accounts_api.logOutUser);
 
 app.get('/accountResources/users', accounts_api.getAllAccounts);
 
-app.get('/accountResources/exsistingUsername', accounts_api.isUsernameRegistered);
 
-app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);
 
 

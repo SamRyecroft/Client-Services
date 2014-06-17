@@ -1,7 +1,7 @@
 'use strict';
 
 loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$timeout', '$location', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, $timeout, $location, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
-	
+
 	$scope.loginSubmit = function(){
 		if($scope.login_form.$valid){
 			$http({

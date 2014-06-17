@@ -5,13 +5,15 @@
 	<form class="forms" name="register_form" novalidate ng-submit="registerSubmit()">
 		<small class="error-messages" ng-show="registrationErrorMessage && !registrationSuccessMessage">&#x2718 {{registrationErrorMessage}}</small>
 		<small class="success-messages" ng-show="registrationSuccessMessage && !registrationErrorMessage">&#x2713 {{ registrationSuccessMessage }}</small>
-		<input class="form-input" name="username" type="text" placeholder="Desired Username" required ng-model="register.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
+		<small class="error-messages" ng-show="userNameUnavailable && !userNameAvailable">&#x2718 {{ userNameUnavailable }}</small>
+		<input class="form-input" name="username" type="text" placeholder="Desired Username" required ng-model="register.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/" onchange="angular.element(this).scope().existingUsername(this)">
 			<div class="error-messages" ng-show="register_form.username.$dirty && register_form.username.$invalid && register_form.submitted">
 				<small ng-show="register_form.username.$error.required">&#x2718 A username is required</small>
 				<small ng-show="register_form.username.$error.minlength">&#x2718 The username min character length is 2</small>
 				<small ng-show="register_form.username.$error.maxlength">&#x2718 The username max character length is 20</small>
 				<small ng-show="register_form.username.$error.pattern">&#x2718 Use only A-Z/a-z 0-9</small>
 			</div>
+			
 		<input class="form-input" name="firstName" type="text" placeholder="Your First Name" required ng-model="register.firstName" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/">
 			<div class="error-messages" ng-show="register_form.firstName.$dirty && register_form.firstName.$invalid && register_form.submitted">
 				<small ng-show="register_form.firstName.$error.required">&#x2718 Your First Name is required</small>
@@ -19,6 +21,7 @@
 				<small ng-show="register_form.firstName.$error.maxlength">&#x2718 The First Name max character length is 20</small>
 				<small ng-show="register_form.firstName.$error.pattern">&#x2718 Use only A-Z/a-z</small>
 			</div>
+			
 		<input class="form-input" name="surname" type="text" placeholder="Your Surname" required ng-model="register.surname" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/">
 			<div class="error-messages" ng-show="register_form.surname.$dirty && register_form.surname.$invalid && register_form.submitted">
 				<small ng-show="register_form.surname.$error.required">&#x2718 Your Surname is required</small>
@@ -26,11 +29,14 @@
 				<small ng-show="register_form.surname.$error.maxlength">&#x2718 The Surname max character length is 20</small>
 				<small ng-show="register_form.surname.$error.pattern">&#x2718 Use only A-Z/a-z</small>
 			</div>
-		<input class="form-input" name="email" type="email" placeholder="Your Email Address" required ng-model="register.email">
+			
+		<small class="error-messages" ng-show="emailAddressUnavailable">&#x2718 {{ emailAddressUnavailable }}</small>
+		<input class="form-input" name="email" type="email" placeholder="Your Email Address" required ng-model="register.email" onchange="angular.element(this).scope().existingEmailAddress(this)">
 			<div class="error-messages" ng-show="register_form.email.$dirty && register_form.email.$invalid && register_form.submitted">
 				<small ng-show="register_form.email.$error.required">&#x2718 An email address is required</small>
 				<small ng-show="register_form.email.$error.email">&#x2718 A valid email address is required</small>
 			</div>
+			
 		<input class="form-input" name="password" type="password" placeholder="Desired Password" required ng-model="register.password" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
 			<div class="error-messages" ng-show="register_form.password.$dirty && register_form.password.$invalid && register_form.submitted">
 				<small ng-show="register_form.password.$error.required">&#x2718 A password is required</small>

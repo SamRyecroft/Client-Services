@@ -4,10 +4,10 @@ loginApp.controller('PasswordResetController', ['$scope', '$http', '$cookies', '
 
 	var userCookie = $cookies.userInfoCookie;
   	if(userCookie != undefined) { $scope.showPage = true; }
-	
+
 	// Retrieve password function.
 	$scope.passwordResetSubmit = function(){
-		if($scope.reset_form.$valid){ // If the form is valid do the following.
+		if($scope.reset_form.$valid){
 			if($scope.reset.newPassword == $scope.reset.confirmPassword){
 				$scope.reset.recoveryKey = $location.$$search.recoveryKey;
 				$scope.reset.emailAddress = $location.$$search.emailAddress;
@@ -28,9 +28,9 @@ loginApp.controller('PasswordResetController', ['$scope', '$http', '$cookies', '
 			}else{
 				$scope.passwordMatch = 'The password do not match';
 			}
-			
-		}else{ // Else the form input is not valid. Set submitted to true (shows error messages).
+		}else{
 			$scope.reset_form.submitted = true;
 		}
 	};
+
 }]);

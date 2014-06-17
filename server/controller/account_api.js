@@ -334,6 +334,7 @@ function getAllAccounts(req, res) {
 
 function isUsernameRegistered (req, res) {
 		
+		console.log('sdsd');
 		if (req.query.username == undefined){
 			
 			res.statusCode = 400;
@@ -376,13 +377,13 @@ function isUsernameRegistered (req, res) {
 
 function isEmailAddressRegistered (req, res) {
 
-		if (req.query.username == undefined){
+		if (req.query.emailAddress == undefined){
 					
 			res.statusCode = 400;
 			res.contentType='application/json';
 			res.end(JSON.stringify({
 				status : 'error',
-				error : 'No username specified'
+				error : 'No email adress specified'
 			}));
 			
 			return;
@@ -613,11 +614,12 @@ function updateEmailAddress(req, res){
 
 			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
 
-			tokenModel.verifyToken(token,function(validToken) {
-
+			tokenModel.verifyToken(token, function(validToken) {
+				
+				console.log(validToken);
 				if (validToken) {
 					
-					userModel.changeEmailAddress(Token.emailAddress, data.emailAddress, function (err, userAccount){
+					userModel.changeEmailAddress(token.emailAddress, data.emailAddress, function (err, userAccount){
 
 						if (err != null) {				
 							
@@ -628,7 +630,7 @@ function updateEmailAddress(req, res){
 								error : 'internal error'
 							}));
 							
-						return;
+							return;
 						
 						} else {
 								
@@ -639,7 +641,7 @@ function updateEmailAddress(req, res){
 							userDetails.surname = userAccount.surname;
 							userDetails.emailAddress = userAccount.emailAddress;
 							userDetails.username = userAccount.username;
-							userDetails = userAccount.profileImage;
+							userDetails.profileImage = userAccount.profileImage;
 						
 							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
 								maxAge : 900000,

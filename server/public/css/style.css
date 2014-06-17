@@ -64,6 +64,9 @@ a{
 	text-decoration: none;
 	color: #000000;
 }
+a:active {
+    outline: none;
+}
 
 
 

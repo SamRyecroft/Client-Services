@@ -235,6 +235,8 @@ function isEmailAddressRegisterd (emailAddress, callback){
 		if (err){
 			
 			callback(err);
+			console.log(err);
+			
 			
 		} else {
 			
@@ -427,19 +429,20 @@ function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 			
 		}else {
 		
+			
 			isEmailAddressRegisterd(newEmailAddress, function (err , exsists){
-							
-				if (err != null){
-								
-					if (exsits){
-									
+						
+				if (err == null){
+					
+					if (exsists){
+						
 						callback(new Error ('Email address already in use'));
 						return;
 									
 					} else {
-										
+							
 						userAccount.emailAddress = newEmailAddress;
-						userAccount.save(function(err, userAccount){
+						userAccount.save( function(err, userAccount){
 										
 							if (err){
 																				databaseLogger.error(err.message);
@@ -450,7 +453,7 @@ function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 								callback(null, userAccount);
 
 							}
-						});											
+						});						
 					}
 									
 				}else {

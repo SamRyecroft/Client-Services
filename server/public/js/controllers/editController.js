@@ -4,9 +4,9 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 
 	var userCookie = $cookies.userInfoCookie;
   	if(userCookie != undefined) { $scope.showPage = true; }
-	
+
 	$scope.user = LoggedInUserFactory.getUser(); // Getting the logged in user and putting it in $scope.user		
-	
+
 	// Function onChange for when an image file is added
 	$scope.filesChanged = function(elm){
 		$scope.files = elm.files; // $scope.files is set to the values of the element passed in (workaround for file ng-model) 
@@ -14,8 +14,8 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 	};
 	// Edit Image
 	$scope.editImg = function(){
-		if($scope.user.imgURL != $scope.files[0].name){// If old image & new image are not the same change the image.
-			$scope.user.imgURL = $scope.files[0].name;
+		if($scope.user.profileImage != $scope.files[0].name){ // If old image & new image are not the same change the image.
+			$scope.user.profileImage = $scope.files[0].name;
 			$scope.successImgChange = 'Your Image has been changed';
 			$scope.sameImgError = '';
 		}else{ // If the images are the same.
@@ -24,29 +24,29 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 		};
 		console.log($scope.files);
 	};
-	
+
 	// Edit name
 	$scope.editName = function(){
 		if($scope.name_form.$valid){ // If the form is valid do the following.
 			$http({
-					method: 'PATCH',
-					url: 'https://localhost:3000/userAccount/profileUtilities/updateDetails',
-					data: $.param($scope.edit)
-				}).success(function(data){
-					$scope.successFirstNameChange = 'Your First name has been changed';
-					$scope.successSurnameChange = 'Your Surname name has been changed';
-					$scope.sameFirstNameError = '';
-					$scope.sameSurnameError = '';
-					console.log('success');
-				}).error(function(error, status){
-					$scope.sameFirstNameError = 'my problem';
-					$scope.sameSurnameError = 'my problem';
-					$scope.successFirstNameChange = '';
-					$scope.successSurnameChange = '';
-					console.log(error, status, 'error');
-				});
+				method: 'PATCH',
+				url: 'https://localhost:3000/userAccount/profileUtilities/updateDetails',
+				data: $.param($scope.edit)
+			}).success(function(data){
+				$scope.successFirstNameChange = 'Your First name has been changed';
+				$scope.successSurnameChange = 'Your Surname name has been changed';
+				$scope.sameFirstNameError = '';
+				$scope.sameSurnameError = '';
+				console.log('success');
+			}).error(function(error, status){
+				$scope.sameFirstNameError = 'That is the First name you currently use';
+				$scope.sameSurnameError = 'That is the Surname you currently use';
+				$scope.successFirstNameChange = '';
+				$scope.successSurnameChange = '';
+				console.log(error, status, 'error');
+			});
 			/*
-if($scope.user.fname != $scope.edit.fnam){ // If old fname & new fname are not the same change the fname.
+			if($scope.user.fname != $scope.edit.fnam){ // If old fname & new fname are not the same change the fname.
 				$scope.user.firstName = $scope.edit.firstName;
 				$scope.successFirstNameChange = 'Your First name has been changed';
 			}else{ // If the fnames are the same.
@@ -58,8 +58,8 @@ if($scope.user.fname != $scope.edit.fnam){ // If old fname & new fname are not t
 			}else{ // If the lnames are the same.
 				$scope.sameSurnameError = 'That is the Surname you currently use';
 			};
-*/
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+			*/
+		}else{
 			$scope.name_form.submitted = true;
 		}
 	};
@@ -69,29 +69,29 @@ if($scope.user.fname != $scope.edit.fnam){ // If old fname & new fname are not t
 	$scope.editWebsite = function(){
 		if($scope.website_form.$valid){ // If the form is valid do the following.
 			$http({
-					method: 'POST',
-					url: 'https://localhost:3000/',
-					data: $.param($scope.edit.website)
-				}).success(function(data){
-					$scope.successWebsiteChange = 'Your Website has been changed';
-					$scope.sameWebsiteError = '';
-					console.log('success');
-				}).error(function(error, status){
-					$scope.sameWebsiteError = 'That is the Website you currently have set';
-					$scope.successWebsiteChange = '';
-					console.log(error, status, 'success');
-				});
+				method: 'POST',
+				url: 'https://localhost:3000/',
+				data: $.param($scope.edit)
+			}).success(function(data){
+				$scope.successWebsiteChange = 'Your Website has been changed';
+				$scope.sameWebsiteError = '';
+				console.log('success');
+			}).error(function(error, status){
+				$scope.sameWebsiteError = 'That is the Website you currently have set';
+				$scope.successWebsiteChange = '';
+				console.log(error, status, 'success');
+			});
 			/*
-if($scope.user.web != $scope.edit.website){ // If old website & new website are not the same change the website.
+			if($scope.user.web != $scope.edit.website){ // If old website & new website are not the same change the website.
 				$scope.user.web = $scope.edit.website
 				$scope.successWebsiteChange = 'Your Website has been changed';
 			}else{ // If the websites are the same.
 				$scope.sameWebsiteError = 'That is the Website you currently have set';
 			};
-*/
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+			*/
+		}else{
 			$scope.website_form.submitted = true;
 		}
 	};
-	
+
 }]);

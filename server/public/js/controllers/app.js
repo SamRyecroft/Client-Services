@@ -4,7 +4,7 @@ var loginApp = angular.module('loginApp', ['ngResource', 'ngRoute', 'ngCookies']
 
 // === MAIN CONTROLLER === //
 loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
-	
+
 	// Contact form variables
 	$scope.showPopup = false; // If true the contact form will show.
 	$scope.submitted = false; // If true the error message will be able to be shown.
@@ -37,7 +37,7 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStat
 			$scope.contact_form.submitted = true;
 		};
 	};
-	
+
 	// Clear contact form inputs by clicking the close form button.
 	$scope.clearInputs = function(){
 		$scope.contact = '';

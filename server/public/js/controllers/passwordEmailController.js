@@ -1,6 +1,7 @@
 'use strict';
 
 loginApp.controller('PasswordEmailController', ['$scope', '$http', '$cookies', function($scope, $http, $cookies){
+
 	// Retrieve password function.
 	$scope.passwordEmailSubmit = function(){
 		// Loading indicators.
@@ -23,8 +24,9 @@ loginApp.controller('PasswordEmailController', ['$scope', '$http', '$cookies', f
 				console.log(error, status, 'error');
 				$scope.$emit('LOADED'); // Emit LOADING, sets $scope.loading to true. Shows loading indicator.
 			});
-		}else{ // Else the form input is not valid. Set submitted to true to show error messages.
+		}else{
 			$scope.email_form.submitted = true;
 		}
 	};
+
 }]);
