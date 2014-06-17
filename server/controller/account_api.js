@@ -441,30 +441,28 @@ function changePassword(req, res) {
 
 				if (validToken) {
 
-					userModel.setNewPassword(token.emailAddress, data.oldPassword, data.newPassword, function(err) {
+					userModel.setNewPassword("cake@lotsofit.com", data.oldPassword, data.newPassword, function(err) {
 						
-						if (!err) {
+						if (err == null) {
 							
-							res.statusCode = 500;
-							res.contentType = 'application/json';
+							res.statusCode = 200;								res.contentType = 'application/json';
 							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
-							
+								status : 'sucsess'
+							}));							
 							return;
 							
 						} else {
-
-							res.statusCode = 200;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'sucsess'
+							
+							res.statusCode = 500;
+							res.contentType = 'application/json';							res.end(JSON.stringify({
+								status : 'error',
+								error : 'internal error'
 							}));
+
 							
 							return;
 						}
-					});
+				});
 					
 				} else {
 					
@@ -479,7 +477,7 @@ function changePassword(req, res) {
 
 				}
 			});
-
+		
 		} else {
 			
 			res.statusCode = 403;
@@ -492,6 +490,7 @@ function changePassword(req, res) {
 			return;
 		}
 	});
+	
 }
 
 function createRecoveryKeyForAccount (req, res){

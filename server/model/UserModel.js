@@ -253,21 +253,47 @@ function isEmailAddressRegisterd (emailAddress, callback){
 // Sets a new password for a user account when provided with the correct emailAddress and correct origanl password
 function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 
-	userModel.find({
-		emailAddress : emailAddress
-	}, null, function (err, userAccount){
+	userModel.findOne({ emailAddress : emailAddress},  function (err, userAccount){
 		
-		if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
+		if (err){
 			
-			userAccount.password = newPassword;
-			userAccount.salt = saltValue;
+			databaseLogger.error(err.message);
+			return;
 			
-			userAccount.save(function (err, userAccount){
+		}else {
+			
+			console.log (userAccount);
+			if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
 				
-				callback(err);
-			});
+				userAccount.salt = saltValue;
+				userAccount.password =  createHash(newPassword, saltValue);
+				
+				userAccount.save(function (err, userAccount){
+					
+					if (err){
+						
+						callback(err);
+						
+						
+					} else {
+						
+						callback(null);
+						
+					}
+					
+					return;
+				});
+			
+			}else {
+				
+				callback(new Error('Invalid password'));
+				console.log('code run');
+				return;
+				
+			}
 		}
-	})
+	});
+	
 }
 
 function getAllUsers(callback) {
