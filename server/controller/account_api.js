@@ -52,7 +52,7 @@ function createUserInfomationCookie (userAccount) {
 	userDetails.username = userAccount.username;
 	userDetails.profileImage = userAccount.profileImage;
 	userDetails.websiteURL = userAccount.websiteURL;
-	userDetails.profileInformation = userAccount.profileInformation;
+	userDetails.profileDescription = userAccount.profileDescription;
 	
 	return JSON.stringify(userDetails);
 	

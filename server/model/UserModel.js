@@ -73,7 +73,7 @@ var userSchema = mongoDB
 				type : String,
 				required : false
 			},
-			profileInformation : {
+			profileDescription : {
 				type : String,
 				required : false,
 				default : 'Put somthing about your self here'
@@ -513,7 +513,7 @@ function changeAccountHolderName (emailAddress, firstName, middleName, surname, 
 	});
 }
 
-function changeProfileInformation (emailAddress, profileInfomation, callback){
+function changeProfileInformation (emailAddress, profileDescription, callback){
 	
 	userModel.findOne({emailAddress : emailAddress}, function(err, userAccount){
 		
@@ -526,7 +526,7 @@ function changeProfileInformation (emailAddress, profileInfomation, callback){
 			
 			if (userAccount != null){
 				
-				userAccount.profileInformation = profileInformation;
+				userAccount.profileDescription = profileDescription;
 				userAccount.save(function(err, userAccount){
 					
 					if (err){
