@@ -41,6 +41,23 @@ var fs = require('fs');
 var tokenModel = require('../model/TokenModel.js');
 var cookie = require('cookie');
 
+function createUserInfomationCookie (userAccount) {
+	
+	var userCookie = new Object;
+	
+	userDetails.firstName = userAccount.firstName;
+	userDetails.middleName = userAccount.middleName;
+	userDetails.surname = userAccount.surname;
+	userDetails.emailAddress = userAccount.emailAddress;
+	userDetails.username = userAccount.username;
+	userDetails.profileImage = userAccount.profileImage;
+	userDetails.websiteURL = userAccount.websiteURL;
+	userDetails.profileInformation = userAccount.profileInformation;
+	
+	return JSON.stringify(userCookie);
+	
+}
+
 function registerUserAccount(req, res, next) {
 
 	var body = '';
@@ -121,37 +138,14 @@ function registerUserAccount(req, res, next) {
 					return;		
 				}
 
-			} else {
-
-				tokenModel.createToken(data.emailAddress, function(err, token) {
-
-					if (err != null) {
-
-						res.statusCode = 400;
-						res.end(JSON.stringify({
-							status : 'error',
-							error : 'Could not genrate token'
-						}));
-						
-						return;
-						
-					} else {
-						
-						res.cookie('authenticationCookie', JSON.stringify(token), {
-							maxAge : 900000,
-							httpOnly : true
-						});
-
-						res.statusCode = 200;
-						res.end (JSON.stringify({
-							status : 'sucsess'
+			} else {	
+					res.statusCode = 200;
+					res.end (JSON.stringify({
+						status : 'sucsess'
 							
-						}));
+				}));
 						
-						return;
-								
-					}
-				});
+				return;
 			}
 		});
 	});
@@ -226,19 +220,8 @@ function logInUserAccount(req, res) {
 						return;
 						
 					} else {
-
-						var userDetails = new Object;
-
-						userDetails.firstName = accountData.firstName;
-						userDetails.middleName = accountData.middleName;
-						userDetails.surname = accountData.surname;
-						userDetails.emailAddress = accountData.emailAddress;
-						userDetails.username = accountData.username;
-						userDetails.profileImage = accountData.profileImage;
-						userDetails.websiteURL = accountData.websiteURL;
-						userDetails.profileInforamtion = accountData.profileInfomation;
 						
-						res.cookie('authenticationCookie', JSON.stringify(token), {
+						res.cookie('authenticationCookie', createUserInfomationCookie(accountData), {
 							maxAge : 900000,
 							httpOnly : true,
 							secure : true
@@ -533,18 +516,7 @@ function updateAccountHolderName(req, res){
 
 						} else {
 							
-							var userDetails = new Object;
-							
-							userDetails.firstName = userAccount.firstName;
-							userDetails.middleName = userAccount.middleName;
-							userDetails.surname = userAccount.surname;
-							userDetails.emailAddress = userAccount.emailAddress;
-							userDetails.username = userAccount.username;
-							userDetails.profileImage = userAccount.profileImage;
-							userDetails.websiteURL = accountData.websiteURL;
-							userDetails.profileInforamtion = accountData.profileInfomation;
-							
-							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+							res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {
 								maxAge : 900000,	
 								httpOnly : false		
 							});
@@ -626,17 +598,8 @@ function updateEmailAddress(req, res){
 							return;
 						
 						} else {
-								
-							var userDetails = new Object;
-							
-							userDetails.firstName = userAccount.firstName;
-							userDetails.middleName = userAccount.middleName;
-							userDetails.surname = userAccount.surname;
-							userDetails.emailAddress = userAccount.emailAddress;
-							userDetails.username = userAccount.username;
-							userDetails.profileImage = userAccount.profileImage;
-						
-							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+											
+							res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {
 								maxAge : 900000,
 								httpOnly : false
 							});
@@ -716,19 +679,8 @@ function updateWebsiteURL(req, res){
 							return;
 						
 						} else {
-							
-							var userDetails = new Object;
-							
-							userDetails.firstName = userAccount.firstName;
-							userDetails.middleName = userAccount.middleName;
-							userDetails.surname = userAccount.surname;
-							userDetails.emailAddress = userAccount.emailAddress;
-							userDetails.username = userAccount.username;
-							userDetails.profileImage = userAccount.profileImage;
-							userDetails.websiteURL = accountData.websiteURL;
-							userDetails.profileInforamtion = accountData.profileInfomation;
-																			
-							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+
+							res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {
 								maxAge : 900000,	
 								httpOnly : false									});
 
@@ -807,16 +759,7 @@ function updateProfileInformation(req, res){
 							return;
 						
 						} else {
-							
-							userDetails.firstName = userAccount.firstName;
-							userDetails.middleName = userAccount.middleName;
-							userDetails.surname = userAccount.surname;
-							userDetails.emailAddress = userAccount.emailAddress;
-							userDetails.username = userAccount.username;
-							userDetails.profileImage = userAccount.profileImage;
-							userDetails.websiteURL = accountData.websiteURL;
-							userDetails.profileInforamtion = accountData.profileInfomation;
-																			res.cookie('userInfoCookie', JSON.stringify(userDetails), {								maxAge : 900000,
+																			res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {								maxAge : 900000,
 								httpOnly : false									});
 
 

@@ -38,8 +38,7 @@ var userSchema = mongoDB
 			},
 			salt : {
 				type : String,
-				required : false,
-				"default" : uuid.v1
+				required : true
 			},
 			numberOfFaildLoginAttempts : {
 				type : Number,
@@ -64,7 +63,7 @@ var userSchema = mongoDB
 			// User information
 			firstName : {
 				type : String,
-				required : false
+				required : true
 			},
 			middleName : {
 				type : String,
@@ -514,9 +513,9 @@ function changeAccountHolderName (emailAddress, firstName, middleName, surname, 
 	});
 }
 
-function changeProfileInformation (emailAddress, profileInfomation){
+function changeProfileInformation (emailAddress, profileInfomation, callback){
 	
-	userModel.findOne({emailAddress : emailAddress}, null, function(err, userAccount){
+	userModel.findOne({emailAddress : emailAddress}, function(err, userAccount){
 		
 		if (err){
 			
@@ -547,9 +546,9 @@ function changeProfileInformation (emailAddress, profileInfomation){
 	});	
 }
 
-function changeWebsiteURL(emailAddress, websiteURL){
+function changeWebsiteURL(emailAddress, websiteURL, callback){
 	
-	userModel.findOne({emailAddress : emailAddress}, null, function(err, userAccount){
+	userModel.findOne({emailAddress : emailAddress}, function(err, userAccount){
 		
 		if (err){
 			
