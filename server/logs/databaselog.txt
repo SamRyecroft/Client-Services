@@ -626,3 +626,5 @@
 {"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-18T09:07:53.249Z"}
 {"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-18T09:07:54.255Z"}
 {"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-18T09:07:55.256Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-18T09:23:05.864Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-18T10:07:11.659Z"}

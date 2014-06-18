@@ -18,11 +18,15 @@ app.post('/userAccount/accountTools/accountRecovery/recoverAccountWithKey', acco
 
 app.patch('/userAccount/profileUtilities/changeAccountHolderName', accounts_api.updateAccountHolderName);
 
-app.patch('/userAccount/profileUtilities/changePassword', accounts_api.changePassword); 
+app.patch('/userAccount/profileUtilities/changePassword', accounts_api.updatePassword); 
 
 app.patch('/userAccounts/profileUtilities/changeEmailAddress', accounts_api.updateEmailAddress);
 
-app.post('/userAccount/accountTools/CreateNewAccount', accounts_api.registerUserAccount);
+app.post('/userAccount/accountTools/createNewAccount', accounts_api.registerUserAccount);
+
+app.patch('/userAccount/profileUtilities/changeWebsiteURL', accounts_api.updateWebsiteURL);
+
+app.patch('/userAccount/profileUtilities/changeProfileInfomation', accounts_api.updateProfileInformation);
 
 app.post('/auth/login', accounts_api.logInUserAccount);
 

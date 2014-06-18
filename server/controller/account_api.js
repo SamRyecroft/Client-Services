@@ -234,7 +234,9 @@ function logInUserAccount(req, res) {
 						userDetails.surname = accountData.surname;
 						userDetails.emailAddress = accountData.emailAddress;
 						userDetails.username = accountData.username;
-						userDetails.username = accountData.profileImage;
+						userDetails.profileImage = accountData.profileImage;
+						userDetails.websiteURL = accountData.websiteURL;
+						userDetails.profileInforamtion = accountData.profileInfomation;
 						
 						res.cookie('authenticationCookie', JSON.stringify(token), {
 							maxAge : 900000,
@@ -414,7 +416,7 @@ function isEmailAddressRegistered (req, res) {
 	});
 }
 
-function changePassword(req, res) {
+function updatePassword(req, res) {
 
 	var body = '';
 
@@ -539,10 +541,13 @@ function updateAccountHolderName(req, res){
 							userDetails.emailAddress = userAccount.emailAddress;
 							userDetails.username = userAccount.username;
 							userDetails.profileImage = userAccount.profileImage;
+							userDetails.websiteURL = accountData.websiteURL;
+							userDetails.profileInforamtion = accountData.profileInfomation;
 							
 							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
 								maxAge : 900000,	
-								httpOnly : false									});
+								httpOnly : false		
+							});
 								
 							res.statusCode = 200;
 							res.contentType = 'application/json';
@@ -605,7 +610,6 @@ function updateEmailAddress(req, res){
 
 			tokenModel.verifyToken(token, function(validToken) {
 				
-				console.log(validToken);
 				if (validToken) {
 					
 					userModel.changeEmailAddress(token.emailAddress, data.emailAddress, function (err, userAccount){
@@ -673,6 +677,184 @@ function updateEmailAddress(req, res){
 	});
 }
 
+function updateWebsiteURL(req, res){
+	
+	var body = '';
+
+		req.on('data', function(data) {
+			body += data;
+
+			if (body.length > 1e6) {
+
+				req.connection.destroy();
+			}
+		});
+
+		req.on('end', function() {
+			
+			if (req.headers.cookie != undefined) {
+				
+			var data = qs.parse(body);
+
+			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+			tokenModel.verifyToken(token, function(validToken) {
+				
+				if (validToken) {
+					
+					userModel.changeWebsiteURL(token.emailAddress, data.websiteURL, function (err, userAccount){
+
+						if (err != null) {				
+							
+							res.statusCode = 500;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'error',
+								error : 'internal error'
+							}));
+							
+							return;
+						
+						} else {
+							
+							var userDetails = new Object;
+							
+							userDetails.firstName = userAccount.firstName;
+							userDetails.middleName = userAccount.middleName;
+							userDetails.surname = userAccount.surname;
+							userDetails.emailAddress = userAccount.emailAddress;
+							userDetails.username = userAccount.username;
+							userDetails.profileImage = userAccount.profileImage;
+							userDetails.websiteURL = accountData.websiteURL;
+							userDetails.profileInforamtion = accountData.profileInfomation;
+																			
+							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+								maxAge : 900000,	
+								httpOnly : false									});
+
+
+							res.statusCode = 200;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'sucess'
+							}));
+							
+							return;
+						}
+					});
+					
+				}else {
+					
+					res.statusCode = 401;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error : 'invalid cridentials'
+					}));
+										
+					return;
+					
+				}
+			});
+			
+		} else {
+				
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'invalid cridentials'
+			}));
+															return;
+		}
+	});
+}
+function updateProfileInformation(req, res){
+	
+	var body = '';
+
+		req.on('data', function(data) {
+			body += data;
+
+			if (body.length > 1e6) {
+
+				req.connection.destroy();
+			}
+		});
+
+		req.on('end', function() {
+			
+			if (req.headers.cookie != undefined) {
+				
+			var data = qs.parse(body);
+
+			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+			tokenModel.verifyToken(token, function(validToken) {
+				
+				if (validToken) {
+					
+					userModel.changeProfileInfomation(token.emailAddress, data.profileInformation, function (err, userAccount){
+
+						if (err != null) {				
+							
+							res.statusCode = 500;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'error',
+								error : 'internal error'
+							}));
+							
+							return;
+						
+						} else {
+							
+							userDetails.firstName = userAccount.firstName;
+							userDetails.middleName = userAccount.middleName;
+							userDetails.surname = userAccount.surname;
+							userDetails.emailAddress = userAccount.emailAddress;
+							userDetails.username = userAccount.username;
+							userDetails.profileImage = userAccount.profileImage;
+							userDetails.websiteURL = accountData.websiteURL;
+							userDetails.profileInforamtion = accountData.profileInfomation;
+																			res.cookie('userInfoCookie', JSON.stringify(userDetails), {								maxAge : 900000,
+								httpOnly : false									});
+
+
+							res.statusCode = 200;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'sucess'
+							}));
+							
+							return;
+						}
+					});
+					
+				}else {
+					
+					res.statusCode = 401;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error : 'invalid cridentials'
+					}));
+										
+					return;
+					
+				}
+			});
+			
+		} else {
+				
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'invalid cridentials'
+			}));
+															return;
+		}
+	});
+}
 
 function deleteAccount (req, res){
 	
@@ -823,16 +1005,30 @@ function createRecoveryKeyForAccount (req, res){
 	});
 }
 
-exports.deleteAccount = deleteAccount;
+// Update exports
 exports.updateAccountHolderName = updateAccountHolderName;
 exports.updateEmailAddress = updateEmailAddress;
-exports.deleteAccount = deleteAccount;
+exports.updatePassword = updatePassword;
+exports.updateWebsiteURL = updateWebsiteURL;
+exports.updateProfileInformation = updateProfileInformation;
+
+// Account recovery exports
 exports.createRecoveryKeyForAccount = createRecoveryKeyForAccount;
 exports.recoverAccountWithRecoveryKey = recoverAccountWithRecoveryKey;
+
+// Account removal exports
+exports.deleteAccount = deleteAccount;
+
+// Protected api exports
 exports.getAllAccounts = getAllAccounts;
-exports.registerUserAccount = registerUserAccount;
+
+// Free acesses api exports
 exports.isEmailAddressRegistered = isEmailAddressRegistered;
+exports.isUsernameRegistered = isUsernameRegistered;
+
+// Account authentication 
 exports.logInUserAccount = logInUserAccount;
 exports.logOutUser = logOutUser;
-exports.isUsernameRegistered = isUsernameRegistered;
-exports.changePassword = changePassword;
+
+// Account creation exports 
+exports.registerUserAccount = registerUserAccount;

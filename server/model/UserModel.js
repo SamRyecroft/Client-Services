@@ -76,16 +76,18 @@ var userSchema = mongoDB
 			},
 			profileInfomation : {
 				type : String,
-				required : false
+				required : false,
+				default : 'Put somthing about your self here'
 			},
 			websiteURL : {
 				type: String,
-				required : false
+				required : false,
+				default : 'http://www.redninja.co.uk/'
 			},
 			profileImage : {
 				type : String,
 				required : false,
-				default: 'https://pbs.twimg.com/profile_images/466574846608949248/V3xkb-VP_400x400.png',
+				default : 'https://pbs.twimg.com/profile_images/466574846608949248/V3xkb-VP_400x400.png',
 			}
 
 		});
@@ -314,12 +316,6 @@ function getAllUsers(callback) {
 	});
 }
 
-function changeProfileInformation (emailAddress, profileInfomation){
-	
-	userModel.findOne({emailAddress : emailAddress}, ){
-		
-	}	
-}
 
 function createRecoveryKey (emailAddress, callback) {
 	
@@ -518,6 +514,72 @@ function changeAccountHolderName (emailAddress, firstName, middleName, surname, 
 	});
 }
 
+function changeProfileInformation (emailAddress, profileInfomation){
+	
+	userModel.findOne({emailAddress : emailAddress}, null, function(err, userAccount){
+		
+		if (err){
+			
+			databaseLogger.error(err.message);
+			callback(err);
+		
+		}else {
+			
+			if (userAccount != null){
+				
+				userAccount.profileInformation = profileInformation;
+				userAccount.save(function(err, userAccount){
+					
+					if (err){
+						
+						databaseLogger.error(err.message);
+						callback(err);
+					}else{
+						
+						callback(null, userAccount);
+					}
+				});
+			}else {
+				
+				callback(new Error ('user account not found'));
+			}
+		}
+	});	
+}
+
+function changeWebsiteURL(emailAddress, websiteURL){
+	
+	userModel.findOne({emailAddress : emailAddress}, null, function(err, userAccount){
+		
+		if (err){
+			
+			databaseLogger.error(err.message);
+			callback(err);
+		
+		}else {
+			
+			if (userAccount != null){
+				
+				userAccount.websiteURL = websiteURL;
+				userAccount.save(function(err, userAccount){
+					
+					if (err){
+						
+						databaseLogger.error(err.message);
+						callback(err);
+					}else{
+						
+						callback(null, userAccount);
+					}
+				});
+			}else {
+				
+				callback(new Error ('user account not found'));
+			}
+		}
+	});	
+}
+
 function removeAccount (emailAddress, callback){
 	
 	userModel.findOne({emailAddress : emailAddress}, function (err, userAccount){
@@ -563,3 +625,5 @@ exports.createNewUser = createNewUser;
 exports.loginUsingPassword = loginUsingPassword;
 exports.doseUserExsist = doseUserExsist;
 exports.isEmailAddressRegisterd = isEmailAddressRegisterd;
+exports.changeWebsiteURL = changeWebsiteURL;
+exports.changeProfileInformation = changeProfileInformation;
