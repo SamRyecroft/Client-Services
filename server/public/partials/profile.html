@@ -1,7 +1,7 @@
 <section ng-show="showPage" class="ng-view-section">
 
 	<h1 class="center-text">{{ profile.firstName }}'s Profile</h1>
-	
+
 	<article class="profile-container">
 		<section class="profile-left-container center-text">
 			<img ng-src="{{ profile.profileImage }}" width="120" height="120"/>
@@ -20,7 +20,7 @@
 			</div
 			><div class="right-container-boxes">
 				<div class="right-container-boxes-inner">
-					<div class="likes center-text">{{ likes }}</div>
+					<div class="profile-right-inner-row">{{ profile.profileInformation }}</div>
 				</div>
 			</div
 			><div class="right-container-boxes">

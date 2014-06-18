@@ -1,6 +1,6 @@
 'use strict';
 
-loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStatusFactory', 'LoggedInUserFactory', function($scope, $http, $cookies, LoginStatusFactory, LoggedInUserFactory){
+loginApp.controller('EditController', ['$scope', '$http', '$cookies', '$timeout', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, $timeout, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
 
 	var userCookie = $cookies.userInfoCookie;
   	if(userCookie != undefined) { $scope.showPage = true; }
@@ -28,37 +28,25 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 	// Edit name
 	$scope.editName = function(){
 		if($scope.name_form.$valid){ // If the form is valid do the following.
-			$http({
-				method: 'PATCH',
-				url: 'https://localhost:3000/userAccount/profileUtilities/updateDetails',
-				data: $.param($scope.edit)
-			}).success(function(data){
-				$scope.successFirstNameChange = 'Your First name has been changed';
-				$scope.successSurnameChange = 'Your Surname name has been changed';
-				$scope.sameFirstNameError = '';
-				$scope.sameSurnameError = '';
-				console.log('success');
-			}).error(function(error, status){
-				$scope.sameFirstNameError = 'That is the First name you currently use';
-				$scope.sameSurnameError = 'That is the Surname you currently use';
-				$scope.successFirstNameChange = '';
-				$scope.successSurnameChange = '';
-				console.log(error, status, 'error');
-			});
-			/*
-			if($scope.user.fname != $scope.edit.fnam){ // If old fname & new fname are not the same change the fname.
-				$scope.user.firstName = $scope.edit.firstName;
-				$scope.successFirstNameChange = 'Your First name has been changed';
-			}else{ // If the fnames are the same.
-				$scope.sameFirstNameError = 'That is the First name you currently use';
-			};
-			if($scope.user.surname != $scope.edit.surname){ // If old lname & new lname are not the same change the lname.
-				$scope.user.surname = $scope.edit.surname
-				$scope.successSurnameChange = 'Your Surname name has been changed';
-			}else{ // If the lnames are the same.
-				$scope.sameSurnameError = 'That is the Surname you currently use';
-			};
-			*/
+			if($scope.user.firstName != $scope.edit.firstName){
+				$http({
+					method: 'PATCH',
+					url: 'https://localhost:3000/userAccount/profileUtilities/changeAccountHolderName',
+					data: $.param($scope.edit)
+				}).success(function(data){
+					$scope.successNameChange = 'Your name has been changed';
+					$scope.sameNameError = '';
+					$timeout(function() {
+						LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
+						ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
+					}, 100);
+				}).error(function(error, status){
+					console.log(error, status, 'error');
+				});	
+			}else{
+				$scope.sameNameError = 'That is the name you are currently using';
+				$scope.successNameChange = '';
+			}
 		}else{
 			$scope.name_form.submitted = true;
 		}
@@ -68,27 +56,25 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', 'LoginStat
 	// Edit website
 	$scope.editWebsite = function(){
 		if($scope.website_form.$valid){ // If the form is valid do the following.
-			$http({
-				method: 'POST',
-				url: 'https://localhost:3000/',
-				data: $.param($scope.edit)
-			}).success(function(data){
-				$scope.successWebsiteChange = 'Your Website has been changed';
-				$scope.sameWebsiteError = '';
-				console.log('success');
-			}).error(function(error, status){
-				$scope.sameWebsiteError = 'That is the Website you currently have set';
-				$scope.successWebsiteChange = '';
-				console.log(error, status, 'success');
-			});
-			/*
-			if($scope.user.web != $scope.edit.website){ // If old website & new website are not the same change the website.
-				$scope.user.web = $scope.edit.website
-				$scope.successWebsiteChange = 'Your Website has been changed';
-			}else{ // If the websites are the same.
-				$scope.sameWebsiteError = 'That is the Website you currently have set';
-			};
-			*/
+			if($scope.user.websiteURL != $scope.edit.websiteURL){
+				$http({
+					method: 'PATCH',
+					url: 'https://localhost:3000/userAccount/profileUtilities/changeWebsiteURL',
+					data: $.param($scope.edit)
+				}).success(function(data){
+					$scope.successWebsiteURLChange = 'Your Website has been changed';
+					$scope.sameWebsiteURLError = '';
+					$timeout(function() {
+						LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
+						ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
+					}, 100);
+				}).error(function(error, status){
+					console.log(error, status, 'success');
+				});
+			}else{
+				$scope.sameWebsiteURLError = 'That is the Website you currently have set';
+				$scope.successWebsiteURLChange = '';
+			}
 		}else{
 			$scope.website_form.submitted = true;
 		}

@@ -43,7 +43,7 @@ var cookie = require('cookie');
 
 function createUserInfomationCookie (userAccount) {
 	
-	var userCookie = new Object;
+	var userDetails = new Object;
 	
 	userDetails.firstName = userAccount.firstName;
 	userDetails.middleName = userAccount.middleName;
@@ -54,7 +54,7 @@ function createUserInfomationCookie (userAccount) {
 	userDetails.websiteURL = userAccount.websiteURL;
 	userDetails.profileInformation = userAccount.profileInformation;
 	
-	return JSON.stringify(userCookie);
+	return JSON.stringify(userDetails);
 	
 }
 
@@ -221,13 +221,13 @@ function logInUserAccount(req, res) {
 						
 					} else {
 						
-						res.cookie('authenticationCookie', createUserInfomationCookie(accountData), {
+						res.cookie('authenticationCookie', JSON.stringify(token), {
 							maxAge : 900000,
 							httpOnly : true,
 							secure : true
 						});
 						
-						res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+						res.cookie('userInfoCookie', createUserInfomationCookie(accountData), {
 							maxAge : 900000,
 							httpOnly : false
 						});

@@ -73,7 +73,7 @@ var userSchema = mongoDB
 				type : String,
 				required : false
 			},
-			profileInfomation : {
+			profileInformation : {
 				type : String,
 				required : false,
 				default : 'Put somthing about your self here'

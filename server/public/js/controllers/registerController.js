@@ -7,7 +7,7 @@ loginApp.controller('RegisterController', ['$scope', '$http', 'LoginStatusFactor
 		if($scope.register_form.$valid){
 			$http({
 				method: 'POST',
-				url: 'https://localhost:3000/userAccount/accountTools/CreateNewAccount',
+				url: 'https://localhost:3000/userAccount/accountTools/createNewAccount',
 				data: $.param($scope.register),
 				withCredentials: true
 			}).success(function(data){
@@ -17,6 +17,7 @@ loginApp.controller('RegisterController', ['$scope', '$http', 'LoginStatusFactor
 			}).error(function(error, status){
 				$scope.registrationErrorMessage = "Looks like there was a: " + status + " error";
 				$scope.registrationSuccessMessage = "";
+				console.log(error, status);
 			});
 		}else{
 			$scope.register_form.submitted = true;
@@ -41,8 +42,8 @@ loginApp.controller('RegisterController', ['$scope', '$http', 'LoginStatusFactor
 				$scope.userNameUnavailable = "";
 				console.log(data.result);
 			}
-		}).error(function(data, error, status){
-			console.log(data);
+		}).error(function(error, status){
+			console.log(error, status);
 		});
 	};
 
@@ -64,8 +65,8 @@ loginApp.controller('RegisterController', ['$scope', '$http', 'LoginStatusFactor
 				$scope.emailAddressUnavailable = "";
 				console.log(data.result);
 			}
-		}).error(function(data, error, status){
-			console.log(data);
+		}).error(function(error, status){
+			console.log(error, status);
 		});
 	};
 

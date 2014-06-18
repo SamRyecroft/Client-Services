@@ -12,8 +12,8 @@
 	
 	<!-- CHANGE NAME FORM -->
 	<form class="forms left-align-form" name="name_form" novalidate ng-submit="editName()">
-		<small class="success-messages" ng-show="successFirstNameChange && !sameFirstNameError">&#x2713 {{successFirstNameChange }}</small>
-		<small class="error-messages" ng-show="sameFirstNameError && !successFirstNameChange">&#x2718 {{ sameFirstNameError }}</small>
+		<small class="success-messages" ng-show="successNameChange && !sameNameError">&#x2713 {{ successNameChange }}</small>
+		<small class="error-messages" ng-show="sameNameError && !successNameChange">&#x2718 {{ sameNameError }}</small>
 		<input class="form-input" type="text" name="firstName" placeholder="{{user.firstName}}" required autocomplete="off" ng-model="edit.firstName" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/"/>
 			<div class="error-messages" ng-show="name_form.firstName.$dirty && name_form.firstName.$invalid && name_form.submitted">
 				<small ng-show="name_form.firstName.$error.required">&#x2718 A first name is required</small>
@@ -21,8 +21,6 @@
 				<small ng-show="name_form.firstName.$error.maxlength">&#x2718 The first name max character length is 20</small>
 				<small ng-show="name_form.firstName.$error.pattern">&#x2718 Use only A-Za-z characters</small>
 			</div>			
-		<small class="success-messages" ng-show="successSurnameChange && !sameSurnameError">&#x2713 {{ successSurnameChange }}</small>
-		<small class="error-messages" ng-show="sameSurnameError && !successSurnameChange">&#x2718 {{ sameSurnameError }}</small>
 		<input class="form-input" type="text" name="surname" placeholder="{{user.surname}}" required autocomplete="off" ng-model="edit.surname" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/"/>
 			<div class="error-messages" ng-show="name_form.surname.$dirty && name_form.surname.$invalid && name_form.submitted">
 				<small ng-show="name_form.surname.$error.required">&#x2718 A surname is required</small>
@@ -35,9 +33,9 @@
 	
 	<!-- CHANGE WEBSITE FORM -->
 	<form class="forms left-align-form" name="website_form" novalidate ng-submit="editWebsite()">
-		<small class="success-messages" ng-show="successWebsiteChange && !sameWebsiteError">&#x2713 {{ successWebsiteChange }}</small>
-		<small class="error-messages" ng-show="sameWebsiteError && !successWebsiteChange">&#x2718 {{ sameWebsiteError }}</small>
-		<input class="form-input" type="url" name="website" placeholder="{{user.web}}" required autocomplete="off" ng-model="edit.website" ng-minlength=2 ng-maxlength=200/>
+		<small class="success-messages" ng-show="successWebsiteURLChange && !sameWebsiteURLError">&#x2713 {{ successWebsiteURLChange }}</small>
+		<small class="error-messages" ng-show="sameWebsiteURLError && !successWebsiteURLChange">&#x2718 {{ successWebsiteURLChange }}</small>
+		<input class="form-input" type="url" name="websiteURL" placeholder="{{user.websiteURL}}" required autocomplete="off" ng-model="edit.websiteURL" ng-minlength=2 ng-maxlength=200/>
 			<div class="error-messages" ng-show="website_form.website.$dirty && website_form.website.$invalid && website_form.submitted">
 				<small ng-show="website_form.website.$error.required">&#x2718 A Website is required</small>
 				<small ng-show="website_form.website.$error.minlength">&#x2718 The Website min character length is 2</small>

@@ -17,7 +17,10 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', 'Login
 			}).success(function(data){
 				$scope.successEmailAddressChange = 'Your Email has been changed';
 				$scope.sameEmailAddressError = '';
-				console.log('success');
+				$timeout(function() {
+					LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
+					ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
+				}, 100);
 			}).error(function(error, status){
 				$scope.sameEmailAddressError = 'That is the email you are currently using';
 				$scope.successEmailAddressChange = '';
