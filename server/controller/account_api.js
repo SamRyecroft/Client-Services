@@ -491,67 +491,11 @@ function changePassword(req, res) {
 	
 }
 
-function createRecoveryKeyForAccount (req, res){
+function updateAccountHolderName(req, res){
 
-	userModel.isEmailAddressRegisterd (req.query.emailAddress, function (err, exsists ){		
-		if (err != null){
-			
-			res.statusCode = 500;
-			res.contentType = 'application/json';
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'internal error'
-			}));
-			
-			return;
-			
-		} else if (exsists)  {
-			
-			userModel.createRecoveryKey(req.query.emailAddress, function(err) {
-							
-				if (err){
-								
-					res.statusCode = 500;
-					res.contentType = 'application/json';
-					res.end(JSON.stringify({
-						status : 'error',
-						error : 'internal error'
-					}));
-					
-					return;
-
-				}else {
-								
-					res.statusCode = 201;
-					res.contentType = 'application/json';
-					res.end(JSON.stringify({
-						status : 'sucsess'
-					}));
-					
-					return;
-				}
-			});
-			
-		} else {
-			
-			res.statusCode = 400;
-			res.contentType = 'application/json';
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'Account not found'
-			}));
-			
-			return;
-		}
-	});
-}
-
-function recoverAccountWithRecoveryKey (req, res){
-	
 	var body = '';
 
 	req.on('data', function(data) {
-		
 		body += data;
 
 		if (body.length > 1e6) {
@@ -560,37 +504,83 @@ function recoverAccountWithRecoveryKey (req, res){
 		}
 	});
 
-		req.on('end', function() {
-			
+	req.on('end', function() {
+
+		if (req.headers.cookie != undefined) {
+
 			var data = qs.parse(body);
-			
-			userModel.changePasswordViaRecoveryKey(data.newPassword, data.recoveryKey, data.emailAddress, function(err){
-			
-				if (err != null){
+
+			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+			tokenModel.verifyToken(token,function(validToken) {
+
+				if (validToken) {
 					
-					// 500 error if invalid?
-					res.statusCode = 400;
+					userModel.changeAccountHolderName(token.emailAddress, data.firstName, data.middleName, data.surname, function(err, userAccount) {
+
+						if (err != null) {
+
+							res.statusCode = 500;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'error',
+								error : 'internal error'
+							}));
+							
+							return;
+
+						} else {
+							
+							var userDetails = new Object;
+							
+							userDetails.firstName = userAccount.firstName;
+							userDetails.middleName = userAccount.middleName;
+							userDetails.surname = userAccount.surname;
+							userDetails.emailAddress = userAccount.emailAddress;
+							userDetails.username = userAccount.username;
+							userDetails.profileImage = userAccount.profileImage;
+							
+							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
+								maxAge : 900000,	
+								httpOnly : false									});
+								
+							res.statusCode = 200;
+							res.contentType = 'application/json';
+							res.end(JSON.stringify({
+								status : 'sucess'
+							}));
+							
+							return;
+						}
+					});
+
+				} else {
+
+					res.statusCode = 401;
 					res.contentType = 'application/json';
 					res.end(JSON.stringify({
 						status : 'error',
-						error :  'Account not found with that recovery key'
-					 }));
-					
-					return;
-					
-				}else {
-					
-					res.statusCode = 200;
-					res.contentType = 'application/json';
-					res.end(JSON.stringify({
-						status : 'sucsess'
+						error : 'invalid cridentials'
 					}));
 					
 					return;
 				}
-		});
+			});
+
+		} else {
+			
+			res.statusCode = 401;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'invalid cridentials'
+			}));
+			
+			return;
+		}
 	});
 }
+
 
 function updateEmailAddress(req, res){
 	
@@ -683,95 +673,6 @@ function updateEmailAddress(req, res){
 	});
 }
 
-function updateAccountDetails(req, res){
-
-	var body = '';
-
-	req.on('data', function(data) {
-		body += data;
-
-		if (body.length > 1e6) {
-
-			req.connection.destroy();
-		}
-	});
-
-	req.on('end', function() {
-
-		if (req.headers.cookie != undefined) {
-
-			var data = qs.parse(body);
-
-			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
-
-			tokenModel.verifyToken(token,function(validToken) {
-
-				if (validToken) {
-					
-					userModel.updateUserInfomation(token.emailAddress,data.firstName,data.middleName,data.surname,data.profileInfomation, data.emailAddress, function(err, userAccount) {
-
-						if (err != null) {
-
-							res.statusCode = 500;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
-							
-							return;
-
-						} else {
-							
-							var userDetails = new Object;
-							
-							userDetails.firstName = userAccount.firstName;
-							userDetails.middleName = userAccount.middleName;
-							userDetails.surname = userAccount.surname;
-							userDetails.emailAddress = userAccount.emailAddress;
-							userDetails.username = userAccount.username;
-							userDetails = userAccount.profileImage;
-							
-							res.cookie('userInfoCookie', JSON.stringify(userDetails), {
-								maxAge : 900000,	
-								httpOnly : false									});
-								
-							res.statusCode = 200;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'sucess'
-							}));
-							
-							return;
-						}
-					});
-
-				} else {
-
-					res.statusCode = 401;
-					res.contentType = 'application/json';
-					res.end(JSON.stringify({
-						status : 'error',
-						error : 'invalid cridentials'
-					}));
-					
-					return;
-				}
-			});
-
-		} else {
-			
-			res.statusCode = 401;
-			res.contentType = 'application/json';
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'invalid cridentials'
-			}));
-			
-			return;
-		}
-	});
-}
 
 function deleteAccount (req, res){
 	
@@ -782,14 +683,14 @@ function deleteAccount (req, res){
 		tokenModel.verifyToken = (token, function (validToken){
 			
 			if (validToken){
-				userModel.removeAccount(token.emailAddress, function (err){
+				userModel.removeAccount(token.emailAddress, data.password,  function (err){
 					
 					if (err){
-						res.statusCode = 500;
+						res.statusCode = 400;
 						res.contentType = 'application/json';
 						res.end(JSON.stringify({
 							status : 'error',
-							error : 'internal error'
+							error : err.message
 						}));
 						
 						return;
@@ -821,11 +722,113 @@ function deleteAccount (req, res){
 	}	
 }
 
+function recoverAccountWithRecoveryKey (req, res){
+	
+	var body = '';
+
+	req.on('data', function(data) {
+		
+		body += data;
+
+		if (body.length > 1e6) {
+
+			req.connection.destroy();
+		}
+	});
+
+		req.on('end', function() {
+			
+			var data = qs.parse(body);
+			
+			userModel.changePasswordViaRecoveryKey(data.newPassword, data.recoveryKey, data.emailAddress, function(err){
+			
+				if (err != null){
+					
+					// 500 error if invalid?
+					res.statusCode = 400;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error :  'Account not found with that recovery key'
+					 }));
+					
+					return;
+					
+				}else {
+					
+					res.statusCode = 200;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'sucsess'
+					}));
+					
+					return;
+				}
+		});
+	});
+}
+
+function createRecoveryKeyForAccount (req, res){
+
+	userModel.isEmailAddressRegisterd (req.query.emailAddress, function (err, exsists ){		
+		if (err != null){
+			
+			res.statusCode = 500;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'internal error'
+			}));
+			
+			return;
+			
+		} else if (exsists)  {
+			
+			userModel.createRecoveryKey(req.query.emailAddress, function(err) {
+							
+				if (err){
+								
+					res.statusCode = 500;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'error',
+						error : 'internal error'
+					}));
+					
+					return;
+
+				}else {
+								
+					res.statusCode = 201;
+					res.contentType = 'application/json';
+					res.end(JSON.stringify({
+						status : 'sucsess'
+					}));
+					
+					return;
+				}
+			});
+			
+		} else {
+			
+			res.statusCode = 400;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'Account not found'
+			}));
+			
+			return;
+		}
+	});
+}
+
+exports.deleteAccount = deleteAccount;
+exports.updateAccountHolderName = updateAccountHolderName;
 exports.updateEmailAddress = updateEmailAddress;
 exports.deleteAccount = deleteAccount;
 exports.createRecoveryKeyForAccount = createRecoveryKeyForAccount;
 exports.recoverAccountWithRecoveryKey = recoverAccountWithRecoveryKey;
-exports.updateAccountDetails = updateAccountDetails;
 exports.getAllAccounts = getAllAccounts;
 exports.registerUserAccount = registerUserAccount;
 exports.isEmailAddressRegistered = isEmailAddressRegistered;

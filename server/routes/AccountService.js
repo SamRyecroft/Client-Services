@@ -16,7 +16,7 @@ app.get('/userAccount/accountTools/accountRecovery/generateRecoveryKey', account
 
 app.post('/userAccount/accountTools/accountRecovery/recoverAccountWithKey', accounts_api.recoverAccountWithRecoveryKey);
 
-app.patch('/userAccount/profileUtilities/updateDetails', accounts_api.updateAccountDetails);
+app.patch('/userAccount/profileUtilities/changeAccountHolderName', accounts_api.updateAccountHolderName);
 
 app.patch('/userAccount/profileUtilities/changePassword', accounts_api.changePassword); 
 
@@ -29,6 +29,8 @@ app.post('/auth/login', accounts_api.logInUserAccount);
 app.get('/auth/logout', accounts_api.logOutUser);
 
 app.get('/accountResources/users', accounts_api.getAllAccounts);
+
+app.delete('/userAccount/profileUtilities/closeAccount', accounts_api.deleteAccount);
 
 
 

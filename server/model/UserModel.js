@@ -467,7 +467,7 @@ function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 	});
 }
 
-function updateUserInfomation (emailAddress, firstName, middleName, surname, profileInfomation, newEmailAddress, callback){
+function changeAccountHolderName (emailAddress, firstName, middleName, surname, callback){
 	
 	userModel.findOne({emailAddress : emailAddress} ,function(err, userAccount){
 		
@@ -486,17 +486,6 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 
 			userAccount.surname = surname;
 
-		}
-
-		if (profileInfomation != undefined) {
-
-			userAccount.profileInfomation = profileInfomation;
-
-		}
-		
-		if (newEmailAddress != undefined){
-			
-				
 		}
 		
 		userAccount.save(function(err, userAccount){
@@ -520,22 +509,40 @@ function updateUserInfomation (emailAddress, firstName, middleName, surname, pro
 
 function removeAccount (emailAddress, callback){
 	
-	userModel.remove({emaillAddress : emailAddress}, {justOne : true}, function (err){
+	userModel.findOne({emailAddress : emailAddress}, function (err, userAccount){
 		
-		if (err){
+		if (userAccount != null){
 			
-			callback(err);
-		
+			if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
+				
+				userModel.remove({emaillAddress : emailAddress}, {justOne : true}, function (err){
+						
+						if (err){
+							
+							databaseLogger.error(err.message);
+							callback(err);
+						
+						}else {
+							
+							callback(null);
+						}
+					});
+
+			}else {
+				
+				callback(new Error("incorrect password"));
+			}
+			
 		}else {
 			
-			callback(null);
+			callback(new Error('Useraccount not found!'));
 		}
 	});
 }
 
 exports.changeEmailAddress = changeEmailAddress;
 exports.removeAccount = removeAccount;
-exports.updateUserInfomation = updateUserInfomation;
+exports.changeAccountHolderName = changeAccountHolderName;
 exports.changePasswordViaRecoveryKey = changePasswordViaRecoveryKey;
 exports.createRecoveryKey = createRecoveryKey;
 exports.setNewPassword = setNewPassword;
