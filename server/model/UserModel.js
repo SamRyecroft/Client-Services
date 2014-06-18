@@ -78,6 +78,10 @@ var userSchema = mongoDB
 				type : String,
 				required : false
 			},
+			websiteURL : {
+				type: String,
+				required : false
+			},
 			profileImage : {
 				type : String,
 				required : false,
@@ -308,6 +312,13 @@ function getAllUsers(callback) {
 			callback(null, userAccounts)
 		}
 	});
+}
+
+function changeProfileInformation (emailAddress, profileInfomation){
+	
+	userModel.findOne({emailAddress : emailAddress}, ){
+		
+	}	
 }
 
 function createRecoveryKey (emailAddress, callback) {
