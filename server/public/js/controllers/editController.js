@@ -53,6 +53,34 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', '$timeout'
 	};
 	
 	
+	// Edit Profile Description
+	$scope.editDescription = function(){
+		if($scope.description_form.$valid){ // If the form is valid do the following.
+			if($scope.user.profileDescription != $scope.edit.profileDescription){
+				$http({
+					method: 'PATCH',
+					url: 'https://localhost:3000/userAccount/profileUtilities/changeProfileInfomation',
+					data: $.param($scope.edit)
+				}).success(function(data){
+					$scope.successDescriptionChange = 'Your Description has been changed';
+					$scope.sameDescriptionError = '';
+					$timeout(function() {
+						LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
+						ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
+					}, 100);
+				}).error(function(error, status){
+					console.log(error, status, 'success');
+				});
+			}else{
+				$scope.sameDescriptionError = 'That is the description you currently have set';
+				$scope.successDescriptionChange = '';
+			}
+		}else{
+			$scope.website_form.submitted = true;
+		}
+	};
+	
+	
 	// Edit website
 	$scope.editWebsite = function(){
 		if($scope.website_form.$valid){ // If the form is valid do the following.

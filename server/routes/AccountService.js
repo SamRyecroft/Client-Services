@@ -26,7 +26,7 @@ app.post('/userAccount/accountTools/createNewAccount', accounts_api.registerUser
 
 app.patch('/userAccount/profileUtilities/changeWebsiteURL', accounts_api.updateWebsiteURL);
 
-app.patch('/userAccount/profileUtilities/changeProfileInfomation', accounts_api.updateProfileInformation);
+app.post('/userAccount/profileUtilities/changeProfileInfomation', accounts_api.updateProfileInformation);
 
 app.post('/auth/login', accounts_api.logInUserAccount);
 
@@ -34,7 +34,7 @@ app.get('/auth/logout', accounts_api.logOutUser);
 
 app.get('/accountResources/users', accounts_api.getAllAccounts);
 
-app.delete('/userAccount/profileUtilities/closeAccount', accounts_api.deleteAccount);
+app.patch('/userAccount/profileUtilities/closeAccount', accounts_api.deleteAccount);
 
 
 

@@ -40,23 +40,20 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', 'Login
 	};
 
 	// Update Password.
-	$scope.settingsPassword = function(){
-		if($scope.password_form.$valid){
+	$scope.settingsDelete = function(){
+		if($scope.delete_form.$valid){
 			$http({
 				method: 'PATCH',
-				url: 'https://localhost:3000/userAccount/profileUtilities/changePassword',
+				url: 'https://localhost:3000/userAccount/profileUtilities/closeAccount',
 				data: $.param($scope.change)
 			}).success(function(data){
-				$scope.successPassChange = 'Your Password has been changed';
-				$scope.confirmPasswordError = '';
+				$scope.successDelete = 'Your Password has been changed';
 				console.log('success');
 			}).error(function(error, status){
-				$scope.confirmPasswordError = 'Your passwords do not match';
-				$scope.successPassChange = '';
 				console.log(error, status, 'error');
 			});
 		}else{
-			$scope.password_form.submitted = true;
+			$scope.delete_form.submitted = true;
 		}
 	};
 

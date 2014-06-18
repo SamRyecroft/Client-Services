@@ -50,7 +50,7 @@
 		<small class="success-messages" ng-show="successDeleteAccount">&#x2713 {{ successDeleteAccount }}</small>
 		<small class="error-messages" ng-show="samePasswordError && !successDeleteAccount">&#x2718 {{ samePasswordError }}</small>
 		<input class="form-input" type="password" name="deleteAccount" placeholder="Enter Password To Delete Account" required autocomplete="off" ng-model="change.deleteAccount" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
-			<div class="error-messages" ng-show="delete_form.oldPass.$dirty && delete_form.oldPass.$invalid && delete_form.submitted">
+			<div class="error-messages" ng-show="delete_form.deleteAccount.$dirty && delete_form.deleteAccount.$invalid && delete_form.submitted">
 				<small ng-show="delete_form.deleteAccount.$error.required">&#x2718 A Password is required</small>
 				<small ng-show="delete_form.deleteAccount.$error.minlength">&#x2718 The Password min character length is 2</small>
 				<small ng-show="delete_form.deleteAccount.$error.maxlength">&#x2718 The Password max character length is 20</small>

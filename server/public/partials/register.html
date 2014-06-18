@@ -37,12 +37,21 @@
 				<small ng-show="register_form.email.$error.email">&#x2718 A valid email address is required</small>
 			</div>
 			
-		<input class="form-input" name="password" type="password" placeholder="Desired Password" required ng-model="register.password" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
+		<input class="form-input" name="password" type="password" placeholder="Desired Password" required ng-model="register.password" ng-minlength=6 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
 			<div class="error-messages" ng-show="register_form.password.$dirty && register_form.password.$invalid && register_form.submitted">
 				<small ng-show="register_form.password.$error.required">&#x2718 A password is required</small>
-				<small ng-show="register_form.password.$error.minlength">&#x2718 The password min character length is 2</small>
+				<small ng-show="register_form.password.$error.minlength">&#x2718 The password min character length is 6</small>
 				<small ng-show="register_form.password.$error.maxlength">&#x2718 The password max character length is 20</small>
 				<small ng-show="register_form.password.$error.pattern">&#x2718 Use only A-Z/a-z 0-9</small>
+			</div>
+			
+		<small class="error-messages" ng-show="samePasswordError">&#x2718 {{samePasswordError}}</small>
+		<input class="form-input" name="passwordConfirm" type="password" placeholder="Confirm Password" required ng-model="register.passwordConfirm" ng-minlength=6 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
+			<div class="error-messages" ng-show="register_form.passwordConfirm.$dirty && register_form.passwordConfirm.$invalid && register_form.submitted">
+				<small ng-show="register_form.passwordConfirm.$error.required">&#x2718 A password is required</small>
+				<small ng-show="register_form.passwordConfirm.$error.minlength">&#x2718 The password min character length is 6</small>
+				<small ng-show="register_form.passwordConfirm.$error.maxlength">&#x2718 The password max character length is 20</small>
+				<small ng-show="register_form.passwordConfirm.$error.pattern">&#x2718 Use only A-Z/a-z 0-9</small>
 			</div>
 		<button class="button" type="submit" name="submit">CREATE ACCOUNT</button>
 	</form>

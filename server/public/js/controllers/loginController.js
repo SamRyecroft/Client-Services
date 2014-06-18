@@ -15,6 +15,7 @@ loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$timeout
 					LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
 					ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
 					$location.path('/welcome');
+					console.log($cookies.userInfoCookie);
 				}, 100);
 			}).error(function(error, status){
 				$scope.loginErrorMessage = "Oops. " + error.error;

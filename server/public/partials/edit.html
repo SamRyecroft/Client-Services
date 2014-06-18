@@ -31,7 +31,20 @@
 		<button class="button" type="submit" name="submit">UPDATE NAME</button>
 	</form>
 	
-	<!-- CHANGE WEBSITE FORM -->
+	<!-- CHANGE PROFILE DESCRIPTION FORM -->
+	<form class="forms left-align-form" name="description_form" novalidate ng-submit="editDescription()">
+		<small class="success-messages" ng-show="successDescriptionChange && !sameDescriptionError">&#x2713 {{ successDescriptionChange }}</small>
+		<small class="error-messages" ng-show="sameDescriptionError && !successDescriptionChange">&#x2718 {{ successDescriptionChange }}</small>
+		<textarea class="form-input" type="text" name="description" rows="4" placeholder="{{user.profileDescription}}" required autocomplete="off" ng-model="edit.profileDescription" ng-minlength=2 ng-maxlength=140></textarea>
+			<div class="error-messages" ng-show="description_form.website.$dirty && description_form.website.$invalid && description_form.submitted">
+				<small ng-show="description_form.description.$error.required">&#x2718 A Website is required</small>
+				<small ng-show="description_form.description.$error.minlength">&#x2718 The Website min character length is 2</small>
+				<small ng-show="description_form.description.$error.maxlength">&#x2718 The Website max character length is 140</small>
+			</div>
+		<button class="button" type="submit" name="submit">UPDATE DESCRIPTION</button>
+	</form>
+	
+	<!-- CHANGE WEBSITE URL FORM -->
 	<form class="forms left-align-form" name="website_form" novalidate ng-submit="editWebsite()">
 		<small class="success-messages" ng-show="successWebsiteURLChange && !sameWebsiteURLError">&#x2713 {{ successWebsiteURLChange }}</small>
 		<small class="error-messages" ng-show="sameWebsiteURLError && !successWebsiteURLChange">&#x2718 {{ successWebsiteURLChange }}</small>

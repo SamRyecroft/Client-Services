@@ -579,13 +579,13 @@ function changeWebsiteURL(emailAddress, websiteURL, callback){
 	});	
 }
 
-function removeAccount (emailAddress, callback){
+function removeAccount (emailAddress, password, callback){
 	
 	userModel.findOne({emailAddress : emailAddress}, function (err, userAccount){
 		
 		if (userAccount != null){
 			
-			if (isValidPassword(oldPassword, userAccount.password, userAccount.salt)){
+			if (isValidPassword(password, userAccount.password, userAccount.salt)){
 				
 				userModel.remove({emaillAddress : emailAddress}, {justOne : true}, function (err){
 						
