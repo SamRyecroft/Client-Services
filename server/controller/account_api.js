@@ -85,7 +85,7 @@ function registerUserAccount(req, res, next) {
 			errors.push('No password specified');
 
 		else if (data.password.length < 6)
-			error.push('Password length must be atleast 6 characters');
+			errors.push('Password length must be atleast 6 characters');
 
 		if (!data.email)
 			errors.push('No email address specified');
@@ -720,53 +720,127 @@ function updateWebsiteURL(req, res){
 		}
 	});
 }
+
 function updateProfileInformation(req, res){
 	
 	var body = '';
 
-		req.on('data', function(data) {
-			body += data;
+	req.on('data', function(data) {
+		body += data;
 
-			if (body.length > 1e6) {
+		if (body.length > 1e6) {
 
-				req.connection.destroy();
-			}
-		});
+			req.connection.destroy();
+		}
+	});
 
 		req.on('end', function() {
 			
 			if (req.headers.cookie != undefined) {
 				
-			var data = qs.parse(body);
+				var data = qs.parse(body);
+
+				var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
+
+				tokenModel.verifyToken(token, function(validToken) {
+					
+					if (validToken) {
+						
+						userModel.changeProfileInformation(token.emailAddress, data.profileInformation, function (err, userAccount){
+
+							if (err != null) {				
+								
+								res.statusCode = 500;
+								res.contentType = 'application/json';
+								res.end(JSON.stringify({
+									status : 'error',
+									error : 'internal error'
+								}));
+								
+								return;
+							
+							} else {
+																				res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {								maxAge : 900000,
+									httpOnly : false									});
+
+
+								res.statusCode = 200;
+								res.contentType = 'application/json';
+								res.end(JSON.stringify({
+									status : 'sucess'
+								}));
+								
+								return;
+							}
+						});
+						
+					}else {
+						
+						res.statusCode = 401;
+						res.contentType = 'application/json';
+						res.end(JSON.stringify({
+							status : 'error',
+							error : 'invalid cridentials'
+						}));
+											
+						return;
+						
+					}
+				});
+			
+			} else {
+				
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'invalid cridentials'
+			}));
+															return;
+		}
+	});
+}
+
+function deleteAccount (req, res){
+	
+	var body = '';
+	
+	req.on('data', function(data){
+		body+= data;
+		
+		if (body.length > 1e6) {
+			
+			req.connection.destroy();
+		}
+		
+	});
+	
+	req.on('end', function (){
+		
+		if (req.headers.cookie != undefined) {
 
 			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
-
-			tokenModel.verifyToken(token, function(validToken) {
+			
+			tokenModel.verifyToken = (token, function (validToken){
 				
-				if (validToken) {
-					
-					userModel.changeProfileInfomation(token.emailAddress, data.profileInformation, function (err, userAccount){
-
-						if (err != null) {				
-							
-							res.statusCode = 500;
+				if (validToken){
+					userModel.removeAccount(token.emailAddress, data.password,  function (err){
+						
+						if (err){
+							res.statusCode = 400;
 							res.contentType = 'application/json';
 							res.end(JSON.stringify({
 								status : 'error',
-								error : 'internal error'
+								error : err.message
 							}));
 							
 							return;
-						
-						} else {
-																			res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {								maxAge : 900000,
-								httpOnly : false									});
-
-
+							
+						}else {
+							
 							res.statusCode = 200;
 							res.contentType = 'application/json';
 							res.end(JSON.stringify({
-								status : 'sucess'
+								status : 'sucsess',
 							}));
 							
 							return;
@@ -781,70 +855,12 @@ function updateProfileInformation(req, res){
 						status : 'error',
 						error : 'invalid cridentials'
 					}));
-										
-					return;
 					
+					return;
 				}
-			});
-			
-		} else {
-				
-			res.contentType = 'application/json';
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'invalid cridentials'
-			}));
-															return;
+			});		
 		}
 	});
-}
-
-function deleteAccount (req, res){
-	
-	if (req.headers.cookie != undefined) {
-
-		var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
-		
-		tokenModel.verifyToken = (token, function (validToken){
-			
-			if (validToken){
-				userModel.removeAccount(token.emailAddress, data.password,  function (err){
-					
-					if (err){
-						res.statusCode = 400;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'error',
-							error : err.message
-						}));
-						
-						return;
-						
-					}else {
-						
-						res.statusCode = 200;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'sucsess',
-						}));
-						
-						return;
-					}
-				});
-				
-			}else {
-				
-				res.statusCode = 401;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'error',
-					error : 'invalid cridentials'
-				}));
-				
-				return;
-			}
-		});		
-	}	
 }
 
 function recoverAccountWithRecoveryKey (req, res){

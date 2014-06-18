@@ -76,7 +76,7 @@ var userSchema = mongoDB
 			profileDescription : {
 				type : String,
 				required : false,
-				default : 'Put somthing about your self here'
+				default : 'Enter a description about yourself. The max limit is 140 characters.'
 			},
 			websiteURL : {
 				type: String,
@@ -607,7 +607,7 @@ function removeAccount (emailAddress, callback){
 			
 		}else {
 			
-			callback(new Error('Useraccount not found!'));
+			callback(new Error('User account not found!'));
 		}
 	});
 }
