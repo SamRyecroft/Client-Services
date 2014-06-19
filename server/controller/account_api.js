@@ -822,7 +822,7 @@ function deleteAccount (req, res){
 				if (validToken){
 					
 					
-					userModel.removeAccount(token.emailAddress, data.deleteAccount,  function (err){
+					userModel.removeAccount(token.emailAddress, data.deleteAccountPassword,  function (err){
 						
 						
 						if (err != null){
