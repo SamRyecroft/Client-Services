@@ -587,7 +587,6 @@ function updateEmailAddress(req, res){
 					userModel.changeEmailAddress(token.emailAddress, data.emailAddress, function (err, userAccount){
 
 						if (err != null) {				
-							
 							res.statusCode = 500;
 							res.contentType = 'application/json';
 							res.end(JSON.stringify({
@@ -746,7 +745,7 @@ function updateProfileInformation(req, res){
 					
 				if (validToken) {
 						
-					userModel.changeProfileInformation(token.emailAddress, data.profileInformation, function (err, userAccount){
+					userModel.changeProfileInformation(token.emailAddress, data.profileDescription, function (err, userAccount){
 
 						if (err != null) {				
 								
@@ -818,13 +817,15 @@ function deleteAccount (req, res){
 			var token = (JSON.parse(cookie.parse(req.headers.cookie)['authenticationCookie']));
 			var data = qs.parse(body);
 			
-			tokenModel.verifyToken = (token, function (validToken){
+			tokenModel.verifyToken (token, function (validToken){
 				
 				if (validToken){
 					
-					userModel.removeAccount(token.emailAddress, data.password,  function (err){
+					
+					userModel.removeAccount(token.emailAddress, data.deleteAccount,  function (err){
 						
-						if (err){
+						
+						if (err != null){
 							res.statusCode = 400;
 							res.contentType = 'application/json';
 							res.end(JSON.stringify({
@@ -870,10 +871,6 @@ function recoverAccountWithRecoveryKey (req, res){
 		
 		body += data;
 
-		if (body.length > 1e6) {
-
-			req.connection.destroy();
-		}
 	});
 
 		req.on('end', function() {

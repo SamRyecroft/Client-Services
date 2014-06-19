@@ -26,7 +26,7 @@ app.post('/userAccount/accountTools/createNewAccount', accounts_api.registerUser
 
 app.patch('/userAccount/profileUtilities/changeWebsiteURL', accounts_api.updateWebsiteURL);
 
-app.post('/userAccount/profileUtilities/changeProfileInfomation', accounts_api.updateProfileInformation);
+app.patch('/userAccount/profileUtilities/changeProfileInfomation', accounts_api.updateProfileInformation);
 
 app.post('/auth/login', accounts_api.logInUserAccount);
 

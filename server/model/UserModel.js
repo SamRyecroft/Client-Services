@@ -475,42 +475,50 @@ function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 
 function changeAccountHolderName (emailAddress, firstName, middleName, surname, callback){
 	
+		
 	userModel.findOne({emailAddress : emailAddress} ,function(err, userAccount){
 		
-		if (firstName != undefined) {
+		if (userAccount != null) {
+				
+			if (firstName != undefined) {
 
-			userAccount.firstName = firstName;
-		}
+				userAccount.firstName = firstName;
+			}
 
-		if (middleName != undefined) {
+			if (middleName != undefined) {
 
-			userAccount.middleName = middleName;
-
-		}
-
-		if (surname != undefined) {
-
-			userAccount.surname = surname;
-
-		}
-		
-		userAccount.save(function(err, userAccount){
-			
-			if (err){
-									
-				databaseLogger.error(err.message);
-				callback(err);
-									
-			} else {
-
-				callback(null, userAccount);
+				userAccount.middleName = middleName;
 
 			}
 
+			if (surname != undefined) {
 
-		});
+				userAccount.surname = surname;
 
+			}
+				
+			userAccount.save(function(err, userAccount){
+					
+				if (err){
+											
+					databaseLogger.error(err.message);
+					callback(err);
+											
+				} else {
+
+					callback(null, userAccount);
+
+				}
+
+			});
+			
+		} else {
+			
+			console.log(emailAddress);
+		}
+		
 	});
+	
 }
 
 function changeProfileInformation (emailAddress, profileDescription, callback){
@@ -583,11 +591,12 @@ function removeAccount (emailAddress, password, callback){
 	
 	userModel.findOne({emailAddress : emailAddress}, function (err, userAccount){
 		
-		if (userAccount != null){
+		console.log(userAccount);
+		if (userAccount != null && !err){
 			
 			if (isValidPassword(password, userAccount.password, userAccount.salt)){
 				
-				userModel.remove({emaillAddress : emailAddress}, {justOne : true}, function (err){
+				userAccount.remove( function (err, userAccount){
 						
 						if (err){
 							
@@ -595,7 +604,7 @@ function removeAccount (emailAddress, password, callback){
 							callback(err);
 						
 						}else {
-							
+							console.log(err);
 							callback(null);
 						}
 					});
@@ -607,7 +616,16 @@ function removeAccount (emailAddress, password, callback){
 			
 		}else {
 			
-			callback(new Error('User account not found!'));
+			if (err){
+				
+				databaseLogger.error(err.message);
+				console.log(err.message);
+				callback(new Error('Internal error'));
+			} else {
+				
+				callback(new Error('User account not found!'));
+			
+			}
 		}
 	});
 }
