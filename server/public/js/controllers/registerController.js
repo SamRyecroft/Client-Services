@@ -5,7 +5,7 @@ loginApp.controller('RegisterController', ['$scope', '$http', 'LoginStatusFactor
 	// Register form submit function
 	$scope.registerSubmit = function(){
 		if($scope.register_form.$valid){
-			if($scope.password == $scope.passwordConfirm){
+			if($scope.register.password == $scope.register.passwordConfirm){
 				$http({
 					method: 'POST',
 					url: 'https://localhost:3000/userAccount/accountTools/createNewAccount',

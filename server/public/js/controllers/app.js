@@ -24,10 +24,8 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStat
 				data: $.param($scope.contact),
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 			}).success(function(data){
+				$scope.contact = {};
 				$scope.contact.success = 'Your message has been submitted';
-				$scope.contact.name = '';
-				$scope.contact.email = '';
-				$scope.contact.message = '';
 				$scope.$emit('LOADED');
 			}).error(function(error, status){
 				$scope.$emit('LOADED');
@@ -57,6 +55,19 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStat
 		});
 	};
 
+	// Watches to get details for the logged in user. Displays name in the drop down navigation, and passes user to userProfile.
+	$scope.$watch(function() {
+		$scope.loggedInUser = angular.fromJson($cookies.userInfoCookie);	
+	});
+
+	// $scope.userProfile is triggered by a ng-click from the drop down nav.
+	$scope.userProfile = function(loggedInUser){
+		ProfileFactory.setUserProfile(loggedInUser); // Setting setUserProfile to the logged in user for the profile page.
+	};
+	
+	
+	
+	
 	// Watches to get the login status of a member to decide what nav to show.
 	$scope.$watch(LoginStatusFactory.getLoginStatus, function() {
 		$scope.loggedIn = LoginStatusFactory.getLoginStatus();
@@ -66,15 +77,18 @@ loginApp.controller('MainController', ['$scope', '$http', '$cookies', 'LoginStat
 			$scope.loggedOut = false;
 		}	
 	});
-
-	// Watches to get details for the logged in user. Displays name in the drop down navigation, and passes user to userProfile.
-	$scope.$watch(LoggedInUserFactory.getUser, function() {
-		$scope.loggedInUser = LoggedInUserFactory.getUser();	
+	
+	
+	$scope.$watch(function() {
+		if(angular.fromJson($cookies.userInfoCookie)){
+			LoginStatusFactory.setLoginStatus(true);
+		}else{
+			LoginStatusFactory.setLoginStatus(false);
+		}	
 	});
-
-	// $scope.userProfile is triggered by a ng-click from the drop down nav.
-	$scope.userProfile = function(loggedInUser){
-		ProfileFactory.setUserProfile(loggedInUser); // Setting setUserProfile to the logged in user for the profile page.
-	};
+	
+	
+	
+	
 
 }]);

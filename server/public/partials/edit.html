@@ -36,10 +36,10 @@
 		<small class="success-messages" ng-show="successDescriptionChange && !sameDescriptionError">&#x2713 {{ successDescriptionChange }}</small>
 		<small class="error-messages" ng-show="sameDescriptionError && !successDescriptionChange">&#x2718 {{ successDescriptionChange }}</small>
 		<textarea class="form-input" type="text" name="description" rows="4" placeholder="{{user.profileDescription}}" required autocomplete="off" ng-model="edit.profileDescription" ng-minlength=2 ng-maxlength=140></textarea>
-			<div class="error-messages" ng-show="description_form.website.$dirty && description_form.website.$invalid && description_form.submitted">
-				<small ng-show="description_form.description.$error.required">&#x2718 A Website is required</small>
-				<small ng-show="description_form.description.$error.minlength">&#x2718 The Website min character length is 2</small>
-				<small ng-show="description_form.description.$error.maxlength">&#x2718 The Website max character length is 140</small>
+			<div class="error-messages" ng-show="description_form.description.$dirty && description_form.description.$invalid && description_form.submitted">
+				<small ng-show="description_form.description.$error.required">&#x2718 A description is required</small>
+				<small ng-show="description_form.description.$error.minlength">&#x2718 The description min character length is 2</small>
+				<small ng-show="description_form.description.$error.maxlength">&#x2718 The description max character length is 140</small>
 			</div>
 		<button class="button" type="submit" name="submit">UPDATE DESCRIPTION</button>
 	</form>
@@ -49,11 +49,11 @@
 		<small class="success-messages" ng-show="successWebsiteURLChange && !sameWebsiteURLError">&#x2713 {{ successWebsiteURLChange }}</small>
 		<small class="error-messages" ng-show="sameWebsiteURLError && !successWebsiteURLChange">&#x2718 {{ successWebsiteURLChange }}</small>
 		<input class="form-input" type="url" name="websiteURL" placeholder="{{user.websiteURL}}" required autocomplete="off" ng-model="edit.websiteURL" ng-minlength=2 ng-maxlength=200/>
-			<div class="error-messages" ng-show="website_form.website.$dirty && website_form.website.$invalid && website_form.submitted">
-				<small ng-show="website_form.website.$error.required">&#x2718 A Website is required</small>
-				<small ng-show="website_form.website.$error.minlength">&#x2718 The Website min character length is 2</small>
-				<small ng-show="website_form.website.$error.maxlength">&#x2718 The Website max character length is 200</small>
-				<small ng-show="website_form.website.$error.url">&#x2718 That's not a URL</small>
+			<div class="error-messages" ng-show="website_form.websiteURL.$dirty && website_form.websiteURL.$invalid && website_form.submitted">
+				<small ng-show="website_form.websiteURL.$error.required">&#x2718 A Website is required</small>
+				<small ng-show="website_form.websiteURL.$error.minlength">&#x2718 The Website min character length is 2</small>
+				<small ng-show="website_form.websiteURL.$error.maxlength">&#x2718 The Website max character length is 200</small>
+				<small ng-show="website_form.websiteURL.$error.url">&#x2718 That's not a URL</small>
 			</div>
 		<button class="button" type="submit" name="submit">UPDATE WEBSITE</button>
 	</form>

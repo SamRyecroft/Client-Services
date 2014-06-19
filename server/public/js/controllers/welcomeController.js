@@ -2,7 +2,7 @@
 
 loginApp.controller('WelcomeController', ['$scope', '$http', '$cookies', 'LoggedInUserFactory', 'ProfileFactory', 'LoginStatusFactory', 'UsersFactory', function($scope, $http, $cookies, LoggedInUserFactory, ProfileFactory, LoginStatusFactory, UsersFactory){
 
-	var userCookie = $cookies.userInfoCookie;
+	var userCookie = angular.fromJson($cookies.userInfoCookie);
   	if(userCookie != undefined) { $scope.showPage = true; }
 
 	$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.

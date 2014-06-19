@@ -2,10 +2,10 @@
 
 loginApp.controller('EditController', ['$scope', '$http', '$cookies', '$timeout', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, $timeout, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
 
-	var userCookie = $cookies.userInfoCookie;
+	var userCookie = angular.fromJson($cookies.userInfoCookie);
   	if(userCookie != undefined) { $scope.showPage = true; }
 
-	$scope.user = LoggedInUserFactory.getUser(); // Getting the logged in user and putting it in $scope.user		
+	$scope.user = userCookie; // Getting the logged in user and putting it in $scope.user		
 
 	// Function onChange for when an image file is added
 	$scope.filesChanged = function(elm){
@@ -64,6 +64,8 @@ loginApp.controller('EditController', ['$scope', '$http', '$cookies', '$timeout'
 				}).success(function(data){
 					$scope.successDescriptionChange = 'Your Description has been changed';
 					$scope.sameDescriptionError = '';
+					$scope.user.profileDescription = $scope.edit.profileDescription;
+					$scope.edit.profileDescription = '';
 					$timeout(function() {
 						LoggedInUserFactory.setUser(angular.fromJson($cookies.userInfoCookie));
 						ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));

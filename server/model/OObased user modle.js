@@ -10,100 +10,100 @@ var logingUtilities = require('../utilities/logger.js');
 var databaseLogger = logingUtilities.logger.loggers.get('Database error');
 var serverLogger = logingUtilities.logger.loggers.get('Server error');
 var mailServices = require('../utilities/mailService.js');
-var DATABASE_ERROR = -1;
+var DATABASE_ERROR = 1;
 var ACCOUNT_NOT_FOUND = 2;
 var INCORRECT_PASSWORD = 3;
-var UNABLE_TO_SEND_EMAIL =-2;
+var UNABLE_TO_SEND_EMAIL =3;
 var INVALID_RECOVERY_KEY_OR_EMAIL_ADDRESS =4;
 var EMAILADDRESS_ALREADY_IN_USE = 5;
 
 var userSchema = mongoDB.Schema({
 
-	username : {
-		type : String,
-		required : true,
-		index :{
-			unique : true
-		}
-	},
-	emailAddress : {
-		type : String,
-		required : true,
-		index : {
-			unique : true
-		},
-		validate : /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-	},
+			username : {
+				type : String,
+				required : true,
+				index :{
+					unique : true
+				}
+			},
+			emailAddress : {
+				type : String,
+				required : true,
+				index : {
+					unique : true
+				},
+				validate : /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+			},
 
-	// Authentication
-	password : {
-		type : String,
-		required : true
-	},
-	salt : {
-		type : String,
-		required : true
-	},
-	numberOfFaildLoginAttempts : {
-		type : Number,
-		required : true,
-		"default" : 0
-	},
-	accountLockedUntill : {
-		type : Date,
-		required : false
-	},
-	accountRecovery : {
-		recoveryKey :{
-			type: String,
-			required : false
-		},
-		experationTime : {
-			type : Date,
-			required : false
-		}
-	},
-	// User information
-	firstName : {
-		type : String,
-		required : true
-	},
-	middleName : {
-		type : String,
-		required : false
-	},
-	surname : {
-		type : String,
-		required : false
-	},
-	profileDescription : {
-		type : String,
-		required : false,
-		default : 'Enter a description about yourself. The max limit is 140 characters.'
-	},
-	websiteURL : {
-		type: String,
-		required : false,
-		default : 'http://www.redninja.co.uk/'
-	},
-	profileImage : {
-		type : String,
-		required : false,
-		default : 'https://pbs.twimg.com/profile_images/466574846608949248/V3xkb-VP_400x400.png',
-	}
+			// Authentication
+			password : {
+				type : String,
+				required : true
+			},
+			salt : {
+				type : String,
+				required : true
+			},
+			numberOfFaildLoginAttempts : {
+				type : Number,
+				required : true,
+				"default" : 0
+			},
+			accountLockedUntill : {
+				type : Date,
+				required : false
+				
+			},
+			accountRecovery : {
+				recoveryKey :{
+					type: String,
+					required : false
+				},
+				experationTime : {
+					type : Date,
+					required : false
+				}
+			},
+			// User information
+			firstName : {
+				type : String,
+				required : true
+			},
+			middleName : {
+				type : String,
+				required : false
+			},
+			surname : {
+				type : String,
+				required : false
+			},
+			profileDescription : {
+				type : String,
+				required : false,
+				default : 'Enter a description about yourself. The max limit is 140 characters.'
+			},
+			websiteURL : {
+				type: String,
+				required : false,
+				default : 'http://www.redninja.co.uk/'
+			},
+			profileImage : {
+				type : String,
+				required : false,
+				default : 'https://pbs.twimg.com/profile_images/466574846608949248/V3xkb-VP_400x400.png',
+			}
 
 });
 
 var userModel = mongoDB.model('User', userSchema);
-exports.userModel = userModel;
-function error (internalErrorCode, errorMessage){
+
+function error (InternalErrorCode, errorMessage){
 	
 	var error = new Object;
 	
-	error.internalErrorCode = internalErrorCode;
+	error.InternetalErrorCode = internalErrorCode;
 	error.errorMessage = errorMessage;
 	
-	console.log(error);
 	return error;
 }
 
@@ -141,7 +141,6 @@ function isValidPassword(password, hashedPassword, saltValue) {
 }
 
 var userModel = mongoDB.model('User', userSchema);
-exports.userModel = userModel;
 
 // Validates user credentials against the stored values before returning the
 // user data if the credentials are correct
@@ -167,13 +166,7 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 
 				userAccount.numberOfFaildLoginAttempts = 0;
 				
-				userAccount.save(function (err, userAccount){
-					
-					if (err){
-						
-						callback(error(DATABASE_ERROR_ ))
-					}
-				});
+				userAccount.save();
 				
 				// RUN IF PASSWORD IS CORRECT
 
@@ -187,7 +180,6 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 				if (userAccount.numberOfFaildLoginAttempts > MAXIMUM_FAILED_LOGIN_ATTEMPTS){
 					
 					userAccount.accountLockedUntill = ((new Date).setHours((new Date).getHours() + LOCK_OUT_TIME));
-					return calback(new Error('Account now locked'));
 				}
 				
 				userAccount.save();
@@ -201,8 +193,6 @@ function loginUsingPassword(accountIdentifier, password, callback) {
 		}
 	});
 }
-exports.loginUsingPassword = loginUsingPassword;
-
 
 // Creates a new user account adding it to the database
 function createNewUser (username, password, emailAddress, firstName, middleName, surname, callback) {
@@ -230,7 +220,6 @@ function createNewUser (username, password, emailAddress, firstName, middleName,
 
 	});
 }
-exports.createNewUser = createNewUser;
 
 // Checks to see if a user account with the specified username exsists
 function doseUserExsist(username, callback) {
@@ -256,10 +245,9 @@ function doseUserExsist(username, callback) {
 		}
 	});
 }
-exports.doseUserExsist = doseUserExsist;
 
 // Checks to see if an account with the specified email address exsists
-function isEmailAddressRegistered (emailAddress, callback){
+function isEmailAddressRegisterd (emailAddress, callback){
 	
 	userModel.find({
 		emailAddress : emailAddress
@@ -284,7 +272,6 @@ function isEmailAddressRegistered (emailAddress, callback){
 		}
 	});
 }
-exports.isEmailAddressRegistered = isEmailAddressRegistered;
 
 function getAllUsers(callback) {
 	
@@ -299,7 +286,6 @@ function getAllUsers(callback) {
 		}
 	});
 }
-exports.getAllUsers = getAllUsers;
 
 function getUserAccountByEmail (emailAddress, callback){
 	
@@ -351,7 +337,8 @@ function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 						callback(null);
 						return 			
 					}
-					
+								
+					return;
 				});
 						
 			}else {
@@ -363,7 +350,6 @@ function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 		}
 	});
 }
-exports.setNewPassword = setNewPassword;
 
 function createRecoveryKey (emailAddress, callback) {
 	
@@ -422,7 +408,6 @@ function createRecoveryKey (emailAddress, callback) {
 		}
 	});
 }
-exports.createRecoveryKey = createRecoveryKey;
 
 function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, callback){
 	
@@ -466,13 +451,11 @@ function changePasswordViaRecoveryKey (newPassword, recoveryKey, emailAddress, c
 		}
 	});
 }
-exports.changePasswordViaRecoveryKey = changePasswordViaRecoveryKey;
-
 
 function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 	
 	
-	getUserAccountByEmail(emailAddress, function(err, userAccount){
+	getUserAccountByEmailAddress(emailAddress, function(err, userAccount){
 		
 		if (err){
 			
@@ -493,7 +476,6 @@ function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 						
 						if (err){
 							
-							callback(error(DATABASE_ERROR, 'Internal database error'));
 							
 						}else {
 							
@@ -506,11 +488,10 @@ function changeEmailAddress (emailAddress ,newEmailAddress, callback){
 		}
 	});
 }
-exports.changeEmailAddress = changeEmailAddress;
 
 function changeAccountHolderName (emailAddress, firstName, middleName, surname, callback){
 	
-	getUserAccountByEmail(emailAddress, function (err, userAccount){
+	getUserAccountByEmailAddress(emailAddress, function (err, userAccount){
 		
 		if (firstName != undefined){
 			
@@ -543,11 +524,10 @@ function changeAccountHolderName (emailAddress, firstName, middleName, surname, 
 		});
 	});
 }
-exports.changeAccountHolderName = changeAccountHolderName;
 
 function changeWebsiteURL(emailAddress, websiteURL, callback){
 	
-	getUserAccountByEmail(emailAddress, function (err, userAccount){
+	getUserAccountByEmailAddress(emailAddress, function (err, userAccount){
 		
 		if (err){
 			
@@ -573,21 +553,17 @@ function changeWebsiteURL(emailAddress, websiteURL, callback){
 		}
 	});
 }
-exports.changeWebsiteURL = changeWebsiteURL;
 
-function changeProfileDescriptioni(emailAddress, profileDescription, callback){
+function removeAccount (emailAddress, password, callback){
 	
-	getUserAccountByEmail(emailAddress, function (err, userAccount){
+	getUserAccountByEmailAddress(emailAddress, function (err, userAccount){
 		
 		if (err){
 			
 			callback(err);
-			return;
-			
 		}else {
 			
-			userAccount.profileDescription = profileDescription;
-			userAccount.save(function(err, userAccount){
+			userAccount.remove(function (err, userAccount){
 				
 				if (err){
 					
@@ -596,46 +572,11 @@ function changeProfileDescriptioni(emailAddress, profileDescription, callback){
 					
 				}else {
 					
-					callback(null, userAccount);
+					callback(null);
 					return;
-				}	
-			});
-		}
-	});
-}
-exports.changeProfileDescriptioni = changeProfileDescriptioni;
-
-function removeAccount (emailAddress, password, callback){
-	
-	getUserAccountByEmail(emailAddress, function (err, userAccount){
-		
-		if (err){
-			
-			callback(err);
-		}else {
-			
-			if (isValidPassword(password, userAccount.password, userAccount.salt)){
-				
-				userAccount.remove(function (err, userAccount){
-					
-					if (err){
-						
-						callback(error(DATABASE_ERROR, 'Internal database error'));
-						return;
-						
-					}else {
-						
-						callback(null);
-						return;
-					}
-				});
-			}else {
-				
-				callback(error(INCORRECT_PASSWORD, 'Password provided was incorrect'));
-				return;
-			}
+				}
+			})
 		}
 	});
 	
 }
-exports.removeAccount = removeAccount;

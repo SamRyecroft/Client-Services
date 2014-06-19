@@ -58,6 +58,26 @@ function createUserInfomationCookie (userAccount) {
 	
 }
 
+function errorResponse (res, err){
+	
+	if (err.internalErrorCode < 0 ){
+								
+		res.statusCode = 500;
+							
+	}else {
+								
+		res.statusCode = 400;
+	}
+							
+	res.contentType = 'application/json';
+	res.end(JSON.stringify({
+		status : 'error',
+		error : err.errorMessage
+	}));
+	return;
+	
+}
+
 function registerUserAccount(req, res, next) {
 
 	var body = '';
@@ -194,13 +214,13 @@ function logInUserAccount(req, res) {
 
 		userModel.loginUsingPassword(data.username, data.password, function(
 				err, accountData) {
-
+			
 			if (err != null) {
 				res.statusCode = 400;
 				res.contentType = 'application/json';
 				res.end(JSON.stringify({
 					status : 'error',
-					error : 'Invalid login details'
+					error : err.message
 				}));
 				
 				return;
@@ -334,13 +354,8 @@ function isUsernameRegistered (req, res) {
 		userModel.doseUserExsist(req.query.username, function(err, exsists) {
 		
 		if (err != null){
-			res.statusCode = 500;
-			res.contentType = 'application/json';
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'internal error'
-			}));
 			
+			errorResponse (res, err);
 			return;
 			
 		}else {
@@ -361,10 +376,10 @@ function isUsernameRegistered (req, res) {
 
 function isEmailAddressRegistered (req, res) {
 
-		if (req.query.emailAddress == undefined){
+	if (req.query.emailAddress == undefined){
 					
-			res.statusCode = 400;
-			res.contentType='application/json';
+		res.statusCode = 400;
+		res.contentType='application/json';
 			res.end(JSON.stringify({
 				status : 'error',
 				error : 'No email adress specified'
@@ -374,27 +389,45 @@ function isEmailAddressRegistered (req, res) {
 					
 		}
 				
-		userModel.isEmailAddressRegisterd(req.query.emailAddress, function(err, exsists) {
+	userModel.isEmailAddressRegistered(req.query.emailAddress, function(err, exsists) {
 			
-			if (err != null){
-				res.statusCode = 500;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'error',
-					error : 'internal error'
-				}));
-						
+		if (err != null){
+				
+				errorResponse(res, err);
 				return;
 						
 			}else{
-				res.statusCode = 200;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'sucsess',
-					result : exsists
-				}));
+				
+				tokenModel.createToken(accountData.emailAddress, function(err, token) {
+
+					if (err != null) {
+						res.statusCode = 500;
+						res.contentType = 'application/json';
+						res.end(JSON.stringify({
+							status : 'error',
+							error : 'Internal error'
+						}));
+							
+						return;
+										
+					} else {
+					
+						res.cookie('authenticationCookie', JSON.stringify(token), {
+							maxAge : 900000,
+							httpOnly : true,
+							secure : true
+						});
+
+						res.statusCode = 200;
+						res.contentType = 'application/json';
+						res.end(JSON.stringify({
+							status : 'sucsess',
+							result : exsists
+						}));
 			
-			return;
+						return;
+					}
+				});
 		}
 	});
 }
@@ -426,23 +459,17 @@ function updatePassword(req, res) {
 
 					userModel.setNewPassword(token.emailAddress, data.oldPassword, data.newPassword, function(err) {
 						
-						if (err == null) {
+						if (err != null) {
+							
+							errorResponse(res, err);
+							return;
+							
+						} else {
 							
 							res.statusCode = 200;								res.contentType = 'application/json';
 							res.end(JSON.stringify({
 								status : 'sucsess'
 							}));							
-							return;
-							
-						} else {
-							
-							res.statusCode = 500;
-							res.contentType = 'application/json';							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
-
-							
 							return;
 						}
 				});
@@ -504,14 +531,8 @@ function updateAccountHolderName(req, res){
 					userModel.changeAccountHolderName(token.emailAddress, data.firstName, data.middleName, data.surname, function(err, userAccount) {
 
 						if (err != null) {
-
-							res.statusCode = 500;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
 							
+							errorResponse(res, err);
 							return;
 
 						} else {
@@ -587,13 +608,8 @@ function updateEmailAddress(req, res){
 					userModel.changeEmailAddress(token.emailAddress, data.emailAddress, function (err, userAccount){
 
 						if (err != null) {				
-							res.statusCode = 500;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
 							
+							errorResponse(res, err);
 							return;
 						
 						} else {
@@ -668,13 +684,7 @@ function updateWebsiteURL(req, res){
 
 						if (err != null) {				
 							
-							res.statusCode = 500;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
-							
+							errorResponse(res, err);
 							return;
 						
 						} else {
@@ -745,17 +755,11 @@ function updateProfileInformation(req, res){
 					
 				if (validToken) {
 						
-					userModel.changeProfileInformation(token.emailAddress, data.profileDescription, function (err, userAccount){
+					userModel.changeProfileDescriptioni(token.emailAddress, data.profileDescription, function (err, userAccount){
 
 						if (err != null) {				
 								
-							res.statusCode = 500;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'error',
-								error : 'internal error'
-							}));
-								
+							errorResponse(res, err);
 							return;
 							
 						} else {
@@ -826,13 +830,8 @@ function deleteAccount (req, res){
 						
 						
 						if (err != null){
-							res.statusCode = 400;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'error',
-								error : err.message
-							}));
 							
+							errorResponse(res, err);
 							return;
 							
 						}else {
@@ -881,15 +880,7 @@ function recoverAccountWithRecoveryKey (req, res){
 			
 				if (err != null){
 					
-					// 500 error if invalid?
-					res.statusCode = 400;
-					res.contentType = 'application/json';
-					res.end(JSON.stringify({
-						status : 'error',
-						error :  'Account not found with that recovery key'
-					 }));
-					
-					return;
+					errorResponse(res, err);
 					
 				}else {
 					
@@ -907,7 +898,7 @@ function recoverAccountWithRecoveryKey (req, res){
 
 function createRecoveryKeyForAccount (req, res){
 
-	userModel.isEmailAddressRegisterd (req.query.emailAddress, function (err, exsists ){		
+	userModel.isEmailAddressRegistered (req.query.emailAddress, function (err, exsists ){		
 		if (err != null){
 			
 			res.statusCode = 500;

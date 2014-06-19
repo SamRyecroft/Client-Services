@@ -2,7 +2,7 @@
 
 loginApp.controller('PasswordResetController', ['$scope', '$http', '$cookies', '$location', function($scope, $http, $cookies, $location){
 
-	var userCookie = $cookies.userInfoCookie;
+	var userCookie = angular.fromJson($cookies.userInfoCookie);
   	if(userCookie != undefined) { $scope.showPage = true; }
 
 	// Retrieve password function.
