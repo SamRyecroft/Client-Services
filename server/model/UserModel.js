@@ -323,6 +323,7 @@ function getUserAccountByEmail (emailAddress, callback){
 		}
 	});
 }
+exports.getUserAccountByEmail = getUserAccountByEmail;
 
 function setNewPassword(emailAddress, oldPassword, newPassword, callback){
 	

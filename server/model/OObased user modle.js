@@ -10,10 +10,10 @@ var logingUtilities = require('../utilities/logger.js');
 var databaseLogger = logingUtilities.logger.loggers.get('Database error');
 var serverLogger = logingUtilities.logger.loggers.get('Server error');
 var mailServices = require('../utilities/mailService.js');
-var DATABASE_ERROR = 1;
+var DATABASE_ERROR = -1;
 var ACCOUNT_NOT_FOUND = 2;
 var INCORRECT_PASSWORD = 3;
-var UNABLE_TO_SEND_EMAIL =3;
+var UNABLE_TO_SEND_EMAIL = -2;
 var INVALID_RECOVERY_KEY_OR_EMAIL_ADDRESS =4;
 var EMAILADDRESS_ALREADY_IN_USE = 5;
 

@@ -779,3 +779,7 @@
 {"level":"warn","message":"failed to connect to [localhost:27017]","timestamp":"2014-06-19T14:29:33.009Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-19T14:29:53.296Z"}
 {"level":"info","message":"Connected to database","timestamp":"2014-06-19T14:47:21.938Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-23T08:51:07.471Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-23T09:47:54.245Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-23T09:50:37.878Z"}
+{"level":"info","message":"Connected to database","timestamp":"2014-06-23T11:24:25.048Z"}

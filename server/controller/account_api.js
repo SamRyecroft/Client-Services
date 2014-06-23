@@ -613,23 +613,46 @@ function updateEmailAddress(req, res){
 							return;
 						
 						} else {
-											
-							res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {
-								maxAge : 900000,
-								httpOnly : false
+							
+							tokenModel.createToken(userAccount.emailAddress, function(err, token) {
+
+								if (err != null) {
+									
+									res.statusCode = 500;
+									res.contentType = 'application/json';
+									res.end(JSON.stringify({
+										status : 'error',
+										error : 'Internal error'
+									}));
+									
+									return;
+								
+								} else {
+
+									res.cookie('authenticationCookie', JSON.stringify(token), {
+										maxAge : 900000,
+										httpOnly : true,
+										secure : true
+									});
+									
+									res.cookie('userInfoCookie', createUserInfomationCookie(userAccount), {
+										maxAge : 900000,
+										httpOnly : false
+									});
+									
+									res.statusCode = 200;
+									res.contentType = 'application/json';
+									res.end(JSON.stringify({
+										status : 'sucess'
+									}));
+									
+									return;
+								}
 							});
-							
-							res.statusCode = 200;
-							res.contentType = 'application/json';
-							res.end(JSON.stringify({
-								status : 'sucess'
-							}));
-							
-							return;
 						}
 					});
 					
-				}else {
+				} else {
 					
 					res.statusCode = 401;
 					res.contentType = 'application/json';
