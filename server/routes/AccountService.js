@@ -1,5 +1,7 @@
 var accounts_api = require('../controller/account_api.js');
 var app = require('../app.js').app;
+var testing = require('../controller/passport.js');
+var passport = require('passport');
 
 app.all('/*', function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -8,6 +10,10 @@ app.all('/*', function(req, res, next) {
     next();
 });
  
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
+
+app.get('/auth/facebook/callback',  accounts_api.loginWithFaceBook);
+
 app.get('/accountResources/existingUsername', accounts_api.isUsernameRegistered);
 
 app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressRegistered);

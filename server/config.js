@@ -15,7 +15,7 @@ define("OUTGOING_EMAIL_ADDRESS", "testemailnodejs@gmail.com");
 define("EMAIL_ACCOUNT_PASSWORD", "totalySecurePassword123");
 define("SERVICE", "Gmail");
 define("PASSWORD_RECOVERY_KEY_LIFE_SPAN", 24);
-define('FACEBOOK_APP_ID', '563369227113484');
-define('FACEBOOK_APP_SECRET', '4a6c58a748973605599ace09ff810e21');
+define('FACEBOOK_APP_ID', '580913495359057');
+define('FACEBOOK_APP_SECRET', 'd72b82d112b5706490a82fd578944807');
 
  

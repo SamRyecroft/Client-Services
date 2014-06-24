@@ -20,3 +20,4 @@
 {"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-16T14:23:43.093Z"}
 {"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-19T09:05:07.016Z"}
 {"level":"info","message":"Recovery key issued to justsam33@gmail.com","timestamp":"2014-06-19T14:11:30.141Z"}
+{"level":"info","message":"Recovery key issued to justsam33@hotmail.com","timestamp":"2014-06-23T13:11:43.916Z"}

@@ -40,7 +40,11 @@ var qs = require('querystring');
 var fs = require('fs');
 var tokenModel = require('../model/TokenModel.js');
 var cookie = require('cookie');
+var passport = require('passport');
+var FacebookStrategy = require ('passport-facebook');
 
+
+exports.userModel =  userModel;
 function createUserInfomationCookie (userAccount) {
 	
 	var userDetails = new Object;
@@ -171,7 +175,17 @@ function registerUserAccount(req, res, next) {
 	});
 }
 
+function loginWithFaceBook(req, res){
 
+	passport.authenticate('facebook', function (err, user, info){
+		
+		console.log(err);
+		console.log(user);
+		console.log(info);
+	});
+		
+}
+exports.loginWithFaceBook = loginWithFaceBook;
 function logInUserAccount(req, res) {
 
 	var body = '';

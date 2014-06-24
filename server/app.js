@@ -48,6 +48,7 @@ app.set('port', serverConfiguration.SERVER_PORT);
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 
+
 // Sets the application to use Compress which enables Gzip compression to responses from the server
 app.use(compress());  
  

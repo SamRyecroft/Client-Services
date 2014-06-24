@@ -1,25 +1,28 @@
 var passport = require('passport');
-var facebookStrategy = require ('passport-facebook');
+var FacebookStrategy = require ('passport-facebook').Strategy;
 var config = require('../config.js');
-var userModel = require ('../model/userModel.js')
-passport.use(new FacebookStrategy{
+var userModel = require('./account_api.js').userModel;
+passport.use(new FacebookStrategy({
 	
-	clientID: config.FACEBOOK_APP_ID;
-	clientSecret :config.FACEBOOK_APP_SECRET;
-	callbackURL : 'localhost callback!';
+	clientID: config.FACEBOOK_APP_ID,
+	clientSecret :config.FACEBOOK_APP_SECRET,
+	callbackURL : 'https://localhost:3000/auth/facebook/callback'
 }, 
 
 function (accessToken, refreshToken, profile, callback){
+
+	userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
 		
-	userModel.isEmailAddressRegistered(profile.emailAddress[0], function (err,exsists){
+		console.log(profile.emails[0].value);
+		console.log(exsists);
 		
 		if (err){
 			
-		} else if (exsits) {
+		} else if (exsists) {
 			
-			userModel.getUserAccountByEmail(profile.emailAddress[0] function (err, userAccount){
+			userModel.getUserAccountByEmail(profile.emails[0].value, function (err, userAccount){
 				
-				if (err){
+				if (err){	
 					
 				} else {
 					
@@ -29,8 +32,8 @@ function (accessToken, refreshToken, profile, callback){
 			
 		}else {
 			
-			userModel.createNewUser();
+			
 		}
 	});
-	
-}
+}	
+));
