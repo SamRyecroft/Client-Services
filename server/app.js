@@ -1,11 +1,12 @@
 var express = require('express');
 var app = express();
+
 var logingUtilities = require('./utilities/logger.js');
 var databaseLogger = logingUtilities.logger.loggers.get('Database error');
 var serverLogger = logingUtilities.logger.loggers.get('Server error');
 exports.app = app;
 
-require('./routes/AccountService.js');
+
 
 var https = require('https');
 var path = require('path');
@@ -13,8 +14,10 @@ var mongoDB = require('mongoose');
 var serverConfiguration = require('./config.js');
 var compress = require('compression');
 var fs = require('fs');
+var util = require('util')
+var BasicStrategy = require('passport-http').BasicStrategy;
 
-
+var passport = require('passport');
 
 
 // Connects the database to the server useing the value stored within the server configuration folder, 
@@ -51,13 +54,10 @@ app.use(express.static(__dirname + '/public'));
 
 // Sets the application to use Compress which enables Gzip compression to responses from the server
 app.use(compress());  
- 
+app.use(passport.initialize());
+
  // If the server dose not have a method mapped to the requested url the server will return a 404 error
-app.get('*', function (req, res){
-	
-	res.writeHead(404);
-	res.end("invalid resource");
-});
+
 
 // Loading private key for server
 var privateKey = fs.readFileSync('./certificates/privkey.pem').toString(); 
@@ -70,7 +70,7 @@ var options = {
 		key: privateKey, 
 		cert : certificate
 }
-
+require('./routes/AccountService.js');
 // Creates a https server useing the loaded private key and certificate and deploys the app on it
 https.createServer(options, app).listen(app.get('port'), function(){
 

@@ -1,7 +1,7 @@
 var passport = require('passport');
 var FacebookStrategy = require ('passport-facebook').Strategy;
 var config = require('../config.js');
-var userModel = require('./account_api.js').userModel;
+var userModel = require('../controller/account_api.js').userModel;
 passport.use(new FacebookStrategy({
 	
 	clientID: config.FACEBOOK_APP_ID,
@@ -11,10 +11,10 @@ passport.use(new FacebookStrategy({
 
 function (accessToken, refreshToken, profile, callback){
 
+	console.log(accessToken, refreshToken);
+
 	userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
 		
-		console.log(profile.emails[0].value);
-		console.log(exsists);
 		
 		if (err){
 			
@@ -26,14 +26,25 @@ function (accessToken, refreshToken, profile, callback){
 					
 				} else {
 					
+					console.log(userAccount);
 					callback(null, userAccount);
 				}
 			});
 			
-		}else {
+			}else {
 			
 			
-		}
-	});
-}	
+			}
+		});
+	}	
 ));
+passport.serializeUser(function(user, done) {
+  done(null, user.username);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+exports.passport = passport;

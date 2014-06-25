@@ -40,11 +40,16 @@ var qs = require('querystring');
 var fs = require('fs');
 var tokenModel = require('../model/TokenModel.js');
 var cookie = require('cookie');
-var passport = require('passport');
-var FacebookStrategy = require ('passport-facebook');
 
+var FacebookStrategy = require ('passport-facebook');
+var config = require('../config.js');
 
 exports.userModel =  userModel;
+
+var passport = require('passport');
+
+
+
 function createUserInfomationCookie (userAccount) {
 	
 	var userDetails = new Object;
@@ -78,8 +83,131 @@ function errorResponse (res, err){
 		status : 'error',
 		error : err.errorMessage
 	}));
-	return;
 	
+	return;
+}
+
+function loginSucsess (req, res, accountData){
+	
+	tokenModel.createToken(accountData.emailAddress, function(err, token) {
+
+		if (err != null) {
+			res.statusCode = 500;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'Internal error'
+			}));
+					
+			return;
+						
+		} else {
+				
+			res.cookie('authenticationCookie', JSON.stringify(token), {
+				httpOnly : true,
+				secure : true
+			});
+						
+			res.cookie('userInfoCookie', createUserInfomationCookie(accountData), {
+				httpOnly : false
+			});
+
+			res.writeHead(302);
+			res.location = '/#/welcome';
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'sucsess',
+				testMessage : 'hello'
+			}));
+						
+			return;
+						
+		}
+	});	
+}
+
+function loginWithFacebook(req, res, next){
+	
+	console.log('started');
+	
+	passport.authenticate('facebook', function(err, user, info) {
+	
+	if (err) {
+		
+	} else if (!user){
+		
+		
+	}else {
+		
+		loginSucsess(req, res, user);
+	}
+		
+	console.log('finished');
+});
+}
+
+exports.loginWithFacebook = loginWithFacebook;
+
+function logInUserAccount(req, res) {
+
+	var body = '';
+
+	req.on('data', function(data) {
+		body += data;
+
+		if (body.length > 1e6) {
+
+			req.connection.destroy();
+		}
+	});
+
+	req.on('end', function() {
+
+		var data = qs.parse(body);
+
+		if (!data.username) {
+			res.statusCode = 400;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'No username specified'
+			}));
+			
+			return;
+
+		}
+
+		if (!data.password) {
+			res.statusCode = 400;
+			res.end(JSON.stringify({
+				status : 'error',
+				error : 'No password specified'
+			}));
+			
+			return;
+
+		}
+
+		userModel.loginUsingPassword(data.username, data.password, function(
+				err, accountData) {
+			
+			if (err != null) {
+				res.statusCode = 400;
+				res.contentType = 'application/json';
+				res.end(JSON.stringify({
+					status : 'error',
+					error : err.message
+				}));
+				
+				return;
+
+			} else {
+
+				loginSucsess(req, res, accountData);
+				
+			}
+		});
+	});
 }
 
 function registerUserAccount(req, res, next) {
@@ -170,112 +298,6 @@ function registerUserAccount(req, res, next) {
 				}));
 						
 				return;
-			}
-		});
-	});
-}
-
-function loginWithFaceBook(req, res){
-
-	passport.authenticate('facebook', function (err, user, info){
-		
-		console.log(err);
-		console.log(user);
-		console.log(info);
-	});
-		
-}
-exports.loginWithFaceBook = loginWithFaceBook;
-function logInUserAccount(req, res) {
-
-	var body = '';
-
-	req.on('data', function(data) {
-		body += data;
-
-		if (body.length > 1e6) {
-
-			req.connection.destroy();
-		}
-	});
-
-	req.on('end', function() {
-
-		var data = qs.parse(body);
-
-		if (!data.username) {
-			res.statusCode = 400;
-			res.contentType = 'application/json';
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'No username specified'
-			}));
-			
-			return;
-
-		}
-
-		if (!data.password) {
-			res.statusCode = 400;
-			res.end(JSON.stringify({
-				status : 'error',
-				error : 'No password specified'
-			}));
-			
-			return;
-
-		}
-
-		userModel.loginUsingPassword(data.username, data.password, function(
-				err, accountData) {
-			
-			if (err != null) {
-				res.statusCode = 400;
-				res.contentType = 'application/json';
-				res.end(JSON.stringify({
-					status : 'error',
-					error : err.message
-				}));
-				
-				return;
-
-			} else {
-
-				tokenModel.createToken(accountData.emailAddress, function(err, token) {
-
-					if (err != null) {
-						res.statusCode = 500;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'error',
-							error : 'Internal error'
-						}));
-						
-						return;
-						
-					} else {
-						
-						res.cookie('authenticationCookie', JSON.stringify(token), {
-							maxAge : 900000,
-							httpOnly : true,
-							secure : true
-						});
-						
-						res.cookie('userInfoCookie', createUserInfomationCookie(accountData), {
-							maxAge : 900000,
-							httpOnly : false
-						});
-
-						res.writeHead(200);
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'sucsess'
-						}));
-						
-						return;
-						
-					}
-				});
 			}
 		});
 	});
@@ -406,42 +428,20 @@ function isEmailAddressRegistered (req, res) {
 	userModel.isEmailAddressRegistered(req.query.emailAddress, function(err, exsists) {
 			
 		if (err != null){
-				
-				errorResponse(res, err);
-				return;
-						
-			}else{
-				
-				tokenModel.createToken(accountData.emailAddress, function(err, token) {
-
-					if (err != null) {
-						res.statusCode = 500;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'error',
-							error : 'Internal error'
-						}));
-							
-						return;
-										
-					} else {
 					
-						res.cookie('authenticationCookie', JSON.stringify(token), {
-							maxAge : 900000,
-							httpOnly : true,
-							secure : true
-						});
-
-						res.statusCode = 200;
-						res.contentType = 'application/json';
-						res.end(JSON.stringify({
-							status : 'sucsess',
-							result : exsists
-						}));
-			
-						return;
-					}
-				});
+			errorResponse(res, err);
+			return;
+							
+		}else{
+					
+			res.statusCode = 200;
+			res.contentType = 'application/json';
+			res.end(JSON.stringify({
+				status : 'sucsess',
+				result : exsists
+			}));
+				
+			return;
 		}
 	});
 }
