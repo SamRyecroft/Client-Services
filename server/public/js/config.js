@@ -23,10 +23,6 @@ loginApp.config(function($routeProvider, $httpProvider) {
 		templateUrl: 'partials/welcome.html',
 		controller: 'WelcomeController'
 	}).
-	when('/password', {
-		templateUrl: 'partials/password.html',
-		controller: 'PasswordController'
-	}).
 	when('/password-email', {
 		templateUrl: 'partials/password-email.html',
 		controller: 'PasswordEmailController'
@@ -34,6 +30,10 @@ loginApp.config(function($routeProvider, $httpProvider) {
 	when('/password-reset', {
 		templateUrl: 'partials/password-reset.html',
 		controller: 'PasswordResetController'
+	}).
+	when('/user', {
+		templateUrl: 'partials/user.html',
+		controller: 'UserController'
 	}).
 	when('/profile', {
 		templateUrl: 'partials/profile.html',

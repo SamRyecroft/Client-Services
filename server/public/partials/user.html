@@ -1,0 +1,33 @@
+<section ng-show="showPage" class="ng-view-section">
+
+	<h1 class="center-text">{{ user.firstName }}'s Profile</h1>
+
+	<article class="profile-container">
+		<section class="profile-left-container center-text">
+			<img ng-src="{{ user.profileImage }}" width="120" height="120"/>
+			<div class="profile-left-inner-row">{{ user.firstName }} {{ user.surname }}</div>
+		</section
+		><section class="profile-right-container">
+			<div class="right-container-boxes">
+				<div class="right-container-boxes-inner">
+					<div class="profile-right-inner-row">{{ user.firstName }} {{ user.surname }}</div>
+					<div class="profile-right-inner-row">{{ user.emailAddress }}</div>
+					<div class="profile-right-inner-row"><a href="{{ user.websiteURL }}" target="_blank">{{ user.websiteURL }}</a></div>
+				</div>
+			</div
+			><div class="right-container-boxes">
+				<div class="right-container-boxes-inner">
+					<div class="profile-right-inner-row">My Description</div>
+					<div class="profile-right-inner-row">{{ user.profileDescription }}</div>
+				</div>
+			</div
+			><div class="right-container-boxes">
+				<div class="right-container-boxes-inner"></div>
+			</div
+			><div class="right-container-boxes">
+				<div class="right-container-boxes-inner"></div>
+			</div>
+		</section>
+	</article>
+	
+</section>

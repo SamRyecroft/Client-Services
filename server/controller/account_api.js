@@ -112,12 +112,10 @@ function loginSucsess (req, res, accountData){
 				httpOnly : false
 			});
 
-			res.writeHead(302);
-			res.location = '/#/welcome';
+			res.writeHead(200);
 			res.contentType = 'application/json';
 			res.end(JSON.stringify({
 				status : 'sucsess',
-				testMessage : 'hello'
 			}));
 						
 			return;
@@ -127,23 +125,40 @@ function loginSucsess (req, res, accountData){
 }
 
 function loginWithFacebook(req, res, next){
-	
-	console.log('started');
-	
+
 	passport.authenticate('facebook', function(err, user, info) {
-	
-	if (err) {
+		if (err) { 
+			
+			return next(err); 
+		}
 		
-	} else if (!user){
+		if (!user) { 
+			
+			return res.redirect('/#/login'); 
+		}
+    	
+		req.logIn(user, function(err) {
 		
+			if (err) { 
+				console.log(err);
+			return next(err); 
+			}
 		
-	}else {
-		
-		loginSucsess(req, res, user);
-	}
-		
-	console.log('finished');
-});
+			tokenModel.createToken(user.emailAddress, function(err, token) {
+				
+				res.cookie('authenticationCookie', JSON.stringify(token), {
+					httpOnly : true,
+					secure : true
+				});
+							
+				res.cookie('userInfoCookie', createUserInfomationCookie(user), {
+					httpOnly : false
+				});
+				
+    	 			 return res.redirect('/#/welcome');
+			});
+   		 });
+  	})(req, res, next);
 }
 
 exports.loginWithFacebook = loginWithFacebook;

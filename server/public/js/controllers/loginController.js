@@ -1,27 +1,27 @@
 'use strict';
 
-loginApp.controller('LoginController', ['$scope', '$http', '$cookies', '$timeout', '$location', 'LoginStatusFactory', 'LoggedInUserFactory', 'ProfileFactory', function($scope, $http, $cookies, $timeout, $location, LoginStatusFactory, LoggedInUserFactory, ProfileFactory){
+loginApp.controller('LoginController', ['$scope', '$http', '$timeout', '$location', function($scope, $http, $timeout, $location){
 		
 	$scope.loginSubmit = function(){
-		if($scope.login_form.$valid){
+	
+		if($scope.login_form.$valid){ // If the form is valid
 			$http({
 				method: 'POST',
 				url: 'https://localhost:3000/auth/login',
 				data: $.param($scope.login)
 			}).success(function(data){
-				LoginStatusFactory.setLoginStatus(true);
 				$scope.login = {};
 				$timeout(function() {
-					ProfileFactory.setUserProfile(angular.fromJson($cookies.userInfoCookie));
 					$location.path('/welcome');
 				}, 100);
 			}).error(function(error, status){
-				$scope.loginErrorMessage = "Oops. " + error.error;
+				$scope.loginErrorMessage = error.error;
 				console.log(error, status, ' from Login');
 			});
-		}else{
+		}else{ // Else the form is invalid
 			$scope.login_form.submitted = true;
 		}
+		
 	};
 
 }]);

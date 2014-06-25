@@ -1,7 +1,9 @@
 var passport = require('passport');
 var FacebookStrategy = require ('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
 var config = require('../config.js');
 var userModel = require('../controller/account_api.js').userModel;
+
 passport.use(new FacebookStrategy({
 	
 	clientID: config.FACEBOOK_APP_ID,
@@ -38,6 +40,7 @@ function (accessToken, refreshToken, profile, callback){
 		});
 	}	
 ));
+
 passport.serializeUser(function(user, done) {
   done(null, user.username);
 });

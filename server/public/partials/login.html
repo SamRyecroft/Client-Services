@@ -1,25 +1,36 @@
 <section class="ng-view-section">
 
 	<h1 class="center-text">Login</h1>
-	
+
+
+	<!-- SOCIAL MEDIA LOGIN -->
+	<form class="forms" name="social_form" novalidate ng-submit="socialSubmit()">
+		<a href="/auth/twitter" class="button social-button twitter-blue">Login with Twitter</a>
+		<a href="/auth/facebook" class="button social-button facebook-blue">Login with Facebook</a>
+	</form>
+
+
+	<!-- NATIVE LOGIN -->
 	<form class="forms" name="login_form" novalidate ng-submit="loginSubmit()">	
-	
-		
 		<small class="error-messages" ng-show="loginErrorMessage">&#x2718 {{ loginErrorMessage }}</small>
+
+		<div class="error-messages" ng-show="login_form.username.$dirty && login_form.username.$invalid && login_form.submitted">
+		    <small ng-show="login_form.username.$error.required">&#x2718 A username is required</small>
+		    <small ng-show="login_form.username.$error.minlength">&#x2718 The username min character length is 2</small>
+		    <small ng-show="login_form.username.$error.maxlength">&#x2718 The username max character length is 20</small>
+		</div>
 		<input class="form-input" type="text" name="username" placeholder="Username or Email" required autocomplete="off" ng-model="login.username" ng-minlength=2 ng-maxlength=20>
-			<div class="error-messages" ng-show="login_form.username.$dirty && login_form.username.$invalid && login_form.submitted">
-				<small ng-show="login_form.username.$error.required">&#x2718 A username is required</small>
-				<small ng-show="login_form.username.$error.minlength">&#x2718 The username min character length is 2</small>
-				<small ng-show="login_form.username.$error.maxlength">&#x2718 The username max character length is 20</small>
-			</div>
+
+		<div class="error-messages" ng-show="login_form.password.$dirty && login_form.password.$invalid && login_form.submitted">
+		    <small ng-show="login_form.password.$error.required">&#x2718 A password is required</small>
+		    <small ng-show="login_form.password.$error.minlength">&#x2718 The password min character length is 2</small>
+		    <small ng-show="login_form.password.$error.maxlength">&#x2718 The password max character length is 20</small>
+		    <small ng-show="login_form.password.$error.pattern">&#x2718 Use only A-Z/a-z</small>
+		</div>
 		<input class="form-input" type="password" name="password" placeholder="Password" required ng-model="login.password" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
-			<div class="error-messages" ng-show="login_form.password.$dirty && login_form.password.$invalid && login_form.submitted">
-				<small ng-show="login_form.password.$error.required">&#x2718 A password is required</small>
-				<small ng-show="login_form.password.$error.minlength">&#x2718 The password min character length is 2</small>
-				<small ng-show="login_form.password.$error.maxlength">&#x2718 The password max character length is 20</small>
-				<small ng-show="login_form.password.$error.pattern">&#x2718 Use only A-Z/a-z</small>
-			</div>
+
 		<button class="button" type="submit" name="submit">LOGIN</button>
+
 		<div class="password-link"><a href="#/password-email">Forgot Password</a></div>
 	</form>
 

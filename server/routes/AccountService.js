@@ -13,7 +13,7 @@ app.all('/*', function(req, res, next) {
  
 app.get('/auth/facebook', passport.authenticate('facebook', { session : false,  scope : 'email' }));
 
-	app.get('/auth/facebook/callback',accounts_api.loginWithFacebook);
+app.get('/auth/facebook/callback',accounts_api.loginWithFacebook);
 
 app.get('/accountResources/existingUsername', accounts_api.isUsernameRegistered);
 

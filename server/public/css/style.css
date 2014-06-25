@@ -1,37 +1,3 @@
-.popup{
-	position: fixed;
-	top: 0; right: 0; bottom: 0; left: 0;
-	background-color: rgba(78,117,94,0.5);
-	z-index: 9999;
-}
-.popup-inner-container{
-	margin: 5% auto 12.5% auto;
-	width: 50%;
-}
-.close-popup{
-	margin-left: 100%;
-	font-size: 32px;
-	width: 64px;
-	height: 64px;
-	line-height: 64px;
-	color: #ffffff;
-	left: 100%;
-	top: -64px;
-}
-.close-popup:hover{
-	color: #1abc9c;
-	border: none;
-}
-.contact-forms{
-	padding: 16px;
-	border: 1px silver solid;
-}
-textarea {
-   resize: none;
-}
-
-
-
 /* === UNIVERSAL === */
 /* ================= */
 *{
@@ -41,11 +7,20 @@ textarea {
 	font-size: 16px;
 	font-weight: 300;
 	line-height: 16px;
+	letter-spacing: 1px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
+::selection {
+	background: #1bd8b3;
+	color: #ffffff;
+}
+::-moz-selection {
+	background: #1bd8b3;
+	color: #ffffff;
+}
 
 
 
@@ -137,6 +112,7 @@ nav,
 .main-nav, 
 .form-input,
 .current-members-li a > img, 
+.image-margin-bottom,
 .error-messages,
 .success-messages{
 	margin-bottom: 24px;
@@ -148,7 +124,6 @@ nav,
 /* === PADDINGS === */
 /* ================ */
 .container, 
-.main-nav, 
 .main-nav-li a,
 .forms,
 .form-input, 
@@ -171,6 +146,7 @@ nav,
 article,
 nav, 
 section,
+.forms, 
 .main-nav-li-drop li a,
 .button,
 .profile-left-inner-row, 
@@ -179,7 +155,8 @@ section,
 .success-messages{
 	display: block;
 }
-.main-nav-li,  
+.main-nav-li,
+.social-button,
 .current-members-li, 
 .profile-left-container, 
 .profile-left-inner-row > div, 
@@ -204,8 +181,7 @@ section,
 }
 .button:hover,
 .profile-left-container, 
-.add-like, 
-.right-container-boxes-inner{
+.add-like{
 	background-color: #1abc9c;
 }
 .close-popup,
@@ -217,17 +193,22 @@ section,
 .error-messages{
 	background-color: #f92828;
 }
-
+.twitter-blue{
+	background-color: #4099FF;
+}
+.facebook-blue{
+	background-color: #3B5998;
+}
 
 
 
 /* === FONT COLOURS === */
 /* ==================== */
 .main-nav-li a:hover, 
-.button, 
+.button,
+.social-button a, 
 .add-like, 
 .profile-left-inner-row,
-.profile-right-inner-row, 
 .error-messages,
 .success-messages{
 	color: #ffffff;
@@ -256,7 +237,8 @@ section,
 
 /* === TEXT UNDERLINE === */
 /* ====================== */
-.password-link a:hover{
+.password-link a:hover,
+.profile-right-inner-row a:hover{
 	text-decoration: underline;
 }
 
@@ -276,6 +258,7 @@ section,
 
 /* === VERTICAL ALIGN TOP === */
 /* ========================== */
+.forms,
 .current-members-li, 
 .profile-left-container, 
 .profile-right-container, 
@@ -301,6 +284,7 @@ section,
 
 
 .main-nav{
+	padding: 16px 0;
 }
 /* === DROP DOWN NAV (ALL PAGES) === */
 /* ================================= */
@@ -324,8 +308,7 @@ section,
 /* === FORMS (ALL FORMS) === */
 /* ========================= */
 .forms{
-	width: 50%;
-	border: 1px silver solid;
+	width: 49%;
 }
 /* === FORM INPUT FIELDS (ALL FORM INPUTS) === */
 .form-input{
@@ -339,7 +322,7 @@ section,
 /* === SUBMIT BUTTON (ALL FORM SUBMIT BUTTONS) === */
 .button{
 	border: none;	
-	width: 50%;
+	width: 49%;
 }
 /* === FORGOT PASSWORD LINK (LOGIN PAGE) === */
 .password-link{
@@ -413,10 +396,11 @@ section,
 /* === RIGHT BOXES INNER (PROFILE PAGE) === */
 .right-container-boxes-inner{
 	height: 100%;
+	border: 1px silver solid;
 }
 /* === RIGHT PROFILE INNER TEXT ROW (PROFILE PAGE) === */
 .profile-right-inner-row{
-	height: 33%;
+	height: 20%;
 }
 
 /* === RIGHT BOXES INNER LIKES CIRCLE (PROFILE PAGE) === */
@@ -434,20 +418,56 @@ section,
 
 
 
+/* === CONTACT FORM === */
+/* ==================== */
+.popup{
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background-color: rgba(78,117,94,0.5);
+	z-index: 9999;
+}
+.popup-inner-container{
+	margin: 5% auto 12.5% auto;
+	width: 50%;
+}
+.close-popup{
+	margin-left: 100%;
+	font-size: 32px;
+	width: 64px;
+	height: 64px;
+	line-height: 64px;
+	color: #ffffff;
+	left: 100%;
+	top: -64px;
+}
+.close-popup:hover{
+	color: #1abc9c;
+	border: none;
+}
+.contact-forms{
+	padding: 16px;
+	border: 1px silver solid;
+}
+textarea {
+   resize: none;
+}
 
 
 
+
+
+
+
+
+/* === LOADING ICON === */
+/* ==================== */
 .loader{
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	z-index: 9999;
-	width: 100px;
-	margin: -50px 0 0 -50px;
+	background-color: rgba(78,117,94,0.5);
+	top: 0%; right: 0; bottom: 0; left: 0%;
+	z-index: 999;
 }
-/**
- * Flexible Google-style progress indicator
- */
+
 @-webkit-keyframes progress {
 	50% { border-width: .5em 0; }
 	to { border-width: .5em 0 0 0; }
@@ -463,14 +483,11 @@ section,
 	to { transform: rotate(-270deg); }
 }
 
-.loading { /* Size of the progress indicator */
-	margin: 16px auto;
-	text-align: center;
-	padding: 16px;
-}
-
 .progress {
-	font-size: 100px; /* Size of the progress indicator */
+	position: absolute;
+	top: 40%;
+	left: 46%;
+	font-size: 100px; /* Size of the loader */
 	width: 1em; 
 	height: 1em;
 	border: solid red;
@@ -485,8 +502,4 @@ section,
 	-webkit-animation: rotate 1s steps(4) infinite,
 	           progress .25s linear infinite alternate;
 	transform: rotate(90deg);
-	animation: rotate 1s steps(4) infinite,
-	           progress .25s linear infinite alternate;
-	text-indent: 99em;
-	overflow: hidden;
 }

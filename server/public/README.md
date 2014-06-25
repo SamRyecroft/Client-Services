@@ -1,10 +1,13 @@
-THIS NEEDS UPDATING!!!!
-=======================
+PREREQUISITE!!!!
+================
 
 The app requires a node.js server. The one i am using with this is by Sam Ryecroft. (NodeServer).
 
-Angular-Login
-=============
+For this to work, get Sam's Node Server code and replace the contents of the Public folder only with the contents of this.
+
+
+Angular-Login - This needs updating
+===================================
 
 AngularJS login, register and password retrieval.
 

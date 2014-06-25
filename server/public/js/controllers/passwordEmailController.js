@@ -4,10 +4,13 @@ loginApp.controller('PasswordEmailController', ['$scope', '$http', '$cookies', f
 
 	// Retrieve password function.
 	$scope.passwordEmailSubmit = function(){
-		// Loading indicators.
-		$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true/LOADING the loader will show.
-		$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false/LOADED the loader will show.
-		if($scope.email_form.$valid){
+
+  		// Loading Indicators
+		$scope.$on('LOADING', function(){$scope.loading = true}); // If $scope.loading is true (LOADING) the loader will show.
+		$scope.$on('LOADED', function(){$scope.loading = false}); // If $scope.loading is false (LOADED) the loader will show.
+
+		if($scope.email_form.$valid){ // If the form is valid
+		
 			$scope.$emit('LOADING');
 			$http({
 				method: 'GET',
@@ -19,14 +22,18 @@ loginApp.controller('PasswordEmailController', ['$scope', '$http', '$cookies', f
 				$scope.password.emailAddress = {};
 				$scope.$emit('LOADED'); // Emit LOADING, sets $scope.loading to true. Shows loading indicator.
 			}).error(function(error, status){
-				$scope.emailAddressErrorMessage = "Looks like there was a: " + status + " error";
+				$scope.emailAddressErrorMessage = error.error;
 				$scope.emailAddressSuccessMessage = "";
 				console.log(error, status, 'error');
 				$scope.$emit('LOADED'); // Emit LOADING, sets $scope.loading to true. Shows loading indicator.
 			});
-		}else{
+			
+		}else{ // Else the form is invalid
+		
 			$scope.email_form.submitted = true;
+			
 		}
+		
 	};
 
 }]);

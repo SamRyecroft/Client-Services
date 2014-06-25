@@ -13,13 +13,14 @@
 		><section class="profile-right-container">
 			<div class="right-container-boxes">
 				<div class="right-container-boxes-inner">
-					<div class="profile-right-inner-row">{{ profile.firstName }}</div>
-					<div class="profile-right-inner-row">{{ profile.surname }}</div>
+					<div class="profile-right-inner-row">{{ profile.firstName }} {{ profile.surname }}</div>
 					<div class="profile-right-inner-row">{{ profile.emailAddress }}</div>
+					<div class="profile-right-inner-row"><a href="{{ profile.websiteURL }}" target="_blank">{{ profile.websiteURL }}</a></div>
 				</div>
 			</div
 			><div class="right-container-boxes">
 				<div class="right-container-boxes-inner">
+					<div class="profile-right-inner-row">About Me</div>
 					<div class="profile-right-inner-row">{{ profile.profileDescription }}</div>
 				</div>
 			</div

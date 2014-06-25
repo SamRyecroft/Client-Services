@@ -21,36 +21,35 @@
 	.main-nav-li a{
 		font: 12px;
 	}
+	
+	
 	.forms{
 		width: 100%;
 	}
-	.form-input{
-		padding: 10px;
+	.button{
+		width: 100%;
 	}
-	
+	.social-button{
+		margin-bottom: 16px;
+	}
 	.password-link{
 		margin-top: 16px;
 	}
 	
-	.button{
-		width: 100%;
-	}
 	
 	.current-members-li{
 		width: 50%;
 	}
+	
 
 	.profile-left-container{
 		display: block;
 		width: 100%;
 	}
-
 	.profile-right-container{
 		display: block;
 		width: 100%;
 	}
-	
-
 	.right-container-boxes{
 		padding: 16px 0 0 0;
 		width: 100%;
@@ -67,16 +66,23 @@
 	.close-popup{
 		margin-left: 0;
 	}
+
+
+	.main-nav-ul{
+		text-align: center;
+		position: relative;
+	}
 	.forms{
 		width: 75%;
 	}
-	
-	.password-link{
-		margin-top: 16px;
-	}
-	
 	.button{
 		width: 100%;
+	}
+	.social-button{
+		margin-bottom: 16px;
+	}
+	.password-link{
+		margin-top: 16px;
 	}
 	
 	.current-members-li{

@@ -63,15 +63,3 @@ loginApp.factory('ProfileFactory', function(){
 		}
 	};
 });
-
-// === MEMBER FACTORY TO STORE CURRENT MEMBERS === //
-/*
-loginApp.factory('memberFactory', function($http) {
-
-	return {
-		getMembers: function() {
-			return $http.get('https://localhost:3000/accountResources/allUsers.json');
-		}
-	};
-});
-*/

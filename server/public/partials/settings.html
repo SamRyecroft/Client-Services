@@ -6,13 +6,15 @@
 	<form class="forms left-align-form" name="email_form" novalidate ng-submit="settingsEmail()">
 		<small class="success-messages" ng-show="successEmailChange && !sameEmailError">&#x2713 {{ successEmailChange }}</small>
 		<small class="error-messages" ng-show="sameEmailError && !successEmailChange">&#x2718 {{ sameEmailError }}</small>
+			
+		<div class="error-messages" ng-show="email_form.emailAddress.$dirty && email_form.emailAddress.$invalid && email_form.submitted">
+		    <small ng-show="email_form.emailAddress.$error.required">&#x2718 A Email is required</small>
+		    <small ng-show="email_form.emailAddress.$error.minlength">&#x2718 The Email min character length is 2</small>
+		    <small ng-show="email_form.emailAddress.$error.maxlength">&#x2718 The Email max character length is 30</small>
+		    <small ng-show="email_form.emailAddress.$error.email">&#x2718 Please enter a valid email</small>
+		</div>
 		<input class="form-input" type="email" name="emailAddress" placeholder="{{user.emailAddress}}" required autocomplete="off" ng-model="change.emailAddress" ng-minlength=2 ng-maxlength=30>
-			<div class="error-messages" ng-show="email_form.emailAddress.$dirty && email_form.emailAddress.$invalid && email_form.submitted">
-				<small ng-show="email_form.emailAddress.$error.required">&#x2718 A Email is required</small>
-				<small ng-show="email_form.emailAddress.$error.minlength">&#x2718 The Email min character length is 2</small>
-				<small ng-show="email_form.emailAddress.$error.maxlength">&#x2718 The Email max character length is 30</small>
-				<small ng-show="email_form.emailAddress.$error.email">&#x2718 Please enter a valid email</small>
-			</div>
+		
 		<button class="button" type="submit" name="submit">UPDATE EMAIL</button>
 	</form>
 
@@ -20,43 +22,48 @@
 	<form class="forms left-align-form" name="password_form" novalidate ng-submit="settingsPassword()">
 		<small class="success-messages" ng-show="successPassChange && !samePasswordError">&#x2713 {{ successPassChange }}</small>
 		<small class="error-messages" ng-show="samePasswordError && !successPassChange">&#x2718 {{ samePasswordError }}</small>
+		<div class="error-messages" ng-show="password_form.oldPassword.$dirty && password_form.oldPassword.$invalid && password_form.submitted">
+		    <small ng-show="password_form.oldPassword.$error.required">&#x2718 A Password is required</small>
+		    <small ng-show="password_form.oldPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
+		    <small ng-show="password_form.oldPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
+		    <small ng-show="password_form.oldPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
+		</div>
 		<input class="form-input" type="password" name="oldPassword" placeholder="Current Password" required autocomplete="off" ng-model="change.oldPassword" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
-			<div class="error-messages" ng-show="password_form.oldPassword.$dirty && password_form.oldPassword.$invalid && password_form.submitted">
-				<small ng-show="password_form.oldPassword.$error.required">&#x2718 A Password is required</small>
-				<small ng-show="password_form.oldPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
-				<small ng-show="password_form.oldPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
-				<small ng-show="password_form.oldPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
-			</div>
+		
 		<small class="error-messages" ng-show="confirmPasswordError">&#x2718 {{ confirmPasswordError }}</small>
 		<small class="error-messages" ng-show="passwordDuplicateError">&#x2718 {{ passwordDuplicateError }}</small>
+			
+		<div class="error-messages" ng-show="password_form.newPassword.$dirty && password_form.newPassword.$invalid && password_form.submitted">
+		    <small ng-show="password_form.newPassword.$error.required">&#x2718 A Password is required</small>
+		    <small ng-show="password_form.newPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
+		    <small ng-show="password_form.newPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
+		    <small ng-show="password_form.newPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
+		</div>
 		<input class="form-input" type="password" name="newPassword" placeholder="New Password" required autocomplete="off" ng-model="change.newPassword" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
-			<div class="error-messages" ng-show="password_form.newPassword.$dirty && password_form.newPassword.$invalid && password_form.submitted">
-				<small ng-show="password_form.newPassword.$error.required">&#x2718 A Password is required</small>
-				<small ng-show="password_form.newPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
-				<small ng-show="password_form.newPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
-				<small ng-show="password_form.newPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
-			</div>
+		
 		<small class="error-messages" ng-show="passwordConfirmError">&#x2718 {{ passwordConfirmError }}</small>
+		<div class="error-messages" ng-show="password_form.confirmPassword.$dirty && password_form.confirmPassword.$invalid && password_form.submitted">
+		    <small ng-show="password_form.confirmPassword.$error.required">&#x2718 A Password is required</small>
+		    <small ng-show="password_form.confirmPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
+		    <small ng-show="password_form.confirmPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
+		    <small ng-show="password_form.confirmPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
+		</div>
 		<input class="form-input" type="password" name="confirmPassword" placeholder="Confirm Password" required autocomplete="off" ng-model="change.confirmPassword" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
-			<div class="error-messages" ng-show="password_form.confirmPassword.$dirty && password_form.confirmPassword.$invalid && password_form.submitted">
-				<small ng-show="password_form.confirmPassword.$error.required">&#x2718 A Password is required</small>
-				<small ng-show="password_form.confirmPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
-				<small ng-show="password_form.confirmPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
-				<small ng-show="password_form.confirmPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
-			</div>
+		
 		<button class="button" type="submit" name="submit">UPDATE PASSWORD</button>
 	</form>
 
 	<!-- DELETE ACCOUNT FORM -->
 	<form class="forms left-align-form" name="delete_form" novalidate ng-submit="settingsDelete()">
 		<small class="success-messages" ng-show="successDeleteAccount">&#x2713 {{ successDeleteAccount }}</small>
+		<div class="error-messages" ng-show="delete_form.deleteAccountPassword.$dirty && delete_form.deleteAccountPassword.$invalid && delete_form.submitted">
+		    <small ng-show="delete_form.deleteAccountPassword.$error.required">&#x2718 A Password is required</small>
+		    <small ng-show="delete_form.deleteAccountPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
+		    <small ng-show="delete_form.deleteAccountPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
+		    <small ng-show="delete_form.deleteAccountPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
+		</div>
 		<input class="form-input" type="password" name="deleteAccountPassword" placeholder="Enter Password To Delete Account" required autocomplete="off" ng-model="change.deleteAccountPassword" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
-			<div class="error-messages" ng-show="delete_form.deleteAccountPassword.$dirty && delete_form.deleteAccountPassword.$invalid && delete_form.submitted">
-				<small ng-show="delete_form.deleteAccountPassword.$error.required">&#x2718 A Password is required</small>
-				<small ng-show="delete_form.deleteAccountPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
-				<small ng-show="delete_form.deleteAccountPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
-				<small ng-show="delete_form.deleteAccountPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
-			</div>
+		
 		<button class="button" type="submit" name="submit">DELETE ACOUNT</button>
 	</form>
 
