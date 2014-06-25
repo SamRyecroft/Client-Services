@@ -11,6 +11,10 @@ app.all('/*', function(req, res, next) {
     next();
 });
  
+app.get('/auth/google', passport.authenticate('google', {session : false}));
+
+app.get('/auth/google/callback', accounts_api.loginWithGoogle);
+
 app.get('/auth/facebook', passport.authenticate('facebook', { session : false,  scope : 'email' }));
 
 app.get('/auth/facebook/callback',accounts_api.loginWithFacebook);

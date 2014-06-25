@@ -41,7 +41,6 @@ var fs = require('fs');
 var tokenModel = require('../model/TokenModel.js');
 var cookie = require('cookie');
 
-var FacebookStrategy = require ('passport-facebook');
 var config = require('../config.js');
 
 exports.userModel =  userModel;
@@ -160,8 +159,45 @@ function loginWithFacebook(req, res, next){
    		 });
   	})(req, res, next);
 }
-
 exports.loginWithFacebook = loginWithFacebook;
+
+function loginWithGoogle(req, res, next){
+	
+	passport.authenticate('google', function(err,user,info) {
+		console.log(user);
+		if (err){
+			
+			return next(err); 
+		}
+		
+		if (!user){
+			return res.redirect('/#/login'); 
+		}
+		
+		req.login(user, function(err){
+			if (err) { 
+				console.log(err);
+			return next(err); 
+			}
+		
+			tokenModel.createToken(user.emailAddress, function(err, token) {
+				
+				res.cookie('authenticationCookie', JSON.stringify(token), {
+					httpOnly : true,
+					secure : true
+				});
+							
+				res.cookie('userInfoCookie', createUserInfomationCookie(user), {
+					httpOnly : false
+				});
+				
+    	 			 return res.redirect('/#/welcome');
+			});
+		});
+	})(req, res, next);
+}
+
+exports.loginWithGoogle = loginWithGoogle;
 
 function logInUserAccount(req, res) {
 

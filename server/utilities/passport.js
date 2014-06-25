@@ -1,6 +1,6 @@
 var passport = require('passport');
 var FacebookStrategy = require ('passport-facebook').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
+var GoogleStrategy = require('passport-google').Strategy;
 var config = require('../config.js');
 var userModel = require('../controller/account_api.js').userModel;
 
@@ -28,7 +28,6 @@ function (accessToken, refreshToken, profile, callback){
 					
 				} else {
 					
-					console.log(userAccount);
 					callback(null, userAccount);
 				}
 			});
@@ -39,6 +38,36 @@ function (accessToken, refreshToken, profile, callback){
 			}
 		});
 	}	
+));
+
+passport.use(new GoogleStrategy({
+    returnURL: 'https://localhost:3000/auth/google/callback',
+    realm: 'https://localhost:3000'
+  },
+  function(identifier, profile, callback) {
+	console.log(profile);
+    userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
+	console.log(exsists);
+	
+	if (err){
+		
+	} else if (exsists) {
+		
+		userModel.getUserAccountByEmail(profile.emails[0].value, function (err, userAccount){
+			
+			if (err){	
+				
+			} else {
+				
+				callback(null, userAccount);
+			}
+		});
+		
+		}else {
+		
+		
+		}
+	});  }
 ));
 
 passport.serializeUser(function(user, done) {
