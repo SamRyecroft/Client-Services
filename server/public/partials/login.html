@@ -4,10 +4,11 @@
 
 
 	<!-- SOCIAL MEDIA LOGIN -->
-	<form class="forms" name="social_form" novalidate ng-submit="socialSubmit()">
-		<a href="/auth/twitter" class="button social-button twitter-blue">Login with Twitter</a>
-		<a href="/auth/facebook" class="button social-button facebook-blue">Login with Facebook</a>
-	</form>
+	<div class="forms">
+		<a ng-href="/auth/google" class="button social-button google-redBG">Login with Google+</a>
+		<a ng-href="/auth/facebook" class="button social-button facebook-blueBG">Login with Facebook</a>
+	</div>
+	
 
 
 	<!-- NATIVE LOGIN -->
@@ -29,7 +30,7 @@
 		</div>
 		<input class="form-input" type="password" name="password" placeholder="Password" required ng-model="login.password" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
 
-		<button class="button" type="submit" name="submit">LOGIN</button>
+		<button class="button" type="submit" name="submit">Login</button>
 
 		<div class="password-link"><a href="#/password-email">Forgot Password</a></div>
 	</form>

@@ -34,7 +34,7 @@ function (accessToken, refreshToken, profile, callback){
 			
 			}else {
 			
-			
+				callback(null, false);
 			}
 		});
 	}	
@@ -45,7 +45,9 @@ passport.use(new GoogleStrategy({
     realm: 'https://localhost:3000'
   },
   function(identifier, profile, callback) {
-	console.log(profile);
+	console.log(identifier);
+
+	
     userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
 	console.log(exsists);
 	
@@ -65,7 +67,7 @@ passport.use(new GoogleStrategy({
 		
 		}else {
 		
-		
+			callback(null, false);
 		}
 	});  }
 ));

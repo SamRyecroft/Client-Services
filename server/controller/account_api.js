@@ -47,8 +47,6 @@ exports.userModel =  userModel;
 
 var passport = require('passport');
 
-
-
 function createUserInfomationCookie (userAccount) {
 	
 	var userDetails = new Object;

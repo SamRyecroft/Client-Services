@@ -10,7 +10,7 @@
 		
 		<input class="form-input" type="file" name="img" required onchange="angular.element(this).scope().filesChanged(this)"/>
 		
-		<button class="button" type="submit" ng-click="editImg()" name="submit">UPDATE IMAGE</button>
+		<button class="button" type="submit" ng-click="editImg()" name="submit">Update Image</button>
 	</form>
 	
 
@@ -36,7 +36,7 @@
 		</div>
 		<input class="form-input" type="text" name="surname" placeholder="{{user.surname}}" required autocomplete="off" ng-model="edit.surname" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/"/>
 		
-		<button class="button" type="submit" name="submit">UPDATE NAME</button>
+		<button class="button" type="submit" name="submit">Update Name</button>
 	</form>
 	
 	
@@ -53,7 +53,7 @@
 		</div>
 		<textarea class="form-input" type="text" name="description" rows="8" placeholder="{{user.profileDescription}}" required autocomplete="off" ng-model="edit.profileDescription" ng-minlength=2 ng-maxlength=140/></textarea>
 		
-		<button class="button" type="submit" name="submit">UPDATE BIO</button>
+		<button class="button" type="submit" name="submit">Update Bio</button>
 	</form>
 	
 	
@@ -71,7 +71,7 @@
 		</div>
 		<input class="form-input" type="url" name="websiteURL" placeholder="{{user.websiteURL}}" required autocomplete="off" ng-model="edit.websiteURL" ng-minlength=2 ng-maxlength=200/>
 		
-		<button class="button" type="submit" name="submit">UPDATE WEBSITE</button>
+		<button class="button" type="submit" name="submit">Update Website</button>
 	</form>
 	
 </section>

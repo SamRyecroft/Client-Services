@@ -34,7 +34,17 @@ var userSchema = mongoDB.Schema({
 		},
 		validate : /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
 	},
-
+	facebook : {
+		
+		acessToken : {
+			type : String,
+			required : false
+		},
+		refreshToken : {
+			type : String,
+			required : false
+		}
+	},
 	// Authentication
 	password : {
 		type : String,
