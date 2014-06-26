@@ -162,36 +162,37 @@ exports.loginWithFacebook = loginWithFacebook;
 function loginWithGoogle(req, res, next){
 	
 	passport.authenticate('google', function(err,user,info) {
-		console.log(user);
-		if (err){
-			
-			return next(err); 
-		}
-		
-		if (!user){
-			return res.redirect('/#/login'); 
-		}
-		
-		req.login(user, function(err){
-			if (err) { 
-				console.log(err);
-			return next(err); 
-			}
-		
-			tokenModel.createToken(user.emailAddress, function(err, token) {
+		if (err) { 
+					console.log(err);
+					return next(err); 
+				}
 				
-				res.cookie('authenticationCookie', JSON.stringify(token), {
-					httpOnly : true,
-					secure : true
-				});
-							
-				res.cookie('userInfoCookie', createUserInfomationCookie(user), {
-					httpOnly : false
-				});
+				if (!user.exsists) { 
+					
+					return res.redirect('/#/social-register?firstName=' + user.account.name.givenName + '&middleName=' + user.account.name.middleName + '&surname=' + user.account.name.familyName + '&emailAddress=' + user.account.emails[0].value); 
+				}
+		    	
+				req.logIn(user, function(err) {
 				
-    	 			 return res.redirect('/#/welcome');
-			});
-		});
+					if (err) { 
+						console.log(err);
+					return next(err); 
+					}
+				
+					tokenModel.createToken(user.emailAddress, function(err, token) {
+						
+						res.cookie('authenticationCookie', JSON.stringify(token), {
+							httpOnly : true,
+							secure : true
+						});
+									
+						res.cookie('userInfoCookie', createUserInfomationCookie(user.account), {
+							httpOnly : false
+						});
+						
+		    	 			 return res.redirect('/#/welcome');
+					});
+		   		 });
 	})(req, res, next);
 }
 

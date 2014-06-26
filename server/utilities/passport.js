@@ -58,24 +58,34 @@ passport.use(new GoogleStrategy({
     userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
 	
 	if (err){
-		
-	} else if (exsists) {
-		
-		userModel.getUserAccountByEmail(profile.emails[0].value, function (err, userAccount){
 			
-			if (err){	
+			callback(err, false);
+			
+		} else if (exsists) {
+			
+			userModel.getUserAccountByEmail(profile.emails[0].value, function (err, userAccount){
 				
-			} else {
-				
-				callback(null, userAccount);
-			}
-		});
-		
-		}else {
-		
-			callback(null, false);
-		}
-	});  }
+				if (err){	
+					
+					callback(err, null)
+					
+				} else {
+					
+					var account = new Object;
+					account.exsists = true;
+					account.account = userAccount;
+					
+					callback(null, account);
+				}
+			});
+			
+			}else {
+					var account = new Object;
+					account.exsists = false;
+					account.account = profile;
+					
+				callback(null, account);
+			}	});  }
 ));
 
 passport.serializeUser(function(user, done) {

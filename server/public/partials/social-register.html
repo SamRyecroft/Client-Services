@@ -5,6 +5,7 @@
 	<!-- SOCIAL SIGNUP FORM -->
 	<form class="forms" name="social_form" novalidate ng-submit="socialRegister()">
 		
+		<div class="success-messages" ng-show="successCreateAccount">&#x2713 {{ successCreateAccount }}</div>
 		<div class="error-messages" ng-show="social_form.username.$dirty && social_form.username.$invalid && social_form.submitted">
 		    <small ng-show="social_form.username.$error.required">&#x2718 A username is required</small>
 		    <small ng-show="social_form.username.$error.minlength">&#x2718 The username min character length is 2</small>
@@ -12,7 +13,7 @@
 		</div>
 		<input class="form-input" type="text" name="username" placeholder="Desired Username" required autocomplete="off" ng-model="social.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/"/>
 			
-		<div class="error-messages" ng-show="passwordDuplicateError">{{ passwordDuplicateError }}</div>
+		<div class="error-messages" ng-show="passwordDuplicateError">&#x2718{{ passwordDuplicateError }}</div>
 		<div class="error-messages" ng-show="social_form.newPassword.$dirty && social_form.newPassword.$invalid && social_form.submitted">
 		    <small ng-show="social_form.newPassword.$error.required">&#x2718 A Password is required</small>
 		    <small ng-show="social_form.newPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
@@ -30,7 +31,7 @@
 		</div>
 		<input class="form-input" type="password" name="confirmPassword" placeholder="Confirm Password" required autocomplete="off" ng-model="social.confirmPassword" ng-minlength=6 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
 		
-		<button class="button" type="submit" name="submit">Update Name</button>
+		<button class="button" type="submit" name="submit">Create Account</button>
 	</form>
 	
 </section>
