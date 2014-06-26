@@ -13,8 +13,6 @@ passport.use(new FacebookStrategy({
 
 function (accessToken, refreshToken, profile, callback){
 
-	console.log(accessToken, refreshToken);
-
 	userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
 		
 		
@@ -81,7 +79,7 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.username);
+  done(null, user.account.username);
 });
 
 passport.deserializeUser(function(id, done) {

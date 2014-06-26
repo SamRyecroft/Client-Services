@@ -131,7 +131,6 @@ function loginWithFacebook(req, res, next){
 		
 		if (!user.exsists) { 
 			
-			console.log(user.account);
 			return res.redirect('/#/social-register?firstName=' + user.account.name.givenName + '&middleName=' + user.account.name.middleName + '&surname=' + user.account.name.familyName + '&emailAddress=' + user.account.emails[0].value); 
 		}
     	
@@ -278,6 +277,11 @@ function registerUserAccountThroughSocialMedia (req, res, next){
 		
 		var data = qs.parse(body);
 		
+		data.username;
+		data.password;
+		data.emailAddress;
+		data.firstName;
+		
 		var acessToken = data.accessToken;
 		var refreshToken = data.refreshToken;
 		if (!data.accessToken){
@@ -289,7 +293,6 @@ function registerUserAccountThroughSocialMedia (req, res, next){
 			refreshToken = null; 
 		}
 		
-		console.log(data.username);
 		userModel.createNewUserThroughSocialMedia(data.username, data.password, data.emailAddress, data.firstName, data.middlename, data.surname, accessToken, refreshToken, function (err){
 			
 			if (err == null){
