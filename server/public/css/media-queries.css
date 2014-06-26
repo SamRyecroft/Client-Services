@@ -10,9 +10,12 @@
 		width: 48px;
 		line-height: 48px;
 	}
+
+
 	h1{
 		font-size: 38px;
 	} 
+
 
 	.main-nav-ul{
 		text-align: center;
@@ -72,6 +75,8 @@
 		text-align: center;
 		position: relative;
 	}
+	
+	
 	.forms{
 		width: 75%;
 	}
@@ -85,18 +90,18 @@
 		margin-top: 16px;
 	}
 	
+	
 	.current-members-li{
 		width: 25%;
 	}
 
+
 	.profile-left-container{
 		width: 100%;
 	}
-
 	.profile-right-container{
 		width: 100%;
 	}
-
 	.right-container-boxes{
 		padding: 16px 16px 0 0;
 	}
@@ -112,15 +117,16 @@
 	.forms{
 		width: 65%;
 	}
+
 	
 	.current-members-li{
 		width: 20%;
 	}
 
+
 	.profile-left-container{
 		width: 40%;
 	}
-
 	.profile-right-container{
 		width: 60%;
 	}

@@ -15,7 +15,6 @@ var serverConfiguration = require('./config.js');
 var compress = require('compression');
 var fs = require('fs');
 var util = require('util')
-var BasicStrategy = require('passport-http').BasicStrategy;
 
 var passport = require('passport');
 

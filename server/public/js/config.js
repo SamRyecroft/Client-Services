@@ -47,6 +47,10 @@ loginApp.config(function($routeProvider, $httpProvider) {
 		templateUrl: 'partials/edit.html',
 		controller: 'EditController'
 	}).
+	when('/social-register', {
+		templateUrl: 'partials/social-register.html',
+		controller: 'SocialController'
+	}).
 	otherwise({
 		redirectTo: '/login'
 	});

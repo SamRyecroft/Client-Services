@@ -20,21 +20,32 @@ function (accessToken, refreshToken, profile, callback){
 		
 		if (err){
 			
+			callback(err, false);
+			
 		} else if (exsists) {
 			
 			userModel.getUserAccountByEmail(profile.emails[0].value, function (err, userAccount){
 				
 				if (err){	
 					
+					callback(err, null)
+					
 				} else {
 					
-					callback(null, userAccount);
+					var account = new Object;
+					account.exsists = true;
+					account.account = userAccount;
+					
+					callback(null, account);
 				}
 			});
 			
 			}else {
-			
-				callback(null, false);
+					var account = new Object;
+					account.exsists = false;
+					account.account = profile;
+					
+				callback(null, account);
 			}
 		});
 	}	
@@ -45,11 +56,8 @@ passport.use(new GoogleStrategy({
     realm: 'https://localhost:3000'
   },
   function(identifier, profile, callback) {
-	console.log(identifier);
-
 	
     userModel.isEmailAddressRegistered(profile.emails[0].value, function (err,exsists){
-	console.log(exsists);
 	
 	if (err){
 		

@@ -19,7 +19,9 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', '$loca
 	$scope.settingsEmail = function(){
 	
 		if($scope.email_form.$valid){
+			
 			if($scope.user.emailAddress != $scope.change.emailAddress){
+			
 				$http({
 					method: 'PATCH',
 					url: 'https://localhost:3000/userAccounts/profileUtilities/changeEmailAddress',
@@ -30,16 +32,22 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', '$loca
 					$scope.user.emailAddress = $scope.change.emailAddress;
 					$scope.change.emailAddress = '';
 				}).error(function(error, status){
-					$scope.sameEmailError = 'That is the email you are currently using';
+					$scope.sameEmailError = error.error;
 					$scope.successEmailChange = '';
 					console.log(error, status, 'error');
 				});	
+				
 			}else{
+			
 				$scope.sameEmailError = 'That is the email you are currently using';
 				$scope.successEmailChange = '';
+				
 			}
+			
 		}else{
+		
 			$scope.email_form.submitted = true;
+		
 		}
 		
 	};
@@ -50,15 +58,24 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', '$loca
 	$scope.settingsPassword = function(){
 	
 		if($scope.password_form.$valid){
+		
 			$scope.passwordDuplicateError = "";
 			$scope.passwordConfirmError = "";
+			
 				if($scope.change.oldPassword == ($scope.change.newPassword || $scope.confirmPassword)){
+				
 					$scope.passwordDuplicateError = "You're already using that password";
+					
 				}
+				
 				else if($scope.change.newPassword != $scope.change.confirmPassword){
+				
 					$scope.passwordConfirmError = 'Your desired password did not match';
+					
 				}
+				
 				else{
+				
 					$http({
 		  				method: 'PATCH',			
 		  				url: 'https://localhost:3000/userAccount/profileUtilities/changePassword',
@@ -71,7 +88,8 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', '$loca
 		  			}).error(function(error, status){
 		  				$scope.successPassChange = '';
 		  				console.log(error, status, 'error');
-		  			});	
+		  			});
+		  				
 				}
   			
   		}else{
@@ -86,6 +104,7 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', '$loca
 	$scope.settingsDelete = function(){
 	
 		if($scope.delete_form.$valid){
+		
 			$http({
 				method: 'PATCH',
 				url: 'https://localhost:3000/userAccount/profileUtilities/closeAccount',
@@ -94,12 +113,14 @@ loginApp.controller('SettingsController', ['$scope', '$http', '$cookies', '$loca
 				$scope.successDelete = 'Your Password has been changed';
 				LoginStatusFactory.setLoginStatus(false);
 				$location.path('/login');
-				console.log('success');
 			}).error(function(error, status){
 				console.log(error, status, 'error');
 			});
+			
 		}else{
+		
 			$scope.delete_form.submitted = true;
+			
 		}
 		
 	};

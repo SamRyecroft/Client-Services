@@ -125,13 +125,14 @@ function loginWithFacebook(req, res, next){
 
 	passport.authenticate('facebook', function(err, user, info) {
 		if (err) { 
-			
+			console.log(err);
 			return next(err); 
 		}
 		
-		if (!user) { 
+		if (!user.exsists) { 
 			
-			return res.redirect('/#/login'); 
+			console.log(user.account);
+			return res.redirect('/#/social-register?firstName=' + user.account.name.givenName + '&middleName=' + user.account.name.middleName + '&surname=' + user.account.name.familyName + '&emailAddress=' + user.account.emails[0].value); 
 		}
     	
 		req.logIn(user, function(err) {
@@ -148,7 +149,7 @@ function loginWithFacebook(req, res, next){
 					secure : true
 				});
 							
-				res.cookie('userInfoCookie', createUserInfomationCookie(user), {
+				res.cookie('userInfoCookie', createUserInfomationCookie(user.account), {
 					httpOnly : false
 				});
 				
@@ -259,6 +260,54 @@ function logInUserAccount(req, res) {
 	});
 }
 
+function registerUserAccountThroughSocialMedia (req, res, next){
+	
+	var body = '';
+	
+	req.on('data', function(data){
+		
+		body += data;
+		
+		if (body.length > 1e6){
+			
+			req.connection.destroy
+		}
+	});
+	
+	req.on('end', function () {
+		
+		var data = qs.parse(body);
+		
+		var acessToken = data.accessToken;
+		var refreshToken = data.refreshToken;
+		if (!data.accessToken){
+			
+			accessToken = null;
+		}
+		
+		if (!data.refreshToken){
+			refreshToken = null; 
+		}
+		
+		console.log(data.username);
+		userModel.createNewUserThroughSocialMedia(data.username, data.password, data.emailAddress, data.firstName, data.middlename, data.surname, accessToken, refreshToken, function (err){
+			
+			if (err == null){
+				res.statusCode = 200;
+				res.end (JSON.stringify({
+					status : 'sucsess'
+										
+				}));
+				
+			} else {
+				
+				errorResponse(res, err);
+			}
+		})
+	});
+	
+}
+exports.registerUserAccountThroughSocialMedia = registerUserAccountThroughSocialMedia;
 function registerUserAccount(req, res, next) {
 
 	var body = '';
@@ -310,7 +359,6 @@ function registerUserAccount(req, res, next) {
 			}));
 			
 			return;
-
 		}
 
 		// Adds a new user to the system

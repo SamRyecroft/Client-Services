@@ -1,0 +1,36 @@
+<section class="ng-view-section">
+
+	<h1 class="center-text">Social Sign Up</h1>
+	
+	<!-- SOCIAL SIGNUP FORM -->
+	<form class="forms" name="social_form" novalidate ng-submit="socialRegister()">
+		
+		<div class="error-messages" ng-show="social_form.username.$dirty && social_form.username.$invalid && social_form.submitted">
+		    <small ng-show="social_form.username.$error.required">&#x2718 A username is required</small>
+		    <small ng-show="social_form.username.$error.minlength">&#x2718 The username min character length is 2</small>
+		    <small ng-show="social_form.username.$error.pattern">&#x2718 Use only A-Za-z characters</small>
+		</div>
+		<input class="form-input" type="text" name="username" placeholder="Desired Username" required autocomplete="off" ng-model="social.username" ng-minlength=2 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+$/"/>
+			
+		<div class="error-messages" ng-show="passwordDuplicateError">{{ passwordDuplicateError }}</div>
+		<div class="error-messages" ng-show="social_form.newPassword.$dirty && social_form.newPassword.$invalid && social_form.submitted">
+		    <small ng-show="social_form.newPassword.$error.required">&#x2718 A Password is required</small>
+		    <small ng-show="social_form.newPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
+		    <small ng-show="social_form.newPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
+		    <small ng-show="social_form.newPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
+		</div>
+		<input class="form-input" type="password" name="newPassword" placeholder="Desired Password" required autocomplete="off" ng-model="social.newPassword" ng-minlength=6 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
+		
+		<!-- <small class="error-messages" ng-show="passwordConfirmError">&#x2718 {{ passwordConfirmError }}</small> -->
+		<div class="error-messages" ng-show="social_form.confirmPassword.$dirty && social_form.confirmPassword.$invalid && social_form.submitted">
+		    <small ng-show="social_form.confirmPassword.$error.required">&#x2718 A Password is required</small>
+		    <small ng-show="social_form.confirmPassword.$error.minlength">&#x2718 The Password min character length is 2</small>
+		    <small ng-show="social_form.confirmPassword.$error.maxlength">&#x2718 The Password max character length is 20</small>
+		    <small ng-show="social_form.confirmPassword.$error.pattern">&#x2718 Use only A-Z/a-z & 0-9</small>
+		</div>
+		<input class="form-input" type="password" name="confirmPassword" placeholder="Confirm Password" required autocomplete="off" ng-model="social.confirmPassword" ng-minlength=6 ng-maxlength=20 ng-pattern="/^[a-zA-Z0-9_]+$/">
+		
+		<button class="button" type="submit" name="submit">Update Name</button>
+	</form>
+	
+</section>

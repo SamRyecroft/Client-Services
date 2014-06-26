@@ -242,6 +242,38 @@ function createNewUser (username, password, emailAddress, firstName, middleName,
 }
 exports.createNewUser = createNewUser;
 
+function createNewUserThroughSocialMedia (username, password, emailAddress, firstName, middleName, surname, accessToken, refreshToken, callback){
+	
+	var userAccount = new userModel ({
+		username : username,
+		password : createHash (password, saltValue),
+		salt : saltValue,
+		emailAddress : emailAddress,
+		firstName : firstName,
+		middleName : middleName,
+		surname : surname
+	});
+	
+	if (accessToken){
+		userAccount.facebook.acessessToken = accessToken;
+	}
+	
+	if (refreshToken){
+		userAccount.facebook.refreshToken = refreshToken;
+	}
+	
+	userAccount.save(function (err) {
+		
+		if (err){
+			console.log(err);
+		}else {
+			callback(null);
+		}
+	});
+}
+
+exports.createNewUserThroughSocialMedia = createNewUserThroughSocialMedia;
+
 // Checks to see if a user account with the specified username exsists
 function doseUserExsist(username, callback) {
 

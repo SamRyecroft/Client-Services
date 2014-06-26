@@ -25,6 +25,8 @@ app.get('/accountResources/registeredEmailAddress', accounts_api.isEmailAddressR
 
 app.get('/userAccount/accountTools/accountRecovery/generateRecoveryKey', accounts_api.createRecoveryKeyForAccount);
 
+app.post('/userAccount/accountTools/createNewAccountWithSocialMedia', accounts_api.registerUserAccountThroughSocialMedia);
+
 app.post('/userAccount/accountTools/accountRecovery/recoverAccountWithKey', accounts_api.recoverAccountWithRecoveryKey);
 
 app.patch('/userAccount/profileUtilities/changeAccountHolderName', accounts_api.updateAccountHolderName);

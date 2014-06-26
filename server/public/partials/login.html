@@ -3,7 +3,7 @@
 	<h1 class="center-text">Login</h1>
 
 
-	<!-- SOCIAL MEDIA LOGIN -->
+	<!-- SOCIAL LOGIN -->
 	<div class="forms">
 		<a ng-href="/auth/google" class="button social-button google-redBG">Login with Google+</a>
 		<a ng-href="/auth/facebook" class="button social-button facebook-blueBG">Login with Facebook</a>
@@ -18,7 +18,6 @@
 		<div class="error-messages" ng-show="login_form.username.$dirty && login_form.username.$invalid && login_form.submitted">
 		    <small ng-show="login_form.username.$error.required">&#x2718 A username is required</small>
 		    <small ng-show="login_form.username.$error.minlength">&#x2718 The username min character length is 2</small>
-		    <small ng-show="login_form.username.$error.maxlength">&#x2718 The username max character length is 20</small>
 		</div>
 		<input class="form-input" type="text" name="username" placeholder="Username or Email" required autocomplete="off" ng-model="login.username" ng-minlength=2 ng-maxlength=20>
 

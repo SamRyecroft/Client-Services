@@ -14,11 +14,11 @@
 }
 
 ::selection {
-	background: #1bd8b3;
+	background: #2ecc71;
 	color: #ffffff;
 }
 ::-moz-selection {
-	background: #1bd8b3;
+	background: #2ecc71;
 	color: #ffffff;
 }
 
